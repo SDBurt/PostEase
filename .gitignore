@@ -1,5 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+.DS_Store
+node_modules
+.next
+out
+.docz
+tmp
+.swp
+
 # dependencies
 /node_modules
 /.pnp
@@ -24,6 +32,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# dotenv environment variables file
+.env
+# excempt the apps/www .env
+!apps/www/.env
+.env.test
+.env.local
+.env.production
+
 # local env files
 .env*.local
 
@@ -33,3 +49,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Supabase
+**/supabase/.branches
+**/supabase/.temp
+
+.vscode
+.idea
+.vercel
