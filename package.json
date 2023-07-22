@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.22.1",
@@ -50,6 +52,7 @@
     "drizzle-orm": "^0.27.2",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
+    "lucide-react": "^0.263.0",
     "next": "13.4.10",
     "postcss": "8.4.26",
     "postgres": "^3.3.5",
@@ -64,7 +67,23 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^7.1.0",
+    "@storybook/addon-interactions": "^7.1.0",
+    "@storybook/addon-links": "^7.1.0",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/addon-styling": "^1.3.4",
+    "@storybook/blocks": "^7.1.0",
+    "@storybook/nextjs": "^7.1.0",
+    "@storybook/react": "^7.1.0",
+    "@storybook/testing-library": "^0.2.0",
     "drizzle-kit": "^0.19.10",
+    "eslint-plugin-storybook": "^0.6.13",
+    "storybook": "^7.1.0",
     "supabase": "^1.77.9"
+  },
+  "pnpm": {
+    "overrides": {
+      "semver@>=7.0.0 <7.5.2": ">=7.5.2"
+    }
   }
 }

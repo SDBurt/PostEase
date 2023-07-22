@@ -1,18 +1,20 @@
-'use client'
-
 import { Button } from "@/components/ui/button";
-import { getPosts } from "@/lib/db/actions";
+import db from "@/lib/drizzle";
+import { posts } from "@/lib/drizzle/schema";
+// import { getPosts } from "@/lib/db/actions";
+
+export async function getPosts() {
+  try {
+    return await db.select().from(posts);
+  } catch(err) {
+    console.error(err)
+  }
+}
 
 export function GetPosts() {
 
-  async function onClickHandler() {
-    console.log("GET CLICKED")
-    await getPosts()
-  }
-
-
   return (
-    <Button onClick={onClickHandler}>
+    <Button onClick={getPosts}>
       Get All Posts
     </Button>
   )

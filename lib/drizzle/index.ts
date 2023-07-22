@@ -3,7 +3,7 @@ import postgres from 'postgres'
  
 import { env } from "@/env.mjs"
 
-const connectionString = env.NEXT_PUBLIC_SUPABASE_URL
+const connectionString = env.DATABASE_URL
 
 const client = postgres(connectionString)
 
