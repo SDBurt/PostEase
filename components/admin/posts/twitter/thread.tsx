@@ -6,6 +6,7 @@ type Tweet = {
   userName: string;
   handle: string;
   text: string;
+  createdAt: string;
 };
 
 interface TweetThreadProps {
@@ -14,7 +15,7 @@ interface TweetThreadProps {
 
 function TweetThread({ tweets }: TweetThreadProps) {
   return (
-    <div>
+    <div className="flex flex-col space-y-2">
       {tweets?.map((tweet) => {
         return (
           <Tweet
@@ -22,6 +23,8 @@ function TweetThread({ tweets }: TweetThreadProps) {
             userName={tweet.userName}
             handle={tweet.handle}
             text={tweet.text}
+            createdAt={tweet.createdAt}
+            isThread={tweets && tweets.length > 1}
           />
         );
       })}

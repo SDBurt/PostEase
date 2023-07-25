@@ -51,6 +51,7 @@ specifiers:
   clsx: ^2.0.0
   cmdk: ^0.2.0
   date-fns: ^2.30.0
+  dayjs: ^1.11.9
   drizzle-kit: ^0.19.10
   drizzle-orm: ^0.27.2
   eslint: 8.45.0
@@ -111,6 +112,7 @@ dependencies:
   clsx: 2.0.0
   cmdk: 0.2.0_clwdj742dood3wxkovrqay7cta
   date-fns: 2.30.0
+  dayjs: 1.11.9
   drizzle-orm: 0.27.2_postgres@3.3.5
   eslint: 8.45.0
   eslint-config-next: 13.4.10_ko3fmmbeyij36muomfgt2u76xu
@@ -7899,6 +7901,10 @@ packages:
     engines: {node: '>=0.11'}
     dependencies:
       '@babel/runtime': 7.22.6
+    dev: false
+
+  /dayjs/1.11.9:
+    resolution: {integrity: sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==}
     dev: false
 
   /debug/2.6.9:

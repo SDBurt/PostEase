@@ -38,6 +38,7 @@ import {
   User,
   X,
   Youtube,
+  Globe,
 } from "lucide-react";
 
 export const Icons = {
@@ -126,6 +127,7 @@ export const Icons = {
   youtube: Youtube,
   twitch: Twitch,
   dribbble: Dribbble,
+  globe: Globe,
   spotify: ({ ...props }: LucideProps) => (
     <svg
       role="img"
