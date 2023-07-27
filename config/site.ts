@@ -1,4 +1,4 @@
-import { SiteConfig } from "types";
+import { SiteConfig } from "types"
 
 export const siteConfig: SiteConfig = {
   name: "PostEase",
@@ -10,4 +10,4 @@ export const siteConfig: SiteConfig = {
     twitter: "https://twitter.com/seanburt8",
     github: "https://github.com/sdburt/postease",
   },
-};
+}

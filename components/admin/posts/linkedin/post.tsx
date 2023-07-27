@@ -1,24 +1,24 @@
-import { UserAvatar } from "@/components/user-avatar";
-import React from "react";
+import React from "react"
 
-import { Icons } from "@/components/icons";
-import { dateFromNow } from "@/lib/utils";
+import { dateFromNow } from "@/lib/utils"
+import { Icons } from "@/components/icons"
+import { UserAvatar } from "@/components/user-avatar"
 
 interface PostHeaderProps {
-  userName: string;
-  headline: string;
-  createdAt: Date;
+  userName: string
+  headline: string
+  createdAt: Date
 }
 interface PostTextProps {
-  text: string;
+  text: string
 }
 
 interface PostProps {
-  imageUrl?: string;
-  userName: string;
-  headline: string;
-  text: string;
-  createdAt: Date;
+  imageUrl?: string
+  userName: string
+  headline: string
+  text: string
+  createdAt: Date
 }
 
 function PostHeader({ userName, headline, createdAt }: PostHeaderProps) {
@@ -35,15 +35,15 @@ function PostHeader({ userName, headline, createdAt }: PostHeaderProps) {
         <Icons.globe className="h-3 w-3" />
       </div>
     </div>
-  );
+  )
 }
 
 function PostText({ text }: PostTextProps) {
-  return <p className="text-primary">{text}</p>;
+  return <p className="text-primary">{text}</p>
 }
 
 function PostContainer({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-col gap-2 p-2">{children}</div>;
+  return <div className="flex flex-col gap-2 p-2">{children}</div>
 }
 
 function Post({ imageUrl, userName, headline, createdAt, text }: PostProps) {
@@ -61,9 +61,9 @@ function Post({ imageUrl, userName, headline, createdAt, text }: PostProps) {
         <PostText text={text} />
       </div>
     </PostContainer>
-  );
+  )
 }
 
-export { PostHeader, PostText, PostContainer, Post };
+export { PostHeader, PostText, PostContainer, Post }
 
-export default Post;
+export default Post

@@ -1,4 +1,4 @@
-import { EditorProps } from "@tiptap/pm/view";
+import { EditorProps } from "@tiptap/pm/view"
 
 export const TiptapEditorProps: EditorProps = {
   attributes: {
@@ -8,11 +8,11 @@ export const TiptapEditorProps: EditorProps = {
     keydown: (_view, event) => {
       // prevent default event listeners from firing when slash command is active
       if (["ArrowUp", "ArrowDown", "Enter"].includes(event.key)) {
-        const slashCommand = document.querySelector("#slash-command");
+        const slashCommand = document.querySelector("#slash-command")
         if (slashCommand) {
-          return true;
+          return true
         }
       }
     },
   },
-};
+}

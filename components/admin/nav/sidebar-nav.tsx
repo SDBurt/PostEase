@@ -1,27 +1,27 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
-import { SidebarNavItem } from "types";
-import { cn } from "@/lib/utils";
-import Icons from "@/components/icons";
+import { SidebarNavItem } from "types"
+import { cn } from "@/lib/utils"
+import Icons from "@/components/icons"
 
 interface SidebarNavProps {
-  items: SidebarNavItem[];
+  items: SidebarNavItem[]
 }
 
 export function SidebarNav({ items }: SidebarNavProps) {
-  const path = usePathname();
+  const path = usePathname()
 
   if (!items?.length) {
-    return null;
+    return null
   }
 
   return (
     <nav className="grid items-start gap-2">
       {items.map((item, index) => {
-        const Icon = Icons[item.icon || "arrowRight"];
+        const Icon = Icons[item.icon || "arrowRight"]
         return (
           item.href && (
             <Link key={index} href={item.disabled ? "/" : item.href}>
@@ -37,10 +37,10 @@ export function SidebarNav({ items }: SidebarNavProps) {
               </span>
             </Link>
           )
-        );
+        )
       })}
     </nav>
-  );
+  )
 }
 
-export default SidebarNav;
+export default SidebarNav

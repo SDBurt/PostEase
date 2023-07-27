@@ -198,6 +198,6 @@ const DEFAULT_EDITOR_CONTENT = {
       ],
     },
   ],
-};
+}
 
-export default DEFAULT_EDITOR_CONTENT;
+export default DEFAULT_EDITOR_CONTENT

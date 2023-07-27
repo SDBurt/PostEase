@@ -1,27 +1,26 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
-
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Post } from "@prisma/client"
+// import { updatePost } from "@/lib/db/actions"
+
+import { EditorContent, useEditor } from "@tiptap/react"
 import { useForm } from "react-hook-form"
 import TextareaAutosize from "react-textarea-autosize"
 import * as z from "zod"
 
+import { insertPostSchema } from "@/lib/db/validation"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
-import { insertPostSchema } from "@/lib/db/validation"
-import { Post } from "@prisma/client"
 
-// import { updatePost } from "@/lib/db/actions"
-
-import { useEditor, EditorContent } from '@tiptap/react'
-import { TiptapEditorProps } from "./props"
 import { EditorBubbleMenu } from "./components/EditorBubbleMenu"
-import { TiptapExtensions } from "./extensions"
 import DEFAULT_EDITOR_CONTENT from "./default-content"
-import Link from "next/link"
+import { TiptapExtensions } from "./extensions"
+import { TiptapEditorProps } from "./props"
 
 interface EditorProps {
   post: Pick<Post, "id" | "title" | "text" | "status">
@@ -30,16 +29,15 @@ interface EditorProps {
 type FormData = z.infer<typeof insertPostSchema>
 
 export function Editor({ post }: EditorProps) {
-  
   const { register, handleSubmit } = useForm<FormData>({
     resolver: zodResolver(insertPostSchema),
   })
 
   const router = useRouter()
-  
+
   const [isSaving, setIsSaving] = React.useState<boolean>(false)
   const [content, setContent] = React.useState(DEFAULT_EDITOR_CONTENT)
-  
+
   const editor = useEditor({
     extensions: TiptapExtensions,
     editorProps: TiptapEditorProps,
@@ -47,12 +45,10 @@ export function Editor({ post }: EditorProps) {
     autofocus: "end",
   })
 
-
   async function onSubmit(data: FormData) {
     setIsSaving(true)
 
     console.log(data)
-
 
     // const result = await updatePost(post.id, data)
 
@@ -75,7 +71,6 @@ export function Editor({ post }: EditorProps) {
     // })
   }
 
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid w-full gap-10">
@@ -91,7 +86,7 @@ export function Editor({ post }: EditorProps) {
               </>
             </Link>
             <p className="text-sm text-muted-foreground">
-              {post.status === 'published' ? "Published" : "Draft"}
+              {post.status === "published" ? "Published" : "Draft"}
             </p>
           </div>
           <button type="submit" className={cn(buttonVariants())}>
@@ -112,7 +107,7 @@ export function Editor({ post }: EditorProps) {
           />
           <div
             onClick={() => {
-              editor?.chain().focus().run();
+              editor?.chain().focus().run()
             }}
             className="relative min-h-[500px] outline-none w-full max-w-screen-lg border-muted bg-background p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
           >

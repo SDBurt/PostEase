@@ -1,16 +1,17 @@
-import React from "react";
-import Tweet, { TweetText } from "./tweet";
+import React from "react"
+
+import Tweet, { TweetText } from "./tweet"
 
 type Tweet = {
-  imageUrl?: string;
-  userName: string;
-  handle: string;
-  text: string;
-  createdAt: Date;
-};
+  imageUrl?: string
+  userName: string
+  handle: string
+  text: string
+  createdAt: Date
+}
 
 interface TweetThreadProps {
-  tweets: Tweet[];
+  tweets: Tweet[]
 }
 
 function TweetThread({ tweets }: TweetThreadProps) {
@@ -27,10 +28,10 @@ function TweetThread({ tweets }: TweetThreadProps) {
           >
             <TweetText text={tweet.text} />
           </Tweet>
-        );
+        )
       })}
     </div>
-  );
+  )
 }
 
-export default TweetThread;
+export default TweetThread

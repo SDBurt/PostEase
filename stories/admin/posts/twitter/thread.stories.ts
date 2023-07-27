@@ -1,15 +1,16 @@
-import TweetThread from "@/components/admin/posts/twitter/thread";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react"
+
+import TweetThread from "@/components/admin/posts/twitter/thread"
 
 const meta = {
   title: "Admin/Posts/Twitter/Thread",
   component: TweetThread,
   tags: ["autodocs"],
-} satisfies Meta<typeof TweetThread>;
+} satisfies Meta<typeof TweetThread>
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
@@ -34,4 +35,4 @@ export const Default: Story = {
       },
     ],
   },
-};
+}

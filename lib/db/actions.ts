@@ -1,13 +1,12 @@
-'use server'
+"use server"
+
+import { auth } from "@clerk/nextjs"
+import { Post } from "@prisma/client"
 
 import { db } from "@/lib/db"
-import { auth } from "@clerk/nextjs";
-import { Post } from "@prisma/client";
-
 
 export async function getPost(postId: Post["id"]): Promise<Post> {
-
-  const { userId } = await auth();
+  const { userId } = await auth()
 
   if (!userId) {
     throw new Error("Unauthorized")
@@ -17,19 +16,17 @@ export async function getPost(postId: Post["id"]): Promise<Post> {
     return await db.post.findUnique({
       where: {
         id: postId,
-        userId
+        userId,
       },
     })
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
   }
-  
 }
 
 export async function getAllPosts(): Promise<Post[]> {
-
-  const { userId } = await auth();
+  const { userId } = await auth()
 
   if (!userId) {
     throw new Error("Unauthorized")
@@ -38,18 +35,17 @@ export async function getAllPosts(): Promise<Post[]> {
   try {
     return await db.post.findMany({
       where: {
-        userId
+        userId,
       },
     })
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
   }
 }
 
 export async function getAllDrafts(): Promise<Post[]> {
-
-  const { userId } = await auth();
+  const { userId } = await auth()
 
   if (!userId) {
     throw new Error("Unauthorized")
@@ -59,22 +55,20 @@ export async function getAllDrafts(): Promise<Post[]> {
     return await db.post.findMany({
       where: {
         userId,
-        status: 'DRAFT'
+        status: "DRAFT",
       },
       orderBy: {
-        createdAt: 'asc',
-      }
+        createdAt: "asc",
+      },
     })
-    
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
   }
 }
 
 export async function getAllScheduled(): Promise<Post[]> {
-
-  const { userId } = await auth();
+  const { userId } = await auth()
 
   if (!userId) {
     throw new Error("Unauthorized")
@@ -84,21 +78,20 @@ export async function getAllScheduled(): Promise<Post[]> {
     return await db.post.findMany({
       where: {
         userId,
-        status: 'SCHEDULED'
+        status: "SCHEDULED",
       },
       orderBy: {
-        createdAt: 'asc',
-      }
+        createdAt: "asc",
+      },
     })
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
   }
 }
 
 export async function getAllPublished(): Promise<Post[]> {
-
-  const { userId } = await auth();
+  const { userId } = await auth()
 
   if (!userId) {
     throw new Error("Unauthorized")
@@ -108,27 +101,26 @@ export async function getAllPublished(): Promise<Post[]> {
     return await db.post.findMany({
       where: {
         userId,
-        status: 'PUBLISHED'
+        status: "PUBLISHED",
       },
       orderBy: {
-        createdAt: 'asc',
-      }
+        createdAt: "asc",
+      },
     })
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
   }
 }
 
-export async function createPost(data): Promise<{id: Post["id"]}> {
-
-  const { userId } = await auth();
+export async function createPost(data): Promise<{ id: Post["id"] }> {
+  const { userId } = await auth()
 
   if (!userId) {
     throw new Error("Unauthorized")
   }
 
-  const newPostData = {...data, userId: userId}
+  const newPostData = { ...data, userId: userId }
 
   try {
     return db.post.create({
@@ -137,15 +129,14 @@ export async function createPost(data): Promise<{id: Post["id"]}> {
         id: true,
       },
     })
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     throw new Error("Unable to create post")
   }
 }
 
-export async function updatePost(postId, data): Promise<{id: Post["id"]}> {
-
-  const { userId } = await auth();
+export async function updatePost(postId, data): Promise<{ id: Post["id"] }> {
+  const { userId } = await auth()
 
   if (!userId) {
     throw new Error("Unauthorized")
@@ -159,18 +150,19 @@ export async function updatePost(postId, data): Promise<{id: Post["id"]}> {
       },
       data,
       select: {
-        id: true
-      }
+        id: true,
+      },
     })
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     throw new Error("Unable to create post")
   }
 }
 
-export async function deletePost(postId: Post["id"]): Promise<{id:  Post["id"]}> {
-
-  const { userId } = await auth();
+export async function deletePost(
+  postId: Post["id"]
+): Promise<{ id: Post["id"] }> {
+  const { userId } = await auth()
 
   if (!userId) {
     throw new Error("Unauthorized")
@@ -183,9 +175,8 @@ export async function deletePost(postId: Post["id"]): Promise<{id:  Post["id"]}>
         userId,
       },
     })
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     throw new Error("Unable to delete post")
   }
-
 }

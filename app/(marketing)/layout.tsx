@@ -19,10 +19,7 @@ export default async function MarketingLayout({
   let navCallToAction = (
     <Link
       href="/login"
-      className={cn(
-        buttonVariants({ variant: "secondary" }),
-        "px-4"
-      )}
+      className={cn(buttonVariants({ variant: "secondary" }), "px-4")}
     >
       Login
     </Link>
@@ -32,10 +29,7 @@ export default async function MarketingLayout({
     navCallToAction = (
       <Link
         href="/admin"
-        className={cn(
-          buttonVariants({ variant: "secondary" }),
-          "px-4"
-        )}
+        className={cn(buttonVariants({ variant: "secondary" }), "px-4")}
       >
         Admin
       </Link>

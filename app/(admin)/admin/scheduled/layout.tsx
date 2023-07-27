@@ -1,11 +1,9 @@
-import ScheduledLayout from "@/components/admin/layout/scheduled-layout";
+import ScheduledLayout from "@/components/admin/layout/scheduled-layout"
 
-
-export default function ScheduledPageLayout({ children }: {children: React.ReactNode}) {
-
-  return (
-    <div>
-      {children}
-    </div>
-  )
+export default function ScheduledPageLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return <div>{children}</div>
 }

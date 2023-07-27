@@ -1,25 +1,24 @@
-
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
-// import { PostCreateButton } from "@/components/post-create-button"
-import { PostItem } from "@/components/admin/posts/post"
-import { PageHeader } from "@/components/admin/page-header"
 import { Post } from "@prisma/client"
+
 import { getAllPosts } from "@/lib/db/actions"
 import { PageShell } from "@/components/admin/layout/page-shell"
+import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
+// import { PostCreateButton } from "@/components/post-create-button"
+import { PostItem } from "@/components/admin/posts/post"
+import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
 export const metadata = {
   title: "Admin",
 }
 
 export default async function DashboardPage() {
-
   const posts: Post[] = await getAllPosts()
 
   return (
     <PageShell>
       <PageHeader heading="Dashboard" text="Create and manage posts.">
-        <PostCreateButton /> 
+        <PostCreateButton />
       </PageHeader>
       <div>
         {posts?.length ? (

@@ -1,18 +1,17 @@
-
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import { PostItem } from "@/components/admin/posts/post"
-import { PageHeader } from "@/components/admin/page-header"
 import { Post } from "@prisma/client"
+
 import { getAllDrafts } from "@/lib/db/actions"
 import { PageShell } from "@/components/admin/layout/page-shell"
+import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
+import { PostItem } from "@/components/admin/posts/post"
+import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
 export const metadata = {
   title: "Drafts",
 }
 
 export default async function DashboardPage() {
-
   const posts: Post[] = await getAllDrafts()
 
   return (

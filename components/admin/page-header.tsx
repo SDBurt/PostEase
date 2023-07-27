@@ -4,11 +4,7 @@ interface PageHeaderProps {
   children?: React.ReactNode
 }
 
-export function PageHeader({
-  heading,
-  text,
-  children,
-}: PageHeaderProps) {
+export function PageHeader({ heading, text, children }: PageHeaderProps) {
   return (
     <div className="flex items-center justify-between px-2">
       <div className="grid gap-1">

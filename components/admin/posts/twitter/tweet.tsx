@@ -1,30 +1,27 @@
-import React from "react";
+import React from "react"
+import { DotFilledIcon } from "@radix-ui/react-icons"
 
-import { DotFilledIcon } from "@radix-ui/react-icons";
-
-import { UserAvatar } from "@/components/user-avatar";
-import { dateFromNow } from "@/lib/utils";
-
-
+import { dateFromNow } from "@/lib/utils"
+import { UserAvatar } from "@/components/user-avatar"
 
 interface TweetHeaderProps {
-  userName: string;
-  handle: string;
-  createdAt: Date;
+  userName: string
+  handle: string
+  createdAt: Date
 }
 interface TweetTextProps {
-  text: string;
+  text: string
 }
 
 interface TweetProps {
-  imageUrl?: string;
-  userName: string;
-  handle: string;
+  imageUrl?: string
+  userName: string
+  handle: string
   // text: string;
   children: React.ReactNode
-  createdAt: Date;
-  isThread?: boolean;
-  showTimestamp?: boolean;
+  createdAt: Date
+  isThread?: boolean
+  showTimestamp?: boolean
 }
 
 function TweetHeader({ userName, handle, createdAt }: TweetHeaderProps) {
@@ -35,24 +32,24 @@ function TweetHeader({ userName, handle, createdAt }: TweetHeaderProps) {
         {"@"}
         {handle}
       </h3>
-     {createdAt ? (
+      {createdAt ? (
         <>
           <DotFilledIcon className="h-3 w-3 text-muted-foreground" />
           <h3 className="font-normal text-muted-foreground flex ">
             {dateFromNow(createdAt)}
           </h3>
         </>
-        ): null}
+      ) : null}
     </div>
-  );
+  )
 }
 
 function TweetText({ text }: TweetTextProps) {
-  return <p className="text-primary">{text}</p>;
+  return <p className="text-primary">{text}</p>
 }
 
 function TweetContainer({ children }: { children: React.ReactNode }) {
-  return <div className="flex gap-2 p-2 w-full">{children}</div>;
+  return <div className="flex gap-2 p-2 w-full">{children}</div>
 }
 
 function Tweet({
@@ -62,7 +59,7 @@ function Tweet({
   children,
   createdAt,
   isThread = false,
-  showTimestamp = false
+  showTimestamp = false,
 }: TweetProps) {
   return (
     <TweetContainer>
@@ -79,9 +76,9 @@ function Tweet({
         {children}
       </div>
     </TweetContainer>
-  );
+  )
 }
 
-export { TweetHeader, TweetText, TweetContainer, Tweet };
+export { TweetHeader, TweetText, TweetContainer, Tweet }
 
-export default Tweet;
+export default Tweet

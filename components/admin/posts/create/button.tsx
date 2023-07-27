@@ -3,10 +3,10 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 
+import { createPost } from "@/lib/db/actions"
 import { cn } from "@/lib/utils"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
-import { createPost } from "@/lib/db/actions"
 
 interface PostCreateButtonProps extends ButtonProps {}
 
@@ -25,7 +25,6 @@ export function PostCreateButton({
 
     setIsLoading(false)
 
-  
     // This forces a cache invalidation.
     router.refresh()
 

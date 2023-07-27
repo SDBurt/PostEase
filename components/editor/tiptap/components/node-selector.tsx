@@ -1,24 +1,24 @@
-import { Editor } from "@tiptap/core";
+import { Dispatch, FC, SetStateAction } from "react"
+import { Editor } from "@tiptap/core"
 import {
   Check,
+  CheckSquare,
   ChevronDown,
+  Code,
   Heading1,
   Heading2,
   Heading3,
-  TextQuote,
   ListOrdered,
   TextIcon,
-  Code,
-  CheckSquare,
-} from "lucide-react";
-import { Dispatch, FC, SetStateAction } from "react";
+  TextQuote,
+} from "lucide-react"
 
-import { BubbleMenuItem } from "./EditorBubbleMenu";
+import { BubbleMenuItem } from "./EditorBubbleMenu"
 
 interface NodeSelectorProps {
-  editor: Editor;
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  editor: Editor
+  isOpen: boolean
+  setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const NodeSelector: FC<NodeSelectorProps> = ({
@@ -92,11 +92,11 @@ export const NodeSelector: FC<NodeSelectorProps> = ({
     //   command: () => editor.chain().focus().toggleCodeBlock().run(),
     //   isActive: () => editor.isActive("codeBlock"),
     // },
-  ];
+  ]
 
   const activeItem = items.filter((item) => item.isActive()).pop() ?? {
     name: "Multiple",
-  };
+  }
 
   return (
     <div className="relative h-full">
@@ -114,8 +114,8 @@ export const NodeSelector: FC<NodeSelectorProps> = ({
             <button
               key={index}
               onClick={() => {
-                item.command();
-                setIsOpen(false);
+                item.command()
+                setIsOpen(false)
               }}
               className="flex items-center justify-between rounded-sm px-2 py-1 text-sm text-stone-600 hover:bg-stone-100"
             >
@@ -131,5 +131,5 @@ export const NodeSelector: FC<NodeSelectorProps> = ({
         </section>
       )}
     </div>
-  );
-};
+  )
+}

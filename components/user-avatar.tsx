@@ -1,11 +1,11 @@
-import { AvatarProps } from "@radix-ui/react-avatar";
+import { AvatarProps } from "@radix-ui/react-avatar"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Icons } from "@/components/icons";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Icons } from "@/components/icons"
 
 interface UserAvatarProps extends AvatarProps {
-  imageUrl?: string;
-  name: string;
+  imageUrl?: string
+  name: string
 }
 
 export function UserAvatar({ imageUrl, name, ...props }: UserAvatarProps) {
@@ -20,5 +20,5 @@ export function UserAvatar({ imageUrl, name, ...props }: UserAvatarProps) {
         </AvatarFallback>
       )}
     </Avatar>
-  );
+  )
 }

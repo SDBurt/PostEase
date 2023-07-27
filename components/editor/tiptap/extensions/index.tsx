@@ -1,19 +1,18 @@
-import StarterKit from "@tiptap/starter-kit";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
-import TiptapLink from "@tiptap/extension-link";
+import { InputRule } from "@tiptap/core"
+import { Color } from "@tiptap/extension-color"
+import Highlight from "@tiptap/extension-highlight"
+import HorizontalRule from "@tiptap/extension-horizontal-rule"
+import TiptapLink from "@tiptap/extension-link"
 // import TiptapImage from "@tiptap/extension-image";
-import Placeholder from "@tiptap/extension-placeholder";
-import TiptapUnderline from "@tiptap/extension-underline";
-import TextStyle from "@tiptap/extension-text-style";
-import { Color } from "@tiptap/extension-color";
-import TaskItem from "@tiptap/extension-task-item";
-import TaskList from "@tiptap/extension-task-list";
-import { Markdown } from "tiptap-markdown";
-import Highlight from "@tiptap/extension-highlight";
+import Placeholder from "@tiptap/extension-placeholder"
+import TaskItem from "@tiptap/extension-task-item"
+import TaskList from "@tiptap/extension-task-list"
+import TextStyle from "@tiptap/extension-text-style"
+import TiptapUnderline from "@tiptap/extension-underline"
+import StarterKit from "@tiptap/starter-kit"
+import { Markdown } from "tiptap-markdown"
 
-import SlashCommand from "./slash-command";
-import { InputRule } from "@tiptap/core";
-
+import SlashCommand from "./slash-command"
 
 export const TiptapExtensions = [
   StarterKit.configure({
@@ -64,19 +63,19 @@ export const TiptapExtensions = [
         new InputRule({
           find: /^(?:---|—-|___\s|\*\*\*\s)$/,
           handler: ({ state, range }) => {
-            const attributes = {};
+            const attributes = {}
 
-            const { tr } = state;
-            const start = range.from;
-            let end = range.to;
+            const { tr } = state
+            const start = range.from
+            let end = range.to
 
             tr.insert(start - 1, this.type.create(attributes)).delete(
               tr.mapping.map(start),
-              tr.mapping.map(end),
-            );
+              tr.mapping.map(end)
+            )
           },
         }),
-      ];
+      ]
     },
   }).configure({
     HTMLAttributes: {
@@ -92,9 +91,9 @@ export const TiptapExtensions = [
   Placeholder.configure({
     placeholder: ({ node }) => {
       if (node.type.name === "heading") {
-        return `Heading ${node.attrs.level}`;
+        return `Heading ${node.attrs.level}`
       }
-      return "Press '/' for commands";
+      return "Press '/' for commands"
     },
     includeChildren: true,
   }),
@@ -120,4 +119,4 @@ export const TiptapExtensions = [
     html: false,
     transformCopiedText: true,
   }),
-];
+]

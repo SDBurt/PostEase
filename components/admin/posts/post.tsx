@@ -1,12 +1,10 @@
 import Link from "next/link"
+import { Post } from "@prisma/client"
 
+import { dateFromNow } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { PostOperations } from "@/components/admin/posts/post-operations"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
-
-import { dateFromNow } from "@/lib/utils"
-import { Post } from "@prisma/client"
-
 
 interface PostItemProps {
   post: Post
@@ -20,12 +18,12 @@ function PostItem({ post }: PostItemProps) {
           href={`/editor/${post.id}`}
           className="font-semibold hover:underline truncate"
         >
-          {post.content && post.content.length > 0 ? post.content[0] : "empty post"}
+          {post.content && post.content.length > 0
+            ? post.content[0]
+            : "empty post"}
         </Link>
         <div>
-          <p className="text-sm text-muted-foreground">
-            {post.status}
-          </p>
+          <p className="text-sm text-muted-foreground">{post.status}</p>
           <p className="text-sm text-muted-foreground">
             {post.createdAt ? dateFromNow(post.createdAt) : null}
           </p>
@@ -74,7 +72,4 @@ function PostList({ posts }: PostListProps) {
   )
 }
 
-export {
-  PostItem,
-  PostList
-}
+export { PostItem, PostList }

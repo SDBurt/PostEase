@@ -1,30 +1,31 @@
-import localFont from "next/font/local";
-import { Inter as FontSans } from "next/font/google";
+import { Inter as FontSans } from "next/font/google"
+import localFont from "next/font/local"
 
-import "@/styles/globals.css";
-import "@/styles/prosemirror.css";
+import "@/styles/globals.css"
+import "@/styles/prosemirror.css"
 
-import type { Metadata } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
-import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Analytics } from "@/components/analytics";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { Toaster } from "@/components/ui/toaster";
+import type { Metadata } from "next"
+import { ClerkProvider } from "@clerk/nextjs"
+
+import { siteConfig } from "@/config/site"
+import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/toaster"
+import { Analytics } from "@/components/analytics"
+import { TailwindIndicator } from "@/components/tailwind-indicator"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-});
+})
 
 const fontHeading = localFont({
   src: "../assets/fonts/CalSans-SemiBold.woff",
   variable: "--font-heading",
-});
+})
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export const metadata: Metadata = {
@@ -72,7 +73,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
-};
+}
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
@@ -95,5 +96,5 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </body>
       </html>
     </ClerkProvider>
-  );
+  )
 }

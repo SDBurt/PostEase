@@ -1,7 +1,7 @@
-import { type ClassValue, clsx } from "clsx"
+import { clsx, type ClassValue } from "clsx"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { twMerge } from "tailwind-merge"
-import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -17,9 +17,8 @@ export function formatDate(input: string | number): string {
 }
 
 export function dateFromNow(date: Date): string {
-
-  dayjs().format();
-  dayjs.extend(relativeTime);
+  dayjs().format()
+  dayjs.extend(relativeTime)
 
   return dayjs(date).fromNow()
 }

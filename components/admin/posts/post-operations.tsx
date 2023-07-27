@@ -3,7 +3,9 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { Post } from "@prisma/client"
 
+import { deletePost } from "@/lib/db/actions"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,13 +25,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
-import { Post } from "@prisma/client"
-import { deletePost } from "@/lib/db/actions"
-
-
 
 async function deletePostHandler(postId: number) {
-
   const result = await deletePost(postId)
 
   if (!result || result[0].id !== postId) {

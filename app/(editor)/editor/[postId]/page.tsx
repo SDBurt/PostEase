@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation"
-
 import { auth, redirectToSignIn } from "@clerk/nextjs"
-import { getPost } from "@/lib/db/actions"
 import { Post } from "@prisma/client"
+
+import { getPost } from "@/lib/db/actions"
 import { Editor } from "@/components/editor/basic/editor"
 
 async function getPostForUser(postId: Post["id"], userId: Post["userId"]) {
@@ -36,7 +36,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
       user={{
         twitterHandle: "twitterHandle",
         userName: "username",
-        imageUrl: ""
+        imageUrl: "",
       }}
     />
   )
