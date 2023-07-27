@@ -1,37 +1,44 @@
-import CreatePost from "@/components/admin/posts/create";
-import { getPosts } from "@/lib/db/actions";
-import db from "@/lib/drizzle";
-import { posts } from "@/lib/drizzle/schema";
-import { InferModel } from "drizzle-orm";
 
-type Posts = InferModel<typeof posts, "select">;
+import { EmptyPlaceholder } from "@/components/empty-placeholder"
+// import { PostCreateButton } from "@/components/post-create-button"
+import { PostItem } from "@/components/admin/posts/post"
+import { PageHeader } from "@/components/admin/page-header"
+import { Post } from "@/lib/db/supabase"
+import { getAllPosts } from "@/lib/db/actions"
+import { PageShell } from "@/components/admin/layout/page-shell"
+import { PostCreateButton } from "@/components/admin/posts/create/button"
 
-export default async function AdminPage() {
+export const metadata = {
+  title: "Admin",
+}
 
+export default async function DashboardPage() {
 
-  const posts = await getPosts()
-
+  const posts: Post[] = await getAllPosts()
 
   return (
-    <main>
-      <div className="flex flex-row space-x-2 p-8">
-        {/* <GetPosts /> */}
-        <CreatePost />
+    <PageShell>
+      <PageHeader heading="Dashboard" text="Create and manage posts.">
+        <PostCreateButton />
+      </PageHeader>
+      <div>
+        {posts?.length ? (
+          <div className="divide-y divide-border rounded-md border">
+            {posts.map((post) => (
+              <PostItem key={post.id} post={post} />
+            ))}
+          </div>
+        ) : (
+          <EmptyPlaceholder>
+            <EmptyPlaceholder.Icon name="post" />
+            <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Description>
+              You don&apos;t have any posts yet. Start creating content.
+            </EmptyPlaceholder.Description>
+            <PostCreateButton variant="outline" />
+          </EmptyPlaceholder>
+        )}
       </div>
-      <div className="flex flex-col space-y-2 p-8">
-        {
-          posts && posts.length > 0 ? (
-            posts.map((post) => {
-              return (
-                <div className="p-2 border rounded">{post.title}</div>
-              )
-            })
-          ) : (
-            <div><p>No Posts</p></div>
-          )
-        }
-      </div>
-
-    </main>
+    </PageShell>
   )
 }

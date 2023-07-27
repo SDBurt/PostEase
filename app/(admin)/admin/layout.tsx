@@ -1,18 +1,11 @@
+import AdminLayout from "@/components/admin/layout/admin-layout";
 
-import { UserButton, auth } from "@clerk/nextjs";
 
-export default function AdminLayout({ children }: {children: React.ReactNode}) {
-
-  // const { userId } = auth()
+export default function AdminPageLayout({ children }: {children: React.ReactNode}) {
 
   return (
-    <div>
-      <nav className="h-12 border-b">
-        <UserButton afterSignOutUrl="/"/>
-      </nav>
-      <div>
-        {children}
-      </div>
-    </div>
+    <AdminLayout>
+      {children}
+    </AdminLayout>
   )
 }

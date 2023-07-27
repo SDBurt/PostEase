@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1690410122977,
+      "tag": "0000_next_boomer",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1690410210038,
+      "tag": "0001_ambitious_sugar_man",
+      "breakpoints": true
+    }
+  ]
+}

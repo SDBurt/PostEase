@@ -1,17 +1,16 @@
-import { UserAvatar } from "@/components/user-avatar";
 import React from "react";
 
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 
-dayjs().format();
-dayjs.extend(relativeTime);
+import { UserAvatar } from "@/components/user-avatar";
+import { dateFromNow } from "@/lib/utils";
+
+
 
 interface TweetHeaderProps {
   userName: string;
   handle: string;
-  createdAt: string;
+  createdAt: Date;
 }
 interface TweetTextProps {
   text: string;
@@ -22,7 +21,7 @@ interface TweetProps {
   userName: string;
   handle: string;
   text: string;
-  createdAt: string;
+  createdAt: Date;
   isThread?: boolean;
 }
 
@@ -36,7 +35,7 @@ function TweetHeader({ userName, handle, createdAt }: TweetHeaderProps) {
       </h3>
       <DotFilledIcon className="h-3 w-3 text-muted-foreground" />
       <h3 className="font-normal text-muted-foreground flex ">
-        {dayjs(createdAt).fromNow()}
+        {dateFromNow(createdAt)}
       </h3>
     </div>
   );

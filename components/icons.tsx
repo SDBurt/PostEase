@@ -39,6 +39,10 @@ import {
   X,
   Youtube,
   Globe,
+  PencilLine,
+  CalendarClock,
+  MailCheck,
+  LayoutDashboard,
 } from "lucide-react";
 
 export const Icons = {
@@ -92,7 +96,11 @@ export const Icons = {
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   trash: Trash,
+  draft: PencilLine,
+  scheduled: CalendarClock,
+  published: MailCheck,
   post: FileText,
+  dashboard: LayoutDashboard,
   page: File,
   media: Image,
   settings: Settings,
@@ -257,3 +265,5 @@ export const Icons = {
     </svg>
   ),
 };
+
+export default Icons

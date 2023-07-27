@@ -1,17 +1,13 @@
 import { UserAvatar } from "@/components/user-avatar";
 import React from "react";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { DotFilledIcon } from "@radix-ui/react-icons";
-import dayjs from "dayjs";
-import { Icons } from "@/components/icons";
 
-dayjs().format();
-dayjs.extend(relativeTime);
+import { Icons } from "@/components/icons";
+import { dateFromNow } from "@/lib/utils";
 
 interface PostHeaderProps {
   userName: string;
   headline: string;
-  createdAt: string;
+  createdAt: Date;
 }
 interface PostTextProps {
   text: string;
@@ -22,7 +18,7 @@ interface PostProps {
   userName: string;
   headline: string;
   text: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 function PostHeader({ userName, headline, createdAt }: PostHeaderProps) {
@@ -32,7 +28,7 @@ function PostHeader({ userName, headline, createdAt }: PostHeaderProps) {
       <h3 className="text-sm font-normal text-muted-foreground">{headline}</h3>
       <div className="text-sm text-muted-foreground flex items-center justify-start space-x-px">
         <span className="font-normal text-muted-foreground space-x-2">
-          {dayjs(createdAt).fromNow()}
+          {dateFromNow(createdAt)}
         </span>
         {/* <DotFilledIcon className="h-2 w-2" /> */}
         <span>{" • "}</span>
