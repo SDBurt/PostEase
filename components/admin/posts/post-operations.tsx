@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
-import { Post } from "@/lib/db/supabase"
+import { Post } from "@prisma/client"
 import { deletePost } from "@/lib/db/actions"
 
 
@@ -44,7 +44,7 @@ async function deletePostHandler(postId: number) {
 }
 
 interface PostOperationsProps {
-  post: Pick<Post, "id" | "title">
+  post: Pick<Post, "id">
 }
 
 export function PostOperations({ post }: PostOperationsProps) {

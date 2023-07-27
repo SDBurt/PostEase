@@ -1,12 +1,12 @@
 import React from "react";
-import Tweet from "./tweet";
+import Tweet, { TweetText } from "./tweet";
 
 type Tweet = {
   imageUrl?: string;
   userName: string;
   handle: string;
   text: string;
-  createdAt: string;
+  createdAt: Date;
 };
 
 interface TweetThreadProps {
@@ -22,10 +22,11 @@ function TweetThread({ tweets }: TweetThreadProps) {
             imageUrl={tweet.imageUrl}
             userName={tweet.userName}
             handle={tweet.handle}
-            text={tweet.text}
             createdAt={tweet.createdAt}
             isThread={tweets && tweets.length > 1}
-          />
+          >
+            <TweetText text={tweet.text} />
+          </Tweet>
         );
       })}
     </div>

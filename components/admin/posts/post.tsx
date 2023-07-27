@@ -4,8 +4,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { PostOperations } from "@/components/admin/posts/post-operations"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
-import type { Post } from '@/lib/db/supabase'
 import { dateFromNow } from "@/lib/utils"
+import { Post } from "@prisma/client"
 
 
 interface PostItemProps {
@@ -20,7 +20,7 @@ function PostItem({ post }: PostItemProps) {
           href={`/editor/${post.id}`}
           className="font-semibold hover:underline truncate"
         >
-          {post.text}
+          {post.content && post.content.length > 0 ? post.content[0] : "empty post"}
         </Link>
         <div>
           <p className="text-sm text-muted-foreground">
@@ -31,7 +31,7 @@ function PostItem({ post }: PostItemProps) {
           </p>
         </div>
       </div>
-      <PostOperations post={{ id: post.id, title: post.title }} />
+      <PostOperations post={{ id: post.id }} />
     </div>
   )
 }

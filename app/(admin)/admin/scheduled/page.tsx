@@ -3,7 +3,7 @@ import { EmptyPlaceholder } from "@/components/empty-placeholder"
 // import { PostCreateButton } from "@/components/post-create-button"
 import { PostItem } from "@/components/admin/posts/post"
 import { PageHeader } from "@/components/admin/page-header"
-import { Post } from "@/lib/db/supabase"
+import { Post } from "@prisma/client"
 import { getAllScheduled } from "@/lib/db/actions"
 import { PageShell } from "@/components/admin/layout/page-shell"
 

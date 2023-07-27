@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -13,12 +12,16 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { insertPostSchema } from "@/lib/db/validation"
-import { Post } from "@/lib/db/supabase"
+import { Post } from "@prisma/client"
 
 // import { updatePost } from "@/lib/db/actions"
 
 import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
+import { TiptapEditorProps } from "./props"
+import { EditorBubbleMenu } from "./components/EditorBubbleMenu"
+import { TiptapExtensions } from "./extensions"
+import DEFAULT_EDITOR_CONTENT from "./default-content"
+import Link from "next/link"
 
 interface EditorProps {
   post: Pick<Post, "id" | "title" | "text" | "status">
@@ -33,14 +36,14 @@ export function Editor({ post }: EditorProps) {
   })
 
   const router = useRouter()
+  
   const [isSaving, setIsSaving] = React.useState<boolean>(false)
-
-
+  const [content, setContent] = React.useState(DEFAULT_EDITOR_CONTENT)
+  
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-    ],
-    content: '<p>Hello World! 🌎️</p>',
+    extensions: TiptapExtensions,
+    editorProps: TiptapEditorProps,
+    content: content,
     autofocus: "end",
   })
 
@@ -98,7 +101,7 @@ export function Editor({ post }: EditorProps) {
             <span>Save</span>
           </button>
         </div>
-        <div className="prose prose-stone mx-auto w-[800px] dark:prose-invert">
+        <div className="mx-auto w-[800px]">
           <TextareaAutosize
             autoFocus
             id="title"
@@ -113,16 +116,9 @@ export function Editor({ post }: EditorProps) {
             }}
             className="relative min-h-[500px] outline-none w-full max-w-screen-lg border-muted bg-background p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
           >
+            {editor && <EditorBubbleMenu editor={editor} />}
             <EditorContent editor={editor} />
           </div>
-          
-          {/* <p className="text-sm text-gray-500">
-            Use{" "}
-            <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">
-              Tab
-            </kbd>{" "}
-            to open the command menu.
-          </p> */}
         </div>
       </div>
     </form>

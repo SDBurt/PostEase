@@ -21,7 +21,7 @@ export function PostCreateButton({
   async function onClick() {
     setIsLoading(true)
 
-    const post = await createPost({title: "", text: ""})
+    const post = await createPost({})
 
     setIsLoading(false)
 

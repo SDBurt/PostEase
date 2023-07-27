@@ -1,14 +1,14 @@
 .ProseMirror .is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
-  color: var(--muted-foreground);
+  color: hsl(var(--muted-foreground));
   pointer-events: none;
   height: 0;
 }
 .ProseMirror .is-empty::before {
   content: attr(data-placeholder);
   float: left;
-  color: var(--muted-foreground);
+  color: hsl(var(--muted-foreground));
   pointer-events: none;
   height: 0;
 }
@@ -41,8 +41,8 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border: 3px solid var(--muted-background);
-    border-top-color: var(--muted-foreground);
+    border: 3px solid hsl(var(--muted-background));
+    border-top-color: hsl(var(--muted-foreground));
     animation: spinning 0.6s linear infinite;
   }
 }
@@ -69,24 +69,24 @@ ul[data-type="taskList"] li > label {
 ul[data-type="taskList"] li > label input[type="checkbox"] {
   -webkit-appearance: none;
   appearance: none;
-  background-color: var(--background);
+  background-color: hsl(var(--background));
   margin: 0;
   cursor: pointer;
   width: 1.2em;
   height: 1.2em;
   position: relative;
   top: 5px;
-  border: 2px solid var(--muted-foreground);
+  border: 2px solid hsl(var(--muted-foreground));
   margin-right: 0.3rem;
   display: grid;
   place-content: center;
 
   &:hover {
-    background-color: var(--muted-background);
+    background-color: hsl(var(--muted-background));
   }
 
   &:active {
-    background-color: var(--muted-foreground);
+    background-color: hsl(var(--muted-foreground));
   }
 
   &::before {
@@ -106,7 +106,7 @@ ul[data-type="taskList"] li > label input[type="checkbox"] {
 }
 
 ul[data-type="taskList"] li[data-checked="true"] > div > p {
-  color: var(--muted-background);
+  color: hsl(var(--muted-background));
   text-decoration: line-through;
   text-decoration-thickness: 2px;
 }

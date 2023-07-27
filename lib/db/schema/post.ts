@@ -7,7 +7,7 @@ export const posts = pgTable('posts', {
   id: serial('id').primaryKey(),
   userId: text('user_id').notNull(),
   title: varchar('title', { length: 256 }),
-  text: text('text').notNull(),
+  content: text('content').array().notNull(),
   status: statusEnum('status').default("draft").notNull(),
   scheduledAt: timestamp("scheduled_at"),
   createdAt: timestamp("created_at"),

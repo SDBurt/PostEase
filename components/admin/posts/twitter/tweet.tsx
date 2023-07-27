@@ -20,9 +20,11 @@ interface TweetProps {
   imageUrl?: string;
   userName: string;
   handle: string;
-  text: string;
+  // text: string;
+  children: React.ReactNode
   createdAt: Date;
   isThread?: boolean;
+  showTimestamp?: boolean;
 }
 
 function TweetHeader({ userName, handle, createdAt }: TweetHeaderProps) {
@@ -33,10 +35,14 @@ function TweetHeader({ userName, handle, createdAt }: TweetHeaderProps) {
         {"@"}
         {handle}
       </h3>
-      <DotFilledIcon className="h-3 w-3 text-muted-foreground" />
-      <h3 className="font-normal text-muted-foreground flex ">
-        {dateFromNow(createdAt)}
-      </h3>
+     {createdAt ? (
+        <>
+          <DotFilledIcon className="h-3 w-3 text-muted-foreground" />
+          <h3 className="font-normal text-muted-foreground flex ">
+            {dateFromNow(createdAt)}
+          </h3>
+        </>
+        ): null}
     </div>
   );
 }
@@ -46,16 +52,17 @@ function TweetText({ text }: TweetTextProps) {
 }
 
 function TweetContainer({ children }: { children: React.ReactNode }) {
-  return <div className="flex gap-2 p-2">{children}</div>;
+  return <div className="flex gap-2 p-2 w-full">{children}</div>;
 }
 
 function Tweet({
   imageUrl,
   userName,
   handle,
-  text,
+  children,
   createdAt,
   isThread = false,
+  showTimestamp = false
 }: TweetProps) {
   return (
     <TweetContainer>
@@ -63,13 +70,13 @@ function Tweet({
         <UserAvatar name={userName} imageUrl={imageUrl} />
         {isThread && <div className="w-px h-full bg-muted" />}
       </div>
-      <div>
+      <div className="w-full">
         <TweetHeader
           userName={userName}
           handle={handle}
-          createdAt={createdAt}
+          createdAt={showTimestamp && createdAt}
         />
-        <TweetText text={text} />
+        {children}
       </div>
     </TweetContainer>
   );

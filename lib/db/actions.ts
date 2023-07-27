@@ -1,23 +1,30 @@
 'use server'
 
-import { eq, and } from "drizzle-orm";
-import db from "@/lib/db/supabase";
-import { posts } from '@/lib/db/schema/post'
-import type { Post, NewPost } from "@/lib/db/supabase";
+import { db } from "@/lib/db"
 import { auth } from "@clerk/nextjs";
+import { Post } from "@prisma/client";
 
 
-export async function getPost(postId: Post["id"], userId: Post["userId"]): Promise<Post> {
+export async function getPost(postId: Post["id"]): Promise<Post> {
 
+  const { userId } = await auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized")
+  }
 
   try {
-    const result = await db.select().from(posts).where(and(eq(posts.userId, userId), eq(posts.id, postId)));
-    return result[0]
-
+    return await db.post.findUnique({
+      where: {
+        id: postId,
+        userId
+      },
+    })
   } catch(err) {
     console.error(err)
-    throw new Error("Unable to retrieve post")
+    throw new Error("Unable to retrieve posts")
   }
+  
 }
 
 export async function getAllPosts(): Promise<Post[]> {
@@ -29,8 +36,11 @@ export async function getAllPosts(): Promise<Post[]> {
   }
 
   try {
-    const result = await db.select().from(posts).where(eq(posts.userId, userId)).orderBy(posts.createdAt);
-    return result
+    return await db.post.findMany({
+      where: {
+        userId
+      },
+    })
   } catch(err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
@@ -46,14 +56,16 @@ export async function getAllDrafts(): Promise<Post[]> {
   }
 
   try {
-    const result = await db
-      .select()
-      .from(posts)
-      .where(and(eq(posts.userId, userId), eq(posts.status, 'draft')))
-      .orderBy(posts.createdAt);
-
-
-    return result
+    return await db.post.findMany({
+      where: {
+        userId,
+        status: 'DRAFT'
+      },
+      orderBy: {
+        createdAt: 'asc',
+      }
+    })
+    
   } catch(err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
@@ -69,13 +81,15 @@ export async function getAllScheduled(): Promise<Post[]> {
   }
 
   try {
-    const result = await db
-      .select()
-      .from(posts)
-      .where(and(eq(posts.userId, userId), eq(posts.status, 'scheduled')))
-      .orderBy(posts.createdAt);
-
-    return result
+    return await db.post.findMany({
+      where: {
+        userId,
+        status: 'SCHEDULED'
+      },
+      orderBy: {
+        createdAt: 'asc',
+      }
+    })
   } catch(err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
@@ -91,13 +105,15 @@ export async function getAllPublished(): Promise<Post[]> {
   }
 
   try {
-    const result = await db
-      .select()
-      .from(posts)
-      .where(and(eq(posts.userId, userId), eq(posts.status, 'published')))
-      .orderBy(posts.createdAt);
-
-    return result
+    return await db.post.findMany({
+      where: {
+        userId,
+        status: 'PUBLISHED'
+      },
+      orderBy: {
+        createdAt: 'asc',
+      }
+    })
   } catch(err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
@@ -112,12 +128,15 @@ export async function createPost(data): Promise<{id: Post["id"]}> {
     throw new Error("Unauthorized")
   }
 
-  const newPostData: NewPost = {...data, userId: userId}
+  const newPostData = {...data, userId: userId}
 
   try {
-    const result = await db.insert(posts).values(newPostData).returning({ id: posts.id})
-    console.log("NEW POST: ", result)
-    return result[0]
+    return db.post.create({
+      data: newPostData,
+      select: {
+        id: true,
+      },
+    })
   } catch(err) {
     console.error(err)
     throw new Error("Unable to create post")
@@ -133,16 +152,23 @@ export async function updatePost(postId, data): Promise<{id: Post["id"]}> {
   }
 
   try {
-    const result = await db.update(posts).set(data).where(eq(posts.id, postId)).returning({ id: posts.id })
-    console.log("UPDATE POST: ", result)
-    return result[0]
+    return await db.post.update({
+      where: {
+        id: postId,
+        userId,
+      },
+      data,
+      select: {
+        id: true
+      }
+    })
   } catch(err) {
     console.error(err)
     throw new Error("Unable to create post")
   }
 }
 
-export async function deletePost(postId: Post["id"]): Promise<{id:  Post["id"]}[]> {
+export async function deletePost(postId: Post["id"]): Promise<{id:  Post["id"]}> {
 
   const { userId } = await auth();
 
@@ -151,8 +177,12 @@ export async function deletePost(postId: Post["id"]): Promise<{id:  Post["id"]}[
   }
 
   try {
-    const result = await db.delete(posts).where(eq(posts.id, postId)).returning({ id: posts.id });
-    return result
+    return await db.post.delete({
+      where: {
+        id: postId,
+        userId,
+      },
+    })
   } catch(err) {
     console.error(err)
     throw new Error("Unable to delete post")
