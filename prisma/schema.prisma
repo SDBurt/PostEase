@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  userId      String    @default(dbgenerated("requesting_user_id()"))
+  content     String[]
+  status      Status    @default(DRAFT)
+  scheduledAt DateTime? @db.Timestamptz()
+  createdAt   DateTime  @default(now()) @db.Timestamptz()
+  updatedAt   DateTime  @updatedAt @db.Timestamptz()
+}
+
+enum Status {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
