@@ -46,29 +46,8 @@ export function Editor({ post }: EditorProps) {
   })
 
   async function onSubmit(data: FormData) {
-    setIsSaving(true)
-
-    console.log(data)
-
-    // const result = await updatePost(post.id, data)
-
-    // console.log(result)
-
-    setIsSaving(false)
-
-    // if (!response?.ok) {
-    //   return toast({
-    //     title: "Something went wrong.",
-    //     description: "Your post was not saved. Please try again.",
-    //     variant: "destructive",
-    //   })
-    // }
-
     router.refresh()
 
-    // return toast({
-    //   description: "Your post has been saved.",
-    // })
   }
 
   return (

@@ -18,7 +18,7 @@ export function Editor({ post, user }: EditorProps) {
       post={{ id: post.id, content: post.content, status: post.status }}
       imageUrl={user.imageUrl}
       userName={user.userName}
-      handle={"placeholder"}
+      handle={user.twitterHandle}
     />
   )
 }

@@ -70,7 +70,6 @@ export default function TwitterForm({
 
     try {
       const updatedData = { content: data.tweets.map((tweet) => tweet.text) }
-      console.log(updatedData)
       const result = await updatePost(post.id, updatedData)
 
       setIsSaving(false)
@@ -104,7 +103,7 @@ export default function TwitterForm({
       return toast({
         title: "Something went wrong.",
         description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <pre className="mt-2 max-w-[340px] rounded-md bg-slate-950 p-4">
             <code className="text-white">{JSON.stringify(err, null, 2)}</code>
           </pre>
         ),
@@ -138,7 +137,7 @@ export default function TwitterForm({
               <span>Save</span>
             </Button>
           </div>
-          <div className="mx-auto w-[800px]">
+          <div className="mx-auto w-4/5 sm:w-2/3 sm:max-w-[600px]">
             <div>
               {fields.map((field, index) => (
                 <FormField

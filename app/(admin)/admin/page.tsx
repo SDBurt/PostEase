@@ -4,15 +4,16 @@ import { getAllPosts } from "@/lib/db/actions"
 import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
-// import { PostCreateButton } from "@/components/post-create-button"
 import { PostItem } from "@/components/admin/posts/post"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import { currentUser  } from "@clerk/nextjs"
 
 export const metadata = {
   title: "Admin",
 }
 
-export default async function DashboardPage() {
+export default async function AdminPage() {
+
   const posts: Post[] = await getAllPosts()
 
   return (
