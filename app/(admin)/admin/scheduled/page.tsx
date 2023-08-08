@@ -1,42 +1,60 @@
 import { Post } from "@prisma/client"
 
-import { getAllScheduled } from "@/lib/db/actions"
+import { getAllScheduledPosts, getUserSchedule } from "@/lib/db/actions"
 import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
-// import { PostCreateButton } from "@/components/post-create-button"
-import { PostItem } from "@/components/admin/posts/post"
+import ScheduleQueue from "@/components/admin/schedule/queue"
+import { Schedule } from "@/types"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import { ScheduleCreateButton } from "@/components/admin/schedule/create/button"
+import { ScheduleEditButton } from "@/components/admin/schedule/edit/button"
 
 export const metadata = {
   title: "Queued",
 }
 
+
 export default async function DashboardPage() {
-  const posts: Post[] = await getAllScheduled()
+  
+  const posts: Post[] = await getAllScheduledPosts()
+  
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+
+  const userSchedules = await getUserSchedule()
+  
+  let schedules = []
+
+  let toRender = <ScheduleQueue timezone={timezone} posts={posts} schedules={schedules}/>
+
+  if (!userSchedules) {
+    toRender = (
+      <EmptyPlaceholder>
+        <EmptyPlaceholder.Icon name="post" />
+        <EmptyPlaceholder.Title>No schedule created</EmptyPlaceholder.Title>
+        <EmptyPlaceholder.Description>
+          You don&apos;t have a schedule yet. Create one now!
+        </EmptyPlaceholder.Description>
+        <ScheduleCreateButton variant="outline" />
+      </EmptyPlaceholder>
+    )
+  }
+
+  if (userSchedules) {
+    const jsonValue = userSchedules["schedule"]
+    schedules = JSON.parse(jsonValue as string) as Schedule[] | []
+  }
+
+  console.log(schedules)
 
   return (
     <PageShell>
-      <PageHeader heading="Posts" text="Create and manage posts.">
-        {/* <PostCreateButton /> */}
+      <PageHeader heading="Scheduled Posts" text="Create and manage scheduled posts.">
+        {!userSchedules ? <ScheduleCreateButton variant="outline" /> : <ScheduleEditButton variant="outline" />}
       </PageHeader>
       <div>
-        {posts?.length ? (
-          <div className="divide-y divide-border rounded-md border">
-            {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
-            ))}
-          </div>
-        ) : (
-          <EmptyPlaceholder>
-            <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
-            <EmptyPlaceholder.Description>
-              You don&apos;t have any posts yet. Start creating content.
-            </EmptyPlaceholder.Description>
-            {/* <PostCreateButton variant="outline" /> */}
-          </EmptyPlaceholder>
-        )}
+        {toRender}
       </div>
+      
     </PageShell>
   )
 }

@@ -1,6 +1,6 @@
 import { Post } from "@prisma/client"
 
-import { getAllPublished } from "@/lib/db/actions"
+import { getAllPublishedPosts } from "@/lib/db/actions"
 import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
 // import { PostCreateButton } from "@/components/post-create-button"
@@ -12,7 +12,7 @@ export const metadata = {
 }
 
 export default async function DashboardPage() {
-  const posts: Post[] = await getAllPublished()
+  const posts: Post[] = await getAllPublishedPosts()
 
   return (
     <PageShell>

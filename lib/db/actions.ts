@@ -1,7 +1,8 @@
+import { schedules } from './schema/schedules';
 "use server"
 
 import { auth } from "@clerk/nextjs"
-import { Post } from "@prisma/client"
+import { Post, Schedule } from "@prisma/client"
 
 import { db } from "@/lib/db"
 
@@ -44,7 +45,7 @@ export async function getAllPosts(): Promise<Post[]> {
   }
 }
 
-export async function getAllDrafts(): Promise<Post[]> {
+export async function getAllDraftPosts(): Promise<Post[]> {
   const { userId } = await auth()
 
   if (!userId) {
@@ -67,7 +68,7 @@ export async function getAllDrafts(): Promise<Post[]> {
   }
 }
 
-export async function getAllScheduled(): Promise<Post[]> {
+export async function getAllScheduledPosts(): Promise<Post[]> {
   const { userId } = await auth()
 
   if (!userId) {
@@ -90,7 +91,7 @@ export async function getAllScheduled(): Promise<Post[]> {
   }
 }
 
-export async function getAllPublished(): Promise<Post[]> {
+export async function getAllPublishedPosts(): Promise<Post[]> {
   const { userId } = await auth()
 
   if (!userId) {
@@ -178,5 +179,68 @@ export async function deletePost(
   } catch (err) {
     console.error(err)
     throw new Error("Unable to delete post")
+  }
+}
+
+
+export async function createUserSchedule(): Promise<{ id: Schedule["id"] }> {
+  const { userId } = await auth()
+
+  if (!userId) {
+    throw new Error("Unauthorized")
+  }
+
+
+  const newScheduleData = JSON.stringify([])
+
+  try {
+
+    const schedule =  await db.schedule.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        schedule: true
+      }
+    })
+
+    if (schedule) {
+      throw new Error("Schedule already exists")
+    }
+
+    return db.schedule.create({
+      data: {
+        schedule: newScheduleData,
+        userId
+      },
+      select: {
+        id: true,
+      },
+    })
+  } catch (err) {
+    console.error(err)
+    throw new Error("Unable to create schedule")
+  }
+}
+
+export async function getUserSchedule(): Promise<Pick<Schedule, "schedule">> {
+  const { userId } = await auth()
+
+  if (!userId) {
+    throw new Error("Unauthorized")
+  }
+
+  try {
+    return await db.schedule.findFirst({
+      where: {
+        userId,
+      },
+      select: {
+        schedule: true
+      }
+    })
+  } catch (err) {
+    console.error(err)
+    throw new Error("Unable to get schedules")
   }
 }

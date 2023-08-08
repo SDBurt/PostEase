@@ -1,65 +1,85 @@
-'use client'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
-import { dayDate, dayFormat, dayFormatTime, dayMonth, dayOfWeek, dayRange, dayYear } from '@/lib/utils'
-import React, { useState } from 'react'
+import { dateFromNow, dayDate, dayFormat, dayFormatTime, dayMonth, dayOfWeek, dayRange, dayYear } from '@/lib/utils'
+import { Schedule } from '@/types'
+import { Post } from '@prisma/client'
+import dayjs from 'dayjs'
+import { PostOperations } from '../posts/post-operations'
+import { Separator } from '@/components/ui/separator'
 
-
-
-const exampleSchedule = [
-  {h: 2, m: 0, days: [0, 1, 2]},
-  {h: 7, m: 15, days: [1, 2]},
-  {h: 9, m: 0, days: [0, 1]},
-  {h: 12, m: 30, days: [1]},
-  {h: 17, m: 0, days: [2]},
-]
-
-type Schedule = {h: number, m: number, days: number[]}
-
-interface Slot {
-  h: number, m: number, date: string
+type SlotType = {
+  h: number
+  m: number
+  date: string
+  type: "POST" | "SLOT"
+  post?: Post
 }
+
+
+
 
 interface SectionData {
   date: string,
-  items: Slot[]
+  items: SlotType[]
 }
 
-function getQueueData(schedule: Schedule[]): SectionData[] {
+function getQueueData(timezone: string, posts: Post[], schedule: Schedule[]): SectionData[] {
 
-  const range = dayRange(new Date())
+  const now = new Date()
+  const weekrange = dayRange(now)
 
   let byDayOfWeek: {[key: string]: {h: number, m: number}[]} = {}
 
-  // {h: 2, m: 0, days: [0, 1, 2]},
+  // Map schedule to a dictionary using day of week as the key
   schedule.forEach((item: Schedule) => {
     item.days.forEach((dow: number) => {
       if (Object.keys(byDayOfWeek).includes(dow.toString())) {
         byDayOfWeek[dow] = [...byDayOfWeek[dow], {h: item.h, m: item.m}]
-      }
-      else {
+      } else {
         byDayOfWeek[dow] = [{h: item.h, m: item.m}]
       }
-      
     })
-    
+  })
+
+  // Map scheduled posts to a dictionary using scheduled date as key
+  const scheduledPostsByDate: {[key: string]: Post} = {}
+  posts.forEach((post: Post) => {
+    if (post.status === "SCHEDULED") {
+      const formattedDate = dayjs(post.scheduledAt).format()
+      scheduledPostsByDate[formattedDate] = post
+    }
   })
 
   let data: SectionData[] = []
-  range.forEach(dt => {
+  weekrange.forEach(dt => {
     const dow = dayOfWeek(dt)
-    const year = String(dayYear(dt)).padStart(2, '0')
-    const month = String(dayMonth(dt) + 1).padStart(2, '0')
-    const day = String(dayDate(dt)).padStart(2, '0')
-
-    const items = (byDayOfWeek[dow] || []).map(item => ({
-      h: item.h,
-      m: item.m,
-      date: `${year}-${month}-${day} ${String(item.h).padStart(2, '0')}:${String(item.m).padStart(2, '0')}:00`
-    }))
+    const date = dayjs(dt).date()
     
+    const items: SlotType[] = (byDayOfWeek[dow] || []).map(item => {
+      
+      const formattedDate = dayjs().date(date).hour(item.h).minute(item.m).second(0).format()
+      
+      // if a post is scheduled for this date
+      if (Object.keys(scheduledPostsByDate).includes(formattedDate)) {
+        return {
+          h: item.h,
+          m: item.m,
+          date: formattedDate,
+          type: "POST",
+          post: scheduledPostsByDate[formattedDate]
+        }
+      }
+
+      return {
+        h: item.h,
+        m: item.m,
+        date: formattedDate,
+        type: "SLOT",
+      }
+    })
+
     // 2023-07-29T18:42:55-07:00
     let newDataItem: SectionData = {
       date: dt,
@@ -72,10 +92,10 @@ function getQueueData(schedule: Schedule[]): SectionData[] {
   return data
 }
 
-function ScheduleQueueItem({ datetime }) {
+function SlotItem({ datetime }) {
   return (
     <Card>
-      <CardContent className='px-4 flex justify-between group'>
+      <CardContent className='p-4 h-12 flex items-center justify-between group'>
         <div className='flex items-center justify-start'>
           {dayFormatTime(datetime)}
         </div>
@@ -88,21 +108,51 @@ function ScheduleQueueItem({ datetime }) {
   )
 }
 
+function PostItem({ post }: { post: Post }) {
+  return (
+    <Card>
+      <CardContent className='p-4 h-24 flex items-center space-x-4'>
+        <div className='flex items-center justify-between'>
+          <div className='w-1 h-full bg-primary rounded' />
+          <div className='flex items-center justify-start'>
+            {dayFormatTime(post.scheduledAt)}
+          </div>
+          <div
+            className="font-semibold truncate"
+          >
+            {post.content && post.content.length > 0
+              ? post.content[0]
+              : "empty post"}
+          </div>
+        </div>
+        <PostOperations post={{ id: post.id }} />
+      </CardContent>
+    </Card>
+  )
+}
+
+
 interface ScheduleQueueSectionProps {
   sectionData: {
     date: string | Date,
-    items: {date: string, h: number, m: number}[]
+    items: SlotType[]
   }
 }
 
 function ScheduleQueueSection({ sectionData }: ScheduleQueueSectionProps) {
+  
   return (
-    <div className='flex flex-col space-y-4'>
+    <div className='flex flex-col space-y-2'>
       <Label>{dayFormat(sectionData.date)}</Label>
       {
-        sectionData.items.map((item) => (
+        sectionData.items.map((item: SlotType) => (
           <div key={`${sectionData.date}-slot-${item.h}-${item.m}`}>
-            <ScheduleQueueItem datetime={item.date}/>
+            {
+              item.type === "SLOT" && <SlotItem datetime={item.date}/>
+            }
+            {
+              item.type === "POST" && item.post && <PostItem post={item.post}/>
+            }
           </div>
         ))
       }
@@ -111,22 +161,26 @@ function ScheduleQueueSection({ sectionData }: ScheduleQueueSectionProps) {
 }
 
 
+interface ScheduleQueueProps {
+  posts: Post[]
+  schedules: Schedule[]
+  timezone: string
+}
+export default function ScheduleQueue({ timezone, posts, schedules }: ScheduleQueueProps) {
 
-export default function ScheduleQueue() {
-
-  const [data, setData] = useState<SectionData[]>(getQueueData(exampleSchedule))
-
-  console.log({data})
 
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col space-y-4">
       {
-        data?.map(item => (
-          
-          <div key={`${item.date}-section`}>
-            <ScheduleQueueSection sectionData={item}/>
-          </div>
-        ))
+        getQueueData(timezone, posts, schedules)?.map(schedule => {
+            return (
+              <div key={`${schedule.date}-section`}>
+                <ScheduleQueueSection sectionData={schedule}/>
+                <Separator />
+              </div>
+            )
+          }
+        )
       }
       
     </div>

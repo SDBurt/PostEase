@@ -53,3 +53,6 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     stripeCurrentPeriodEnd: number
     isPro: boolean
   }
+
+
+export type Schedule = {h: number, m: number, days: number[]}

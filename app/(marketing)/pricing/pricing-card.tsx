@@ -38,7 +38,7 @@ export default function PricingCard({
             Billed Monthly
           </p>
         </div>
-        <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
+        <Link href="/sign-in" className={cn(buttonVariants({ size: "lg" }))}>
           Get Started
         </Link>
       </div>

@@ -18,7 +18,7 @@ export default async function MarketingLayout({
 
   let navCallToAction = (
     <Link
-      href="/login"
+      href="/sign-in"
       className={cn(buttonVariants({ variant: "secondary" }), "px-4")}
     >
       Login

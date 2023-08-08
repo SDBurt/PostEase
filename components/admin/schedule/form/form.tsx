@@ -99,8 +99,6 @@ export function ScheduleForm() {
     //   days: data.days
     // }
 
-    console.log({data})
-
     toast({
       title: "You submitted the following values:",
       description: (

@@ -6,7 +6,6 @@ import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import { currentUser  } from "@clerk/nextjs"
 
 export const metadata = {
   title: "Admin",

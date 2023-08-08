@@ -27,8 +27,8 @@ export function dateFromNow(date: string | number | Date | dayjs.Dayjs): string 
 
 export function dayRange(date: Date): string[] {
   let ranges: string[] = []
-  let currentDate = dayjs(date);
-  let endDate = dayjs(date).add(7, 'day')
+  let currentDate = dayjs(date).startOf('day');
+  let endDate = currentDate.add(7, 'day')
   while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
     currentDate = currentDate.add(1, 'day');
     ranges.push(currentDate.format());
