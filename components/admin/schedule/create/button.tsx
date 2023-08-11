@@ -21,14 +21,12 @@ export function ScheduleCreateButton({
   async function onClick() {
     setIsLoading(true)
 
-    const schedule = await createUserSchedule()
+    await createUserSchedule()
 
     setIsLoading(false)
 
     // This forces a cache invalidation.
     router.refresh()
-
-    // router.push(`/editor/${schedule.id}`)
   }
 
   return (

@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import { toast } from "@/components/ui/use-toast"
 
 export const metadata = {
   title: "Admin",
@@ -13,12 +14,17 @@ export const metadata = {
 
 export default async function AdminPage() {
 
-  const posts: Post[] = await getAllPosts()
+  let posts: Post[] = []
+  try {
+    posts = await getAllPosts()
+  } catch(err) {
+    console.error(err)
+  }
 
   return (
     <PageShell>
       <PageHeader heading="Dashboard" text="Create and manage posts.">
-        <PostCreateButton />
+        <PostCreateButton>Create Post</PostCreateButton>
       </PageHeader>
       <div>
         {posts?.length ? (

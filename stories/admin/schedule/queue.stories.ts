@@ -2,13 +2,12 @@ import type { Meta, StoryObj } from "@storybook/react"
 
 import ScheduleQueue from "@/components/admin/schedule/queue"
 import { Post } from "@prisma/client"
-import { Schedule } from "@/types"
-import { string } from "zod"
+import { ScheduleType } from "@/types"
 import dayjs from "dayjs"
 
 const exampleTz = "America/Toronto"
 
-const exampleSchedule: Schedule[] = [
+const exampleSchedule: ScheduleType[] = [
   {h: 1, m: 0, days: [0, 1, 2, 3, 4, 5, 6]},
   {h: 2, m: 0, days: [0, 1, 2]},
   {h: 7, m: 15, days: [1, 2]},
@@ -50,6 +49,11 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+    },
+  },
   args: {
     timezone: exampleTz,
     posts:  examplePosts,

@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs"
 import { Post, Schedule } from "@prisma/client"
 
 import { db } from "@/lib/db"
+import { ScheduleFormItem, ScheduleType } from '@/types';
 
 export async function getPost(postId: Post["id"]): Promise<Post> {
   const { userId } = await auth()
@@ -170,12 +171,16 @@ export async function deletePost(
   }
 
   try {
-    return await db.post.delete({
+    const result = await db.post.delete({
       where: {
         id: postId,
         userId,
       },
+      select: {
+        id: true
+      }
     })
+    return result
   } catch (err) {
     console.error(err)
     throw new Error("Unable to delete post")
@@ -183,7 +188,27 @@ export async function deletePost(
 }
 
 
-export async function createUserSchedule(): Promise<{ id: Schedule["id"] }> {
+export async function getUserSchedule(): Promise<Schedule> {
+  const { userId } = await auth()
+
+  if (!userId) {
+    throw new Error("Unauthorized")
+  }
+
+  try {
+    return await db.schedule.findFirst({
+      where: {
+        userId,
+      }
+    })
+  } catch (err) {
+    console.error(err)
+    throw new Error("Unable to get schedules")
+  }
+}
+
+
+export async function createUserSchedule(schedule?: ScheduleType[]): Promise<{ id: Schedule["id"] }> {
   const { userId } = await auth()
 
   if (!userId) {
@@ -191,7 +216,7 @@ export async function createUserSchedule(): Promise<{ id: Schedule["id"] }> {
   }
 
 
-  const newScheduleData = JSON.stringify([])
+  const newScheduleData = schedule ? JSON.stringify(schedule) : JSON.stringify([])
 
   try {
 
@@ -223,24 +248,28 @@ export async function createUserSchedule(): Promise<{ id: Schedule["id"] }> {
   }
 }
 
-export async function getUserSchedule(): Promise<Pick<Schedule, "schedule">> {
+export async function editUserSchedule(id: Schedule["id"], newSchedule: string): Promise<{ id: Schedule["id"] }> {
   const { userId } = await auth()
 
   if (!userId) {
     throw new Error("Unauthorized")
   }
 
+
   try {
-    return await db.schedule.findFirst({
+    return db.schedule.update({
       where: {
-        userId,
+        id
+      },
+      data: {
+        schedule: newSchedule,
       },
       select: {
-        schedule: true
-      }
+        id: true,
+      },
     })
   } catch (err) {
     console.error(err)
-    throw new Error("Unable to get schedules")
+    throw new Error("Unable to create schedule")
   }
 }

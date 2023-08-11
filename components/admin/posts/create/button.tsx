@@ -1,6 +1,7 @@
 "use client"
 
-import * as React from "react"
+
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { createPost } from "@/lib/db/actions"
@@ -8,15 +9,29 @@ import { cn } from "@/lib/utils"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 
-interface PostCreateButtonProps extends ButtonProps {}
+interface PostCreateButtonProps extends ButtonProps {
+  scheduledAt?: string
+}
 
 export function PostCreateButton({
   className,
   variant,
+  size,
+  scheduledAt,
+  children,
   ...props
 }: PostCreateButtonProps) {
   const router = useRouter()
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const createQueryString = (name: string, value: string) => {
+    const params = new URLSearchParams()
+    params.set(name, value)
+
+    return params.toString()
+  }
+  
 
   async function onClick() {
     setIsLoading(true)
@@ -27,15 +42,15 @@ export function PostCreateButton({
 
     // This forces a cache invalidation.
     router.refresh()
-
-    router.push(`/editor/${post.id}`)
+    const destination = scheduledAt ? (`/editor/${post.id}` + '?' + createQueryString("scheduledAt", scheduledAt)) : `/editor/${post.id}`
+    router.push(destination)
   }
 
   return (
     <button
       onClick={onClick}
       className={cn(
-        buttonVariants({ variant }),
+        buttonVariants({ variant, size }),
         {
           "cursor-not-allowed opacity-60": isLoading,
         },
@@ -49,7 +64,7 @@ export function PostCreateButton({
       ) : (
         <Icons.add className="mr-2 h-4 w-4" />
       )}
-      New post
+      {children}
     </button>
   )
 }

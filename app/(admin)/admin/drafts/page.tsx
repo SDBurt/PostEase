@@ -17,7 +17,7 @@ export default async function DashboardPage() {
   return (
     <PageShell>
       <PageHeader heading="Drafts" text="Create and manage posts.">
-        <PostCreateButton />
+        <PostCreateButton>Create Post</PostCreateButton>
       </PageHeader>
       <div>
         {posts?.length ? (
@@ -33,7 +33,7 @@ export default async function DashboardPage() {
             <EmptyPlaceholder.Description>
               You don&apos;t have any posts yet. Start creating content.
             </EmptyPlaceholder.Description>
-            <PostCreateButton variant="outline" />
+            <PostCreateButton variant="outline">Create Post</PostCreateButton>
           </EmptyPlaceholder>
         )}
       </div>

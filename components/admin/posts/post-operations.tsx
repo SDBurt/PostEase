@@ -29,7 +29,7 @@ import { Icons } from "@/components/icons"
 async function deletePostHandler(postId: number) {
   const result = await deletePost(postId)
 
-  if (!result || result[0].id !== postId) {
+  if (!result || result.id !== postId) {
     toast({
       title: "Something went wrong.",
       description: "Your post was not deleted. Please try again.",

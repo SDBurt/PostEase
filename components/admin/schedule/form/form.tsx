@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
@@ -9,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,37 +24,43 @@ import { toast } from "@/components/ui/use-toast"
 import { TIME_OPTIONS } from "@/lib/constants"
 import { Checkbox } from "@/components/ui/checkbox"
 import Icons from "@/components/icons"
+import { ScheduleType, ScheduleFormItem } from "@/types"
+import { useEffect } from "react"
+import { createUserSchedule, editUserSchedule } from "@/lib/db/actions"
+import { Schedule } from "@prisma/client"
+import { useRouter } from "next/navigation"
 
 
 const items = [
   {
     id: 0,
-    label: "Mon",
+    label: "Sun",
   },
   {
     id: 1,
-    label: "Tue",
+    label: "Mon",
   },
   {
     id: 2,
-    label: "Wed",
+    label: "Tue",
   },
   {
     id: 3,
-    label: "Thu",
+    label: "Wed",
   },
   {
     id: 4,
-    label: "Fri",
+    label: "Thu",
   },
   {
     id: 5,
-    label: "Sat",
+    label: "Fri",
   },
   {
     id: 6,
-    label: "Sun",
+    label: "Sat",
   },
+
 ] as const
 
 const FormSchema = z.object({
@@ -69,51 +73,118 @@ const FormSchema = z.object({
         message: "You have to select at least one day.",
       }),
     })
-  )
+  ).refine(items => new Set(items.map(item => item.time)).size === items.length, {
+      message: 'Must be an array of unique times',
+  })
 })
 
 
-export function ScheduleForm() {
+const scheduleToFormItem = (schedules: ScheduleType[]): ScheduleFormItem[] => {
+  return schedules.map(schedule => ({
+    time: `${schedule.h}-${schedule.m}`,
+    days: schedule.days
+  }))
+}
+
+const formItemToSchedule = (formData: ScheduleFormItem[]): ScheduleType[] => {
+
+  return formData.map(item => ({
+    h: parseInt(item.time.split("-")[0]),
+    m: parseInt(item.time.split("-")[1]),
+    days: item.days
+  }))
+}
+
+interface ScheduleFormProps {
+  schedule: Schedule
+}
+
+export function ScheduleForm({ schedule }: ScheduleFormProps) {
+  
+  const router = useRouter()
+  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      schedules: [
-        {time: "0-0", days: []},
+      schedules: schedule ? scheduleToFormItem(JSON.parse(schedule.schedule as string)) : [
+        {time: "0-0", days: [0,6]},
         {time: "0-30", days: [2]}
       ]
-      
     },
   })
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     name: "schedules",
     control: form.control,
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    
-    
-    // const payload = {
-    //   h: data.time.split("-")[0],
-    //   m: data.time.split("-")[1],
-    //   days: data.days
-    // }
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
 
+    const scheduleData = formItemToSchedule(data.schedules as ScheduleFormItem[])
+
+    if (schedule) {
+      await editUserSchedule(schedule.id, JSON.stringify(scheduleData))
+    } else {
+      await createUserSchedule(scheduleData)
+    }
+
+
+    console.log("You submitted the following values:", JSON.stringify(scheduleData, null, 2))
     toast({
       title: "You submitted the following values:",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          <code className="text-white">{JSON.stringify(scheduleData, null, 2)}</code>
         </pre>
       ),
     })
+
+    router.refresh()
   }
 
+  const watchFieldArray = form.watch("schedules");
+
+  const controlledFields = fields.map((field, index) => {
+    return {
+      ...field,
+      ...watchFieldArray[index]
+    };
+  });
+
+  const compareControlledFields = (a, b) => {
+    if ( a.time < b.time ){
+      return -1;
+    }
+    if ( a.time > b.time ){
+      return 1;
+    }
+    return 0;
+  }
+
+  function fieldsEqual(a: ScheduleFormItem[], b: ScheduleFormItem[]) {
+    return (
+      (Array.isArray(a) || Array.isArray(b)) &&
+      a.length === b.length &&
+      a.every((val, index) => val.id === b[index].id)
+    )
+}
+
+  useEffect(() => {
+
+    const sortedFields = controlledFields.toSorted(compareControlledFields)
+
+    if (!fieldsEqual(sortedFields as ScheduleFormItem[], controlledFields as ScheduleFormItem[])) {
+      replace(sortedFields)
+    }
+    
+  }, [controlledFields, compareControlledFields])
+
+ 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         {/* Head */}
-        <div className="w-full grid grid-cols-12 gap-4">
+        <div className="w-full grid grid-cols-10 gap-4">
           <FormLabel className="text-center col-span-2">
             Time
           </FormLabel>
@@ -128,7 +199,7 @@ export function ScheduleForm() {
         <div className="w-full grid gap-4 mt-4 ">
           {
             fields.map((field, index) => (
-              <div key={`${field.id}`} className="grid grid-cols-12 gap-4">
+              <div key={`${field.id}`} className="grid grid-cols-10 gap-4">
                 <FormField
                   control={form.control}
                   key={`${field.id}-time`}
@@ -212,7 +283,7 @@ export function ScheduleForm() {
           
         </div>
         <div className="w-full grid gap-4 mt-4 justify-center">
-          <Button type="button" className="w-48" variant="secondary" onClick={() => append({time: "0-0", days: []})}>New Row</Button>
+          <Button type="button" className="w-48" variant="secondary" onClick={() => append({time: "0-0", days: [0, 1, 2, 3, 4]})}>New Row</Button>
         </div>
         <Button className="mt-4" type="submit">Submit</Button>
       </form>

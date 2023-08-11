@@ -3,9 +3,9 @@ import { Post } from "@prisma/client"
 import { getAllPublishedPosts } from "@/lib/db/actions"
 import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
-// import { PostCreateButton } from "@/components/post-create-button"
 import { PostItem } from "@/components/admin/posts/post"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import CronTestButton from "@/components/admin/cron/button"
 
 export const metadata = {
   title: "Published",
@@ -14,10 +14,12 @@ export const metadata = {
 export default async function DashboardPage() {
   const posts: Post[] = await getAllPublishedPosts()
 
+
   return (
     <PageShell>
       <PageHeader heading="Posts" text="Create and manage posts.">
-        {/* <PostCreateButton /> */}
+        {/* <Button onClick={testCron}>Text Cron Publish</Button> */}
+        <CronTestButton />
       </PageHeader>
       <div>
         {posts?.length ? (
@@ -33,7 +35,6 @@ export default async function DashboardPage() {
             <EmptyPlaceholder.Description>
               You don&apos;t have any posts yet. Start creating content.
             </EmptyPlaceholder.Description>
-            {/* <PostCreateButton variant="outline" /> */}
           </EmptyPlaceholder>
         )}
       </div>

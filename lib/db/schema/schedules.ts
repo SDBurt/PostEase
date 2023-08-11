@@ -22,7 +22,7 @@ export const schedules = pgTable("schedules", {
 export const userSchedules = pgTable("user_schedules", {
   id: serial("id").primaryKey(),
   userId: text("user_id").notNull(),
-  // [ { h: 12, m: 0, days: [0, 1, 2, 3, 4] } ]
+  // [ { h: 12, m: 0, days: [0, 1, 2, 3, 4] } ] 0 is sunday
   schedule: json("schedule").default({ schedule: [] }),
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),

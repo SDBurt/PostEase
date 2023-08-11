@@ -21,6 +21,8 @@ import {
 import { toast } from "@/components/ui/use-toast"
 import Tweet from "@/components/admin/posts/twitter/tweet"
 import Icons from "@/components/icons"
+import { PublishButton } from "@/components/admin/posts/publish-button"
+import { useSearchParams } from "next/navigation"
 
 const twitterFormSchema = z.object({
   tweets: z.array(
@@ -45,7 +47,11 @@ export default function TwitterForm({
   handle,
   post,
 }: TwitterFormProps) {
+
   const [isSaving, setIsSaving] = useState(false)
+  const searchParams = useSearchParams()
+
+  const isScheduledAt = searchParams.get('scheduledAt')
 
   const defaultValues: Partial<TwitterFormValues> = {
     tweets:
@@ -70,6 +76,10 @@ export default function TwitterForm({
 
     try {
       const updatedData = { content: data.tweets.map((tweet) => tweet.text) }
+      if (isScheduledAt) {
+        updatedData["scheduledAt"] = isScheduledAt
+        updatedData["status"] = "SCHEDULED"
+      }
       const result = await updatePost(post.id, updatedData)
 
       setIsSaving(false)
@@ -127,8 +137,10 @@ export default function TwitterForm({
                 </>
               </Link>
               <p className="text-sm text-muted-foreground">
-                {post.status === "PUBLISHED" ? "Published" : "Draft"}
+                {post.status === "PUBLISHED" ? "Published" : post.status === "SCHEDULED" ? "Scheduled" : "Draft"}
               </p>
+              {post.status === "DRAFT" ? <PublishButton variant="secondary" postId={post.id} /> : null}
+              {post.status === "SCHEDULED" ? <PublishButton variant="secondary" postId={post.id} /> : null}
             </div>
             <Button type="submit">
               {isSaving && (
