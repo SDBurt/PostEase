@@ -15,18 +15,19 @@ export async function GET(
       where: {
         scheduledAt: {
           lte: now
-        }
+        },
+        status: "SCHEDULED"
       }
     })
 
     console.log(posts)
 
+    // Will probably need to push to twitter here
     let promises = []
     posts.forEach(async post => {
       promises.push(await db.post.update({
           where: {
             id: post.id,
-            status: "SCHEDULED"
           },
           data: {
             status: "PUBLISHED"
