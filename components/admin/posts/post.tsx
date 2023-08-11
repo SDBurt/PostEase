@@ -8,14 +8,15 @@ import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
 interface PostItemProps {
   post: Post
+  hrefPrefix?: string
 }
 
-function PostItem({ post }: PostItemProps) {
+function PostItem({ post, hrefPrefix = "/editor" }: PostItemProps) {
   return (
     <div className="flex items-center justify-between p-4">
       <div className="grid gap-1">
         <Link
-          href={`/editor/${post.id}`}
+          href={`${hrefPrefix}/${post.id}`}
           className="font-semibold hover:underline truncate"
         >
           {post.content && post.content.length > 0

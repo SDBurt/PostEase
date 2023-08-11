@@ -25,7 +25,7 @@ export default async function DashboardPage() {
         {posts?.length ? (
           <div className="divide-y divide-border rounded-md border">
             {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
+              <PostItem key={post.id} post={post} hrefPrefix="/preview" />
             ))}
           </div>
         ) : (
