@@ -122,18 +122,17 @@ interface PostItemProps {
 function PostItem({ postId, scheduledAt, content, showAction = true }: PostItemProps) {
   return (
     <Card>
-      <CardContent className='p-4 h-24 flex items-center justify-between'>
-        <div className='w-full h-full flex'>
-          <div className='w-1 h-full bg-primary rounded' />
-          <div className='flex-col items-center space-y-2 px-2'>
+      <CardContent className='p-4 flex items-center justify-between'>
+        <div className='w-full'>
+          <div className='flex-col items-center space-y-2 px-2 border-l-2 border-primary'>
             <div className='flex items-center justify-start'>
               {dayFormatTime(scheduledAt)}
             </div>
-            <div
-              className="truncate text-muted-foreground"
+            <p
+              className="text-muted-foreground" 
             >
               {content ? content: "empty post"}
-            </div>
+            </p>
           </div>
         </div>
         {showAction && postId && <PostOperations post={{ id: postId }} />}
@@ -186,7 +185,7 @@ export default function ScheduleQueue({ timezone, scheduledPosts, draftPosts, sc
       {
         getQueueData(timezone, scheduledPosts, schedules)?.map(schedule => {
             return (
-              <div key={`${schedule.date}-section`}>
+              <div key={`${schedule.date}-section`} className='w-full'>
                 <ScheduleQueueSection sectionData={schedule} draftPosts={draftPosts} />
               </div>
             )
