@@ -1,11 +1,11 @@
 import Link from "next/link"
-import { auth } from "@clerk/nextjs"
 
 import { marketingConfig } from "@/config/marketing"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { MainNav } from "@/components/main-nav"
 import { SiteFooter } from "@/components/site-footer"
+import { getCurrentUser } from "@/lib/session"
 
 interface MarketingLayoutProps {
   children: React.ReactNode
@@ -14,18 +14,20 @@ interface MarketingLayoutProps {
 export default async function MarketingLayout({
   children,
 }: MarketingLayoutProps) {
-  const { userId } = auth()
+
+
+  const user = await getCurrentUser()
 
   let navCallToAction = (
     <Link
-      href="/sign-in"
+      href="/login"
       className={cn(buttonVariants({ variant: "secondary" }), "px-4")}
     >
       Login
     </Link>
   )
 
-  if (userId) {
+  if (user) {
     navCallToAction = (
       <Link
         href="/admin"

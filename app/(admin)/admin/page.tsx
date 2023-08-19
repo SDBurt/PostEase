@@ -6,7 +6,6 @@ import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import { toast } from "@/components/ui/use-toast"
 
 export const metadata = {
   title: "Admin",
