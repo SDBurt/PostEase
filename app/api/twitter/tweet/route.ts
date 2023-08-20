@@ -12,9 +12,12 @@ export async function GET(
     
     // const twitterAccount = verifiedExternalAccounts.find(account => account.provider === "oauth_twitter")
 
+    console.log(user.userId)
     
+    // use clerk backend to get access token?
     const token = await user.getToken()
-    
+    console.log(token)
+
     const requestParams = {
       "ids": "1261326399320715264,1278347468690915330", // Edit Tweet IDs to look up
       // "tweet.fields": "lang,author_id", // Edit optional query parameters here
