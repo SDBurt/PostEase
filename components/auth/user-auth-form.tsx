@@ -37,7 +37,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         )}{" "}
         Twitter
       </button>
-      <button
+      {/* <button
         type="button"
         className={cn(buttonVariants({ variant: "outline" }))}
         onClick={() => {
@@ -52,7 +52,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <Icons.linkedin className="mr-2 h-4 w-4" />
         )}{" "}
         Linkedin
-      </button>
+      </button> */}
     </div>
   )
 }
