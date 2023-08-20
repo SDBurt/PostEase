@@ -129,13 +129,10 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
     }
 
 
-    console.log("You submitted the following values:", JSON.stringify(scheduleData, null, 2))
     toast({
-      title: "You submitted the following values:",
+      title: "Success",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(scheduleData, null, 2)}</code>
-        </pre>
+        <p>Your schedule has been updated/created!</p>
       ),
     })
 
@@ -283,7 +280,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
           
         </div>
         <div className="w-full grid gap-4 mt-4 justify-center">
-          <Button type="button" className="w-48" variant="secondary" onClick={() => append({time: "0-0", days: [0, 1, 2, 3, 4]})}>New Row</Button>
+          <Button type="button" className="w-48" variant="secondary" onClick={() => append({time: "8-0", days: [1, 2, 3, 4, 5]})}>New Row</Button>
         </div>
         <Button className="mt-4" type="submit">Submit</Button>
       </form>

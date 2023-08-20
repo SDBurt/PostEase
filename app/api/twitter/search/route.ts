@@ -10,8 +10,6 @@ export async function GET(
 
     const token = await getToken({ req, secret: env.NEXTAUTH_SECRET });
 
-    console.log('token', {token});
-
     return new Response(JSON.stringify({
       status: "OK",
       data: []

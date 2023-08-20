@@ -37,8 +37,8 @@ export default async function EditorPage({ params }: EditorPageProps) {
         status: post.status,
       }}
       user={{
-        twitterHandle: name,
-        userName: `${name} ${name}`,
+        twitterHandle: `${String(name).replace(" ", "_").toLowerCase()}`,
+        userName: name,
         imageUrl: image,
       }}
     />

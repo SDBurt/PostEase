@@ -1,12 +1,10 @@
 "use server"
 
 
-import { Post, db } from "@/lib/db"
+import { db } from "@/lib/db"
 import { ScheduleType } from '@/types';
 import { getCurrentUser } from '../session';
-import { posts } from "./schema";
-
-import { eq, lt, gte, ne } from "drizzle-orm";
+import { Post, Schedule } from "@prisma/client";
 
 export async function getPost(postId: Post["id"]): Promise<Post> {
   const user = await getCurrentUser()
@@ -36,7 +34,14 @@ export async function getAllPosts(): Promise<Post[]> {
   }
 
   try {
-    return await db.select().from(posts).where(eq(posts.userId, user.id))
+    return await db.post.findMany({
+      where: {
+        userId: user.id,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    })
   } catch (err) {
     console.error(err)
     throw new Error("Unable to retrieve posts")
@@ -119,7 +124,7 @@ export async function createPost(data): Promise<{ id: Post["id"] }> {
     throw new Error("Unauthorized")
   }
 
-  const newPostData = { ...data, userId: userId }
+  const newPostData = { ...data, userId: user.id }
 
   try {
     return db.post.create({
@@ -233,7 +238,7 @@ export async function createUserSchedule(schedule?: ScheduleType[]): Promise<{ i
     return db.schedule.create({
       data: {
         schedule: newScheduleData,
-        userId
+        userId: user.id
       },
       select: {
         id: true,

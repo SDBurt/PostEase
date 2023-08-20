@@ -1,16 +1,17 @@
-import TwitterProvider from "next-auth/providers/twitter";
 // import LinkedInProvider from "next-auth/providers/linkedin";
 
+import { NextAuthOptions } from "next-auth";
+import TwitterProvider from "next-auth/providers/twitter";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/db";
 import { env } from "@/env.mjs";
-import { NextAuthOptions } from "next-auth";
+import type { Adapter } from "next-auth/adapters";
 
 
 
 export const authOptions: NextAuthOptions = {
-    adapter: DrizzleAdapter(db),
+    adapter: PrismaAdapter(db) as Adapter,
     secret: env.NEXTAUTH_SECRET,
     session: {
         strategy: "jwt",
@@ -30,8 +31,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {    
     async jwt({token, user, account, profile}) {
-
-      console.log("jwt", {token, user, account, profile})
 
       if (user) {
         token.id = user.id
@@ -54,14 +53,16 @@ export const authOptions: NextAuthOptions = {
         if (account.oauth_token) {
           token[account.provider].oauth_token = account.oauth_token;
         }
+
+        if (account.oauth_token_secret) {
+          token[account.provider].oauth_token_secret = account.oauth_token_secret;
+        }
       }
 
       return token
     },
     async session({ session, token, user }) {
         // Send properties to the client, like an access_token and user id from a provider.
-        
-        console.log("session", {session, token, user})
         
         session.user.id = token.id
         session.user.twitter = token.twitter

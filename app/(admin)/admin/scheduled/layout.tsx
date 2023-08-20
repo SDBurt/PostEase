@@ -1,5 +1,3 @@
-import ScheduledLayout from "@/components/admin/layout/scheduled-layout"
-
 export default function ScheduledPageLayout({
   children,
 }: {
