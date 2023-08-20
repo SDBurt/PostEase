@@ -93,10 +93,6 @@ function getQueueData(timezone: string, posts: Post[], schedule: ScheduleType[])
 
 function SlotItem({ datetime, draftPosts }) {
 
-  async function postSelectHandler(index: number) {
-    console.log("CLICKED: ", index)
-  }
-
   return (
     <Card>
       <CardContent className='p-4 h-12 flex items-center justify-between group'>

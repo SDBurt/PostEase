@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs"
 import { Post, Schedule } from "@prisma/client"
 
 import { db } from "@/lib/db"
-import { ScheduleFormItem, ScheduleType } from '@/types';
+import { ScheduleType } from '@/types';
 
 export async function getPost(postId: Post["id"]): Promise<Post> {
   const { userId } = await auth()

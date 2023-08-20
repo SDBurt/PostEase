@@ -128,15 +128,9 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
       await createUserSchedule(scheduleData)
     }
 
-
-    console.log("You submitted the following values:", JSON.stringify(scheduleData, null, 2))
     toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(scheduleData, null, 2)}</code>
-        </pre>
-      ),
+      title: "Success",
+      description: <p>Your Schedule has been updated.</p>,
     })
 
     router.refresh()

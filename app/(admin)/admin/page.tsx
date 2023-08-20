@@ -6,7 +6,6 @@ import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import { toast } from "@/components/ui/use-toast"
 
 export const metadata = {
   title: "Admin",
@@ -40,7 +39,7 @@ export default async function AdminPage() {
             <EmptyPlaceholder.Description>
               You don&apos;t have any posts yet. Start creating content.
             </EmptyPlaceholder.Description>
-            <PostCreateButton variant="outline" />
+            <PostCreateButton variant="outline">Create New Post</PostCreateButton>
           </EmptyPlaceholder>
         )}
       </div>

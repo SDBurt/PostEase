@@ -14,7 +14,10 @@ interface MarketingLayoutProps {
 export default async function MarketingLayout({
   children,
 }: MarketingLayoutProps) {
-  const { userId } = auth()
+
+  const user = auth()
+  const { userId } = user
+
 
   let navCallToAction = (
     <Link

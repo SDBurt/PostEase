@@ -21,7 +21,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
     redirectToSignIn()
   }
 
-  const post = await getPostForUser(parseInt(params.postId), user.id)
+  const post = await getPostForUser(params.postId, user.id)
 
   if (!post) {
     notFound()

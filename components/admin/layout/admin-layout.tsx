@@ -13,11 +13,6 @@ interface LayoutProps {
 }
 
 export default function AdminLayout({ children }: LayoutProps) {
-  const user = auth()
-
-  if (!user) {
-    return notFound()
-  }
 
   return (
     <div className="flex min-h-screen flex-col space-y-6">

@@ -18,7 +18,6 @@ interface PostSelectorItemProps {
 }
 
 function PostSelectorItem({ content, selected }: PostSelectorItemProps) {
-  console.log(selected)
   return (
     <Card className={cn(selected ? "font-semibold" : "font-normal")}>
       <CardContent className="flex items-center p-4 truncate">
