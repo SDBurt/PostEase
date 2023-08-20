@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import TweetTestButton from "@/components/admin/twitter/button"
 
 export const metadata = {
   title: "Admin",
@@ -24,6 +25,7 @@ export default async function AdminPage() {
     <PageShell>
       <PageHeader heading="Dashboard" text="Create and manage posts.">
         <PostCreateButton>Create Post</PostCreateButton>
+        <TweetTestButton/>
       </PageHeader>
       <div>
         {posts?.length ? (
