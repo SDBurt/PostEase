@@ -50,9 +50,12 @@ model User {
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 
-  posts    Post[]
+  
   accounts Account[]
   sessions Session[]
+
+  posts    Post[]
+  schedule  Schedule?
 
   @@map(name: "users")
 }
@@ -67,16 +70,18 @@ model VerificationToken {
 }
 
 model Post {
-  id String @id @default(cuid())
+  id          String    @id @default(uuid())
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
 
   content     String[]
   status      Status    @default(DRAFT)
   scheduledAt DateTime? @db.Timestamptz()
-  createdAt   DateTime  @default(now()) @map(name: "created_at")
-  updatedAt   DateTime  @updatedAt @map(name: "updated_at")
+  createdAt   DateTime  @default(now()) @db.Timestamptz()
+  updatedAt   DateTime  @updatedAt @db.Timestamptz()
+
+  @@index([userId])
 }
 
 enum Status {
@@ -86,11 +91,12 @@ enum Status {
 }
 
 model Schedule {
-  id        String   @id @default(cuid())
-  userId    String
+  id        String      @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String    @unique
   schedule  Json
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
 
   @@index([userId])
 }
