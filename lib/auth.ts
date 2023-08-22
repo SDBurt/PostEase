@@ -9,7 +9,6 @@ import { env } from "@/env.mjs";
 import type { Adapter } from "next-auth/adapters";
 
 
-
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(db) as Adapter,
     secret: env.NEXTAUTH_SECRET,
@@ -21,8 +20,11 @@ export const authOptions: NextAuthOptions = {
       },
     providers: [
         TwitterProvider({
-            clientId: env.TWITTER_CLIENT_ID,
-            clientSecret: env.TWITTER_CLIENT_SECRET
+            clientId: env.TWITTER_CONSUMER_KEY,
+            clientSecret: env.TWITTER_CONSUMER_KEY_SECRET,
+            // clientId: env.TWITTER_CLIENT_ID,
+            // clientSecret: env.TWITTER_CLIENT_SECRET,
+            // version: "2.0",
         }),
         // LinkedInProvider({
         //     clientId: env.LINKEDIN_CLIENT_ID,
@@ -31,6 +33,8 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {    
     async jwt({token, user, account, profile}) {
+
+      // console.log("jwt", {token, user, account, profile})
 
       if (user) {
         token.id = user.id
@@ -64,6 +68,8 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token, user }) {
         // Send properties to the client, like an access_token and user id from a provider.
         
+        // console.log("session", { session, token, user})
+
         session.user.id = token.id
         session.user.twitter = token.twitter
         return session

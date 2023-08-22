@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Post } from "@prisma/client"
@@ -23,6 +23,7 @@ import Tweet from "@/components/admin/posts/twitter/tweet"
 import Icons from "@/components/icons"
 import { PublishButton } from "@/components/admin/posts/publish-button"
 import { useSearchParams } from "next/navigation"
+import TwitterPublishButton from "@/components/admin/twitter/publish-button"
 
 const twitterFormSchema = z.object({
   tweets: z.array(
@@ -70,6 +71,8 @@ export default function TwitterForm({
     name: "tweets",
     control: form.control,
   })
+
+  const tweetText: string[] = useMemo(() => fields.map(field => field.text), [fields])
 
   async function onSubmit(data: TwitterFormValues) {
     setIsSaving(true)
@@ -140,6 +143,7 @@ export default function TwitterForm({
                 {post.status === "PUBLISHED" ? "Published" : post.status === "SCHEDULED" ? "Scheduled" : "Draft"}
               </p>
               {post.status === "DRAFT" ? <PublishButton variant="secondary" postId={post.id} /> : null}
+              {post.status === "DRAFT" ? <TwitterPublishButton text={tweetText} /> : null}
               {post.status === "SCHEDULED" ? <PublishButton variant="secondary" postId={post.id} /> : null}
             </div>
             <Button type="submit">

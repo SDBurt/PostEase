@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog"
 
 interface PublishButtonProps extends ButtonProps {
-  postId: number
+  postId: string
 }
 
 export function PublishButton({
