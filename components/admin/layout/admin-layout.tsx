@@ -1,25 +1,41 @@
 import React from "react"
 import { notFound } from "next/navigation"
-import { auth, UserButton } from "@clerk/nextjs"
 
 import { adminConfig } from "@/config/admin"
 import MainNav from "@/components/main-nav"
 import { SiteFooter } from "@/components/site-footer"
 
 import SidebarNav from "../nav/sidebar-nav"
+import { getCurrentUser } from "@/lib/session"
+import { UserAccountNav } from "@/components/auth/user-account-nav"
+import { getSession } from "next-auth/react"
+import { getToken } from "next-auth/jwt"
+import { authOptions } from "@/lib/auth"
 
 interface LayoutProps {
   children: React.ReactNode
 }
 
-export default function AdminLayout({ children }: LayoutProps) {
+export default async function AdminLayout({ children }: LayoutProps) {
+  
+  const user = await getCurrentUser()
 
+  if (!user) {
+    return notFound()
+  }
+  
   return (
     <div className="flex min-h-screen flex-col space-y-6">
       <header className="sticky top-0 z-40 border-b bg-background">
         <div className="container flex h-16 items-center justify-between py-4">
           <MainNav items={adminConfig.mainNav} />
-          <UserButton />
+          <UserAccountNav
+            user={{
+              name: user.name,
+              image: user.image,
+              email: user.email,
+            }}
+          />
         </div>
       </header>
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">

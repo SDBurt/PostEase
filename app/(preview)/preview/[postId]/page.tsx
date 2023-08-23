@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation"
-import { auth, currentUser, redirectToSignIn } from "@clerk/nextjs"
 import { Post } from "@prisma/client"
 
 import { getPost } from "@/lib/db/actions"
 import { Preview } from "@/components/preview/preview"
+import { getCurrentUser } from "@/lib/session"
 
 async function getPostForUser(postId: Post["id"], userId: Post["userId"]) {
   return await getPost(postId)
@@ -15,10 +15,10 @@ interface EditorPageProps {
 
 export default async function EditorPage({ params }: EditorPageProps) {
   
-  const user = await currentUser()
+  const user = await getCurrentUser()
 
   if (!user?.id) {
-    redirectToSignIn()
+    notFound()
   }
 
   const post = await getPostForUser(params.postId, user.id)
@@ -27,7 +27,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
     notFound()
   }
 
-  const {imageUrl, username, firstName, lastName} = user.externalAccounts.find(account => account.provider === "oauth_twitter")
+  const { name, image, twitter} = user
 
   return (
     <Preview
@@ -38,9 +38,9 @@ export default async function EditorPage({ params }: EditorPageProps) {
         scheduledAt: post.scheduledAt,
       }}
       user={{
-        twitterHandle: username,
-        userName: `${firstName} ${lastName}`,
-        imageUrl: imageUrl,
+        twitterHandle: name,
+        userName: `${name} ${name}`,
+        imageUrl: image,
       }}
     />
   )

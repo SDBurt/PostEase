@@ -128,9 +128,12 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
       await createUserSchedule(scheduleData)
     }
 
+
     toast({
       title: "Success",
-      description: <p>Your Schedule has been updated.</p>,
+      description: (
+        <p>Your schedule has been updated/created!</p>
+      ),
     })
 
     router.refresh()
@@ -277,7 +280,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
           
         </div>
         <div className="w-full grid gap-4 mt-4 justify-center">
-          <Button type="button" className="w-48" variant="secondary" onClick={() => append({time: "0-0", days: [0, 1, 2, 3, 4]})}>New Row</Button>
+          <Button type="button" className="w-48" variant="secondary" onClick={() => append({time: "8-0", days: [1, 2, 3, 4, 5]})}>New Row</Button>
         </div>
         <Button className="mt-4" type="submit">Submit</Button>
       </form>

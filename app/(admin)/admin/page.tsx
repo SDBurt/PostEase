@@ -39,7 +39,7 @@ export default async function AdminPage() {
             <EmptyPlaceholder.Description>
               You don&apos;t have any posts yet. Start creating content.
             </EmptyPlaceholder.Description>
-            <PostCreateButton variant="outline">Create New Post</PostCreateButton>
+            <PostCreateButton variant="outline">Create Post</PostCreateButton>
           </EmptyPlaceholder>
         )}
       </div>
