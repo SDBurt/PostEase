@@ -122,7 +122,7 @@ export default async function IndexPage() {
           </FeatureCard>
           <FeatureCard
             title={"Authentication"}
-            subtitle={"Authentication using Clerk and middlewares."}
+            subtitle={"Authentication using Next-Auth and middlewares."}
           >
             <svg
               viewBox="0 0 24 24"
