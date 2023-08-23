@@ -23,7 +23,7 @@ import Tweet from "@/components/admin/posts/twitter/tweet"
 import Icons from "@/components/icons"
 import { PublishButton } from "@/components/admin/posts/publish-button"
 import { useSearchParams } from "next/navigation"
-import TwitterPublishButton from "@/components/admin/twitter/publish-button"
+import TwitterPublishButton from "@/components/twitter/publish-button"
 
 const twitterFormSchema = z.object({
   tweets: z.array(

@@ -21,7 +21,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
     notFound()
   }
 
-  const {id, name, image, twitter} = user
+  const {id, name, image} = user
 
   const post = await getPostForUser(params.postId, id)
 

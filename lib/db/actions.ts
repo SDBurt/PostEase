@@ -3,8 +3,11 @@
 
 import { db } from "@/lib/db"
 import { ScheduleType } from '@/types';
+<<<<<<< HEAD
 import { getCurrentUser } from '../session';
 import { Post, Schedule } from "@prisma/client";
+=======
+>>>>>>> main
 
 export async function getPost(postId: Post["id"]): Promise<Post> {
   const user = await getCurrentUser()
