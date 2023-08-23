@@ -26,7 +26,6 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@map("accounts")
 }
 
 model Session {
@@ -36,8 +35,6 @@ model Session {
 
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
 }
 
 model User {
@@ -65,7 +62,6 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-  @@map("verificationtokens")
 }
 
 model Post {
@@ -77,8 +73,10 @@ model Post {
   content     String[]
   status      Status    @default(DRAFT)
   scheduledAt DateTime? @db.Timestamptz()
-  createdAt   DateTime  @default(now()) @db.Timestamptz()
-  updatedAt   DateTime  @updatedAt @db.Timestamptz()
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  TweetIds String[] @default([])
 
   @@index([userId])
 }
@@ -94,8 +92,8 @@ model Schedule {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @unique
   schedule  Json
-  createdAt DateTime @default(now()) @db.Timestamptz()
-  updatedAt DateTime @updatedAt @db.Timestamptz()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }

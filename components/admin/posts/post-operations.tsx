@@ -26,7 +26,7 @@ import {
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
-async function deletePostHandler(postId: number) {
+async function deletePostHandler(postId: string) {
   const result = await deletePost(postId)
 
   if (!result || result.id !== postId) {
@@ -96,7 +96,7 @@ export function PostOperations({ post }: PostOperationsProps) {
                   router.refresh()
                 }
               }}
-              className="bg-red-600 focus:ring-red-600"
+              className="destructive border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/80"
             >
               {isDeleteLoading ? (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

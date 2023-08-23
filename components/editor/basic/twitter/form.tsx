@@ -195,7 +195,7 @@ export default function TwitterForm({
                             <TextareaAutosize
                               autoFocus
                               placeholder="Tweet content"
-                              className="w-full resize-none appearance-none overflow-hidden bg-transparent text-muted-foreground focus:text-primary focus:outline-none"
+                              className="w-full resize-none appearance-none overflow-hidden bg-transparent text-muted-foreground focus:outline-none focus:text-primary/80 focus:font-medium focus:m-2"
                               {...field}
                             />
                             <Button

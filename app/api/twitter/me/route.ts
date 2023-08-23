@@ -3,6 +3,7 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import OAuth from 'oauth-1.0a';
+import { pingMe } from '@/lib/twitter/actions';
 
 type TwitterToken = {
   access_token?: string
@@ -18,59 +19,30 @@ export async function GET(
   ) {
     try {
 
-    const token = await getToken({ req, secret: env.NEXTAUTH_SECRET });
+      const token = await getToken({ req, secret: env.NEXTAUTH_SECRET });
 
-    const { twitter } = token as {twitter: TwitterToken}
+      const { twitter } = token as {twitter: TwitterToken}
 
-    
-    if (!twitter || !twitter.oauth_token || !twitter.oauth_token_secret) {
-      return new Response(JSON.stringify({status: "Missing tokens for auth"}), { status: 401 })
-    }
+      
+      if (!twitter || !twitter.oauth_token || !twitter.oauth_token_secret) {
+        return new Response(JSON.stringify({status: "Missing tokens for auth"}), { status: 401 })
+      }
 
-    const endpointURL = `https://api.twitter.com/2/users/me`;
+      const result = await pingMe({
+        key: twitter.oauth_token,
+        secret: twitter.oauth_token_secret
+      })
 
-    const oauth = new OAuth({
-      consumer: {
-        key: env.TWITTER_CONSUMER_KEY,
-        secret: env.TWITTER_CONSUMER_KEY_SECRET
-      },
-      signature_method: 'HMAC-SHA1',
-      hash_function: (baseString, key) => crypto.createHmac('sha1', key).update(baseString).digest('base64')
-    });
-
-    const authHeader = oauth.toHeader(oauth.authorize({
-      url: endpointURL,
-      method: 'GET'
-    }, {
-      key: twitter.oauth_token,
-      secret: twitter.oauth_token_secret,
-    }));
-
-    const tweetPostRes = await fetch(endpointURL, {
-      method: "GET",
-      headers: {
-        Authorization: authHeader["Authorization"],
-      },
-    });
-
-    const result = await tweetPostRes.json()
-
-    if (result.data) {
+      if (result.data) {
+        return new Response(JSON.stringify(result), { status: 200 })
+      } 
+      
       return new Response(JSON.stringify({
-        status: "OK",
-        message: "Success",
-        data: result.data
-      }), { status: 200 })
-    } 
-    
-      return new Response(JSON.stringify({
-        status: "ERROR",
         message: "Error: No data",
-        data: []
       }), { status: 500 })
   
     } catch (e) {
       console.error(e)
-      return new Response(JSON.stringify({status: e.message}), { status: 500 })
+      return new Response(JSON.stringify({message: e.message}), { status: 500 })
     }
   }

@@ -10,6 +10,7 @@ export async function GET(
 
     const now = new Date()
 
+    // Get all posts that can be published
     const posts = await db.post.findMany({
       where: {
         scheduledAt: {
@@ -18,6 +19,8 @@ export async function GET(
         status: "SCHEDULED"
       }
     })
+
+    
 
     // Will probably need to push to twitter here
     let promises = []

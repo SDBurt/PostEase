@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { PostOperations } from "@/components/admin/posts/post-operations"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { Badge } from "@/components/ui/badge"
+import { PostCreateButton } from "./create/button"
 
 interface PostItemProps {
   post: Post
@@ -25,10 +26,7 @@ function PostItem({ post, hrefPrefix = "/editor" }: PostItemProps) {
             : "empty post"}
         </Link>
         <div>
-          <p className="text-sm text-muted-foreground">
-            <Badge variant="secondary">{post.status}</Badge>
-            
-          </p>
+          <Badge variant="secondary">{post.status}</Badge>
           {/* <p className="text-sm text-muted-foreground">
             {post.createdAt ? dateFromNow(post.createdAt) : null}
           </p> */}
@@ -70,7 +68,7 @@ function PostList({ posts }: PostListProps) {
           <EmptyPlaceholder.Description>
             You don&apos;t have any posts yet. Start creating content.
           </EmptyPlaceholder.Description>
-          {/* <PostCreateButton variant="outline" /> */}
+          <PostCreateButton variant="outline" />
         </EmptyPlaceholder>
       )}
     </div>
