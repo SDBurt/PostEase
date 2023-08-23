@@ -44,6 +44,7 @@ import {
   User,
   X,
   Youtube,
+  Pen
 } from "lucide-react"
 
 export const Icons = {
@@ -81,6 +82,7 @@ export const Icons = {
   moon: Moon,
   laptop: Laptop,
   check: Check,
+  pen: Pen,
 
   // Socials
   facebook: Facebook,

@@ -4,7 +4,6 @@ import relativeTime from "dayjs/plugin/relativeTime"
 import calendar from "dayjs/plugin/calendar"
 import { twMerge } from "tailwind-merge"
 
-dayjs().format()
 dayjs.extend(relativeTime)
 dayjs.extend(calendar)
 

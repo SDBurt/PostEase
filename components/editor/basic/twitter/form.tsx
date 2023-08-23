@@ -25,6 +25,12 @@ import { PublishButton } from "@/components/admin/posts/publish-button"
 import { useSearchParams } from "next/navigation"
 import TwitterPublishButton from "@/components/twitter/publish-button"
 
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+import { Badge } from "@/components/ui/badge"
+
+dayjs.extend(relativeTime)
+
 const twitterFormSchema = z.object({
   tweets: z.array(
     z.object({
@@ -39,7 +45,7 @@ interface TwitterFormProps {
   imageUrl: string
   userName: string
   handle: string
-  post?: Pick<Post, "id" | "content" | "status">
+  post?: Pick<Post, "id" | "content" | "status" | "scheduledAt">
 }
 
 export default function TwitterForm({
@@ -139,19 +145,31 @@ export default function TwitterForm({
                   Back
                 </>
               </Link>
-              <p className="text-sm text-muted-foreground">
-                {post.status === "PUBLISHED" ? "Published" : post.status === "SCHEDULED" ? "Scheduled" : "Draft"}
-              </p>
-              {post.status === "DRAFT" ? <PublishButton variant="secondary" postId={post.id} /> : null}
-              {post.status === "DRAFT" ? <TwitterPublishButton text={tweetText} /> : null}
-              {post.status === "SCHEDULED" ? <PublishButton variant="secondary" postId={post.id} /> : null}
             </div>
-            <Button type="submit">
-              {isSaving && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              <span>Save</span>
-            </Button>
+            <div className=" flex space-x-2 items-center">
+              <Badge variant="outline" className="flex items-center justify-center">
+                <Icons.pen className="h-4"/>
+                {post.status === "DRAFT" && <span>Draft</span>}
+                {post.status === "SCHEDULED" && <span>Scheduled</span>}
+                {post.status === "PUBLISHED" && <span>Published</span>}
+              </Badge>
+              {post.status === "SCHEDULED" ? <Badge variant="outline">
+                <Icons.scheduled className="h-4"/>
+                <span>In {dayjs(post.scheduledAt).fromNow(true)}</span>
+              </Badge> : null}
+            </div>
+            <div className=" flex space-x-4 items-center">
+                {post.status === "DRAFT" ? <PublishButton variant="secondary" postId={post.id} /> : null}
+                {post.status === "DRAFT" ? <TwitterPublishButton text={tweetText} /> : null}
+                {post.status === "SCHEDULED" ? <PublishButton variant="secondary" postId={post.id} /> : null}
+                <Button type="submit">
+                  {isSaving && (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  <span>Save</span>
+                </Button>
+            </div>
+            
           </div>
           <div className="mx-auto w-4/5 sm:w-2/3 sm:max-w-[600px]">
             <div>

@@ -5,6 +5,7 @@ import { dateFromNow } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { PostOperations } from "@/components/admin/posts/post-operations"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import { Badge } from "@/components/ui/badge"
 
 interface PostItemProps {
   post: Post
@@ -14,7 +15,7 @@ interface PostItemProps {
 function PostItem({ post, hrefPrefix = "/editor" }: PostItemProps) {
   return (
     <div className="flex items-center justify-between p-4">
-      <div className="grid gap-1">
+      <div className="grid gap-2">
         <Link
           href={`${hrefPrefix}/${post.id}`}
           className="font-semibold hover:underline truncate"
@@ -24,10 +25,13 @@ function PostItem({ post, hrefPrefix = "/editor" }: PostItemProps) {
             : "empty post"}
         </Link>
         <div>
-          <p className="text-sm text-muted-foreground">{post.status}</p>
           <p className="text-sm text-muted-foreground">
-            {post.createdAt ? dateFromNow(post.createdAt) : null}
+            <Badge variant="secondary">{post.status}</Badge>
+            
           </p>
+          {/* <p className="text-sm text-muted-foreground">
+            {post.createdAt ? dateFromNow(post.createdAt) : null}
+          </p> */}
         </div>
       </div>
       <PostOperations post={{ id: post.id }} />
