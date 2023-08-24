@@ -28,10 +28,12 @@ export function dayRange(date: Date): string[] {
   let ranges: string[] = []
   let currentDate = dayjs(date).startOf('day');
   let endDate = currentDate.add(7, 'day')
-  while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
-    currentDate = currentDate.add(1, 'day');
+
+  while (currentDate.isBefore(endDate)) {
     ranges.push(currentDate.format());
+    currentDate = currentDate.add(1, 'day');
   }
+
   return ranges
 }
 

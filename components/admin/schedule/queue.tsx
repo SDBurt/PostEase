@@ -28,6 +28,8 @@ function getQueueData(timezone: string, posts: Post[], schedule: ScheduleType[])
   const now = new Date()
   const weekrange = dayRange(now)
 
+  const dayjsNow = dayjs(now)
+
   let byDayOfWeek: {[key: string]: {h: number, m: number}[]} = {}
 
   // Map schedule to a dictionary using day of week as the key
@@ -51,37 +53,45 @@ function getQueueData(timezone: string, posts: Post[], schedule: ScheduleType[])
   })
 
   let data: SectionData[] = []
+  
   weekrange.forEach(dt => {
     const dow = dayOfWeek(dt)
     const date = dayjs(dt).date()
     
-    const items: SlotType[] = (byDayOfWeek[dow] || []).map(item => {
-      
-      const formattedDate = dayjs().date(date).hour(item.h).minute(item.m).second(0).format()
-      
-      // if a post is scheduled for this date
-      if (Object.keys(scheduledPostsByDate).includes(formattedDate)) {
+    const items: SlotType[] = (byDayOfWeek[dow] || [])
+      .filter(item => {
+        const itemDate = dayjs().date(date).hour(item.h).minute(item.m).second(0)
+        return itemDate.isAfter(dayjsNow)
+      })
+      .map(item => {
+        
+        const itemDate = dayjs().date(date).hour(item.h).minute(item.m).second(0)
+        
+        const formattedDate = itemDate.format()
+        
+        // if a post is scheduled for this date
+        if (Object.keys(scheduledPostsByDate).includes(formattedDate)) {
+          return {
+            h: item.h,
+            m: item.m,
+            date: formattedDate,
+            type: "POST",
+            post: scheduledPostsByDate[formattedDate]
+          }
+        }
+
         return {
           h: item.h,
           m: item.m,
           date: formattedDate,
-          type: "POST",
-          post: scheduledPostsByDate[formattedDate]
+          type: "SLOT",
         }
-      }
-
-      return {
-        h: item.h,
-        m: item.m,
-        date: formattedDate,
-        type: "SLOT",
-      }
-    })
+      })
 
     // 2023-07-29T18:42:55-07:00
     let newDataItem: SectionData = {
       date: dt,
-      items: items
+      items: items.sort((a,b) =>  new Date(a.date).getTime() - new Date(b.date).getTime())
     }
 
     data.push(newDataItem)
