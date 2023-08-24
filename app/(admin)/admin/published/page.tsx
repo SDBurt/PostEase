@@ -5,24 +5,21 @@ import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
 import { PostItem } from "@/components/admin/posts/post"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import CronTestButton from "@/components/admin/cron/button"
-import TwitterWhoAmIButton from "@/components/twitter/whoami-button"
+import TestButtons from "@/components/admin/test/button"
 
 export const metadata = {
   title: "Published",
 }
 
-export default async function DashboardPage() {
+export default async function PublishedPage() {
   const posts: Post[] = await getAllPublishedPosts()
-
 
   return (
     <PageShell>
       <PageHeader heading="Posts" text="Create and manage posts.">
         {/* <Button onClick={testCron}>Text Cron Publish</Button> */}
         <div className="flex space-x-2">
-          <TwitterWhoAmIButton />
-          <CronTestButton />
+          <TestButtons />
         </div>
       </PageHeader>
       <div>

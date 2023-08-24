@@ -27,7 +27,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
     notFound()
   }
 
-  const { name, image, twitter} = user
+  const { name, image } = user
 
   return (
     <Preview
@@ -38,8 +38,8 @@ export default async function EditorPage({ params }: EditorPageProps) {
         scheduledAt: post.scheduledAt,
       }}
       user={{
-        twitterHandle: name,
-        userName: `${name} ${name}`,
+        twitterHandle: String(name).replace(" ", "_"),
+        userName: name,
         imageUrl: image,
       }}
     />

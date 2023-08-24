@@ -28,6 +28,7 @@ import TwitterPublishButton from "@/components/twitter/publish-button"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import { Badge } from "@/components/ui/badge"
+import { BadgeGroup } from "@/components/admin/posts/post-badge-group"
 
 dayjs.extend(relativeTime)
 
@@ -146,18 +147,7 @@ export default function TwitterForm({
                 </>
               </Link>
             </div>
-            <div className=" flex space-x-2 items-center">
-              <Badge variant="outline" className="flex items-center justify-center">
-                <Icons.pen className="h-4"/>
-                {post.status === "DRAFT" && <span>Draft</span>}
-                {post.status === "SCHEDULED" && <span>Scheduled</span>}
-                {post.status === "PUBLISHED" && <span>Published</span>}
-              </Badge>
-              {post.status === "SCHEDULED" ? <Badge variant="outline">
-                <Icons.scheduled className="h-4"/>
-                <span>In {dayjs(post.scheduledAt).fromNow(true)}</span>
-              </Badge> : null}
-            </div>
+            <BadgeGroup post={post}/>
             <div className=" flex space-x-4 items-center">
                 {post.status === "DRAFT" ? <PublishButton variant="secondary" postId={post.id} /> : null}
                 {post.status === "DRAFT" ? <TwitterPublishButton text={tweetText} /> : null}

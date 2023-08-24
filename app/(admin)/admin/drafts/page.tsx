@@ -11,8 +11,10 @@ export const metadata = {
   title: "Drafts",
 }
 
-export default async function DashboardPage() {
+export default async function DraftPage() {
   const posts: Post[] = await getAllDraftPosts()
+
+
 
   return (
     <PageShell>

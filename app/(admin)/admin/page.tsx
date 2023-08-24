@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import dayjs from "dayjs"
 
 export const metadata = {
   title: "Admin",
@@ -13,12 +14,8 @@ export const metadata = {
 
 export default async function AdminPage() {
 
-  let posts: Post[] = []
-  try {
-    posts = await getAllPosts()
-  } catch(err) {
-    console.error(err)
-  }
+
+  const posts = await getAllPosts()
 
   return (
     <PageShell>

@@ -1,12 +1,11 @@
 import Link from "next/link"
 import { Post } from "@prisma/client"
 
-import { dateFromNow } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { PostOperations } from "@/components/admin/posts/post-operations"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import { Badge } from "@/components/ui/badge"
 import { PostCreateButton } from "./create/button"
+import { BadgeGroup } from "./post-badge-group"
 
 interface PostItemProps {
   post: Post
@@ -25,12 +24,7 @@ function PostItem({ post, hrefPrefix = "/editor" }: PostItemProps) {
             ? post.content[0]
             : "empty post"}
         </Link>
-        <div>
-          <Badge variant="secondary">{post.status}</Badge>
-          {/* <p className="text-sm text-muted-foreground">
-            {post.createdAt ? dateFromNow(post.createdAt) : null}
-          </p> */}
-        </div>
+        <BadgeGroup post={post}/>
       </div>
       <PostOperations post={{ id: post.id }} />
     </div>

@@ -1,4 +1,4 @@
-import { db } from '@/lib/db'
+import { publishScheduledPosts } from '@/lib/actions'
  
 /**
  * Publish all posts that are scheduled 
@@ -8,34 +8,7 @@ export async function GET(
 ) {
   try {
 
-    const now = new Date()
-
-    // Get all posts that can be published
-    const posts = await db.post.findMany({
-      where: {
-        scheduledAt: {
-          lte: now
-        },
-        status: "SCHEDULED"
-      }
-    })
-
-    
-
-    // Will probably need to push to twitter here
-    let promises = []
-    posts.forEach(async post => {
-      promises.push(await db.post.update({
-          where: {
-            id: post.id,
-          },
-          data: {
-            status: "PUBLISHED"
-          }
-        }))
-    });
-
-    await Promise.all(promises)
+    await publishScheduledPosts()
 
     return new Response(null, { status: 200 })
 

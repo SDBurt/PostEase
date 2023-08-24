@@ -28,7 +28,7 @@ export default function TwitterWhoAmIButton() {
 
   return (  
 
-    <Button onClick={testTwitter}>Test Twitter</Button>
+    <Button onClick={testTwitter}>Test User/Me API</Button>
     
   )
 }

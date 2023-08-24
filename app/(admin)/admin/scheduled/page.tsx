@@ -15,7 +15,7 @@ export const metadata = {
 }
 
 
-export default async function DashboardPage() {
+export default async function ScheduledPage() {
   
   const scheduledPosts: Post[] = await getAllScheduledPosts()
   const draftPosts: Post[] = await getAllDraftPosts()

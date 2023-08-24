@@ -80,8 +80,9 @@ model Post {
   createdAt   DateTime  @default(now()) @db.Timestamptz()
   updatedAt   DateTime  @updatedAt @db.Timestamptz()
 
+  tweet_ids String[] @default([])
+
   @@index([userId])
-  @@map("posts")
 }
 
 enum Status {
@@ -99,5 +100,4 @@ model Schedule {
   updatedAt DateTime @updatedAt @db.Timestamptz()
 
   @@index([userId])
-  @@map("schedules")
 }

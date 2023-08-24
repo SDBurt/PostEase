@@ -55,13 +55,12 @@ export async function publishTweets(token: Token, content: string[]): Promise<st
     
     const body: PublishTweetBody = {
       text: text,
-      reply: lastTweetID ?? {
-        in_reply_to_tweet_id: lastTweetID
-      }
+      ...(lastTweetID && {reply: {in_reply_to_tweet_id: lastTweetID}})
     }
 
     const tweet: PublishTweetResponse = await postRequest(token, endpointURL, body)
     
+
     if (tweet?.errors) {
       console.error(tweet.errors)
       throw new Error("Something went wrong when posting tweets")
