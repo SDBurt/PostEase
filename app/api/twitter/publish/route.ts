@@ -10,6 +10,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const token = await getToken({ req, secret: env.NEXTAUTH_SECRET })
 
+    if (!token) {
+      return new Response(
+        JSON.stringify({
+          message: "Error: Unauthorized",
+        }),
+        { status: 401 }
+      )
+    }
+
     const { twitter } = token
 
     if (!twitter || !twitter.oauth_token || !twitter.oauth_token_secret) {

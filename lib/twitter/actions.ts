@@ -45,13 +45,13 @@ export async function publishTweets(
 ): Promise<string[]> {
   const endpointURL = `https://api.twitter.com/2/tweets`
 
-  let lastTweetID = null
-  const results = []
+  let lastTweetID: string | null = null
+  const results: string[] = []
 
   for (const text of content) {
     const body: PublishTweetBody = {
       text: text,
-      ...(lastTweetID && { reply: { in_reply_to_tweet_id: lastTweetID } }),
+      ...(lastTweetID ? { reply: { in_reply_to_tweet_id: lastTweetID } } : {}),
     }
 
     const tweet: PublishTweetResponse = await postRequest(

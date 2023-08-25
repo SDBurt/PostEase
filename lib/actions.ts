@@ -30,33 +30,30 @@ export async function publishForUser(): Promise<any> {
     },
   })
 
-  let publishedTweets = []
+  let publishedTweets: Post[] = []
   for (const post of posts) {
     const result = await publishTweets(token, post.content)
 
     publishedTweets.push({
       ...post,
-      tweetIds: result,
+      tweet_ids: result,
     })
   }
 
   // Update Database
-  let promises = []
-  publishedTweets.forEach(async (post) => {
-    promises.push(
-      await db.post.update({
-        where: {
-          id: post.id,
-        },
-        data: {
-          status: Status.PUBLISHED,
-          tweet_ids: post.tweetIds,
-        },
-      })
-    )
-  })
-
-  const res = await Promise.all(promises)
+  let res: Post[] = []
+  for (const post of publishedTweets) {
+    const updatedPost = await db.post.update({
+      where: {
+        id: post.id,
+      },
+      data: {
+        status: Status.PUBLISHED,
+        tweet_ids: post.tweet_ids,
+      },
+    })
+    res.push(updatedPost)
+  }
 
   return res
 }
@@ -83,7 +80,7 @@ export async function publishScheduledPosts(): Promise<{
     },
   })
 
-  let publishedTweets = []
+  let publishedTweets: Post[] = []
   for (const post of posts) {
     // Get account for post's user
     const account = await db.account.findFirst({
@@ -93,18 +90,23 @@ export async function publishScheduledPosts(): Promise<{
       },
     })
 
-    // Create twitter token
-    const token = {
-      key: account.oauth_token,
-      secret: account.oauth_token_secret,
+    if (account?.oauth_token && account?.oauth_token_secret) {
+
+      // Create twitter token
+      const token = {
+        key: account.oauth_token,
+        secret: account.oauth_token_secret,
+      }
+
+      const result = await publishTweets(token, post.content)
+
+      publishedTweets.push({
+        ...post,
+        tweet_ids: result,
+      })
     }
 
-    const result = await publishTweets(token, post.content)
-
-    publishedTweets.push({
-      ...post,
-      tweetIds: result,
-    })
+    
   }
 
   // Update Database
@@ -117,7 +119,7 @@ export async function publishScheduledPosts(): Promise<{
         },
         data: {
           status: Status.PUBLISHED,
-          tweet_ids: post.tweetIds,
+          tweet_ids: post.tweet_ids,
         },
         select: {
           id: true,

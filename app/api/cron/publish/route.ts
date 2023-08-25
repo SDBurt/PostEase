@@ -1,22 +1,36 @@
 import { verifySignature } from "@upstash/qstash/nextjs";
 import { publishScheduledPosts } from "@/lib/actions"
-import { NextApiRequest, NextApiResponse } from "next";
 
-async function handler(_req: NextApiRequest, res: NextApiResponse) {
-  console.log("If this is printed, the signature has already been verified");
 
+
+export async function GET(req: Request) {
   try {
+
+    console.log("GET CRON PUBLISH")
+
+    await verifySignature((req) => null)
+
     await publishScheduledPosts()
-    res.status(200).end();
+
+    return new Response(null, { status: 200 })
   } catch (error) {
-    res.status(500).end();
+    return new Response(null, { status: 500 })
   }
 }
 
-export default verifySignature(handler);
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+
+export async function POST(req: Request) {
+  try {
+
+    console.log("POST CRON PUBLISH")
+
+    await verifySignature((req) => null)
+
+    await publishScheduledPosts()
+
+    return new Response(null, { status: 200 })
+  } catch (error) {
+    return new Response(null, { status: 500 })
+  }
+}

@@ -85,7 +85,7 @@ export function makeDateTimeSelect(): {
   ]
   const minutes = ["00", "15", "30", "45"]
 
-  const result = []
+  const result: { label: string, value: { h: number, m: number}}[] = []
 
   ampm.forEach((ap) => {
     hours.forEach((hour) => {

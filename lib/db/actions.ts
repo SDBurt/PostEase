@@ -7,7 +7,7 @@ import { db } from "@/lib/db"
 
 import { getCurrentUser } from "../session"
 
-export async function getPost(postId: Post["id"]): Promise<Post> {
+export async function getPost(postId: Post["id"]): Promise<Post | null> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -190,7 +190,7 @@ export async function deletePost(
   }
 }
 
-export async function getUserSchedule(): Promise<Schedule> {
+export async function getUserSchedule(): Promise<Schedule | null> {
   const user = await getCurrentUser()
 
   if (!user) {

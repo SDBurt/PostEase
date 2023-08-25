@@ -56,11 +56,11 @@ export default function TwitterForm({
   const [isSaving, setIsSaving] = useState(false)
   const searchParams = useSearchParams()
 
-  const isScheduledAt = searchParams.get("scheduledAt")
+  const isScheduledAt = searchParams?.get("scheduledAt")
 
   const defaultValues: Partial<TwitterFormValues> = {
     tweets:
-      post.content && post.content.length > 0
+      post?.content && post.content.length > 0
         ? post.content.map((text) => ({ text: text }))
         : [{ text: "" }],
   }
@@ -90,11 +90,11 @@ export default function TwitterForm({
         updatedData["scheduledAt"] = isScheduledAt
         updatedData["status"] = "SCHEDULED"
       }
-      const result = await updatePost(post.id, updatedData)
+      const result = await updatePost(post?.id, updatedData)
 
       setIsSaving(false)
 
-      if (!result || result.id !== post.id) {
+      if (!result || result.id !== post?.id) {
         return toast({
           title: "Something went wrong. You submitted the following values:",
           variant: "destructive",
@@ -147,15 +147,15 @@ export default function TwitterForm({
                 </>
               </Link>
             </div>
-            <BadgeGroup post={post} />
+            {post && <BadgeGroup post={post} />}
             <div className=" flex items-center space-x-4">
-              {post.status === "DRAFT" ? (
+              {post && post.status === "DRAFT" ? (
                 <PublishButton variant="secondary" postId={post.id} />
               ) : null}
-              {post.status === "DRAFT" ? (
+              {post && post.status === "DRAFT" ? (
                 <TwitterPublishButton text={tweetText} />
               ) : null}
-              {post.status === "SCHEDULED" ? (
+              {post && post.status === "SCHEDULED" ? (
                 <PublishButton variant="secondary" postId={post.id} />
               ) : null}
               <Button type="submit">

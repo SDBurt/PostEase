@@ -4,8 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Icons } from "@/components/icons"
 
 interface UserAvatarProps extends AvatarProps {
-  imageUrl?: string
-  name: string
+  imageUrl?: string | null
+  name?: string | null
 }
 
 export function UserAvatar({ imageUrl, name, ...props }: UserAvatarProps) {
@@ -15,7 +15,7 @@ export function UserAvatar({ imageUrl, name, ...props }: UserAvatarProps) {
         <AvatarImage alt="Picture" src={imageUrl} />
       ) : (
         <AvatarFallback>
-          <span className="sr-only">{name}</span>
+          {name ? <span className="sr-only">{name}</span> : <span className="sr-only">User</span>}
           <Icons.user className="h-4 w-4" />
         </AvatarFallback>
       )}

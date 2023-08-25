@@ -1,16 +1,9 @@
 import Link from "next/link"
 import { Post } from "@prisma/client"
-import TextareaAutosize from "react-textarea-autosize"
 
 import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
-import { PublishButton } from "@/components/admin/posts/publish-button"
+import { buttonVariants } from "@/components/ui/button"
+
 import Tweet from "@/components/admin/posts/twitter/tweet"
 import Icons from "@/components/icons"
 
@@ -27,8 +20,8 @@ export default function TwitterForm({
   handle,
   post,
 }: TwitterFormProps) {
-  const tweets = post.content
-  const scheduledAt = post.scheduledAt
+  const tweets = post?.content
+  const scheduledAt = post?.scheduledAt
 
   return (
     <div className="w-full space-y-8">
@@ -48,7 +41,7 @@ export default function TwitterForm({
         </div>
         <div className="mx-auto w-4/5 sm:w-2/3 sm:max-w-[600px]">
           <div className=" rounded-lg border p-4">
-            {tweets.map((tweet, index) => (
+            {tweets?.map((tweet, index) => (
               <Tweet
                 imageUrl={imageUrl}
                 userName={userName}

@@ -138,7 +138,7 @@ function SlotItem({ datetime, draftPosts }) {
 
 interface PostItemProps {
   postId?: string
-  scheduledAt: Date
+  scheduledAt: Date | null
   content: string
   showAction?: boolean
 }
@@ -155,7 +155,7 @@ function PostItem({
         <div className="w-full">
           <div className="flex-col items-center space-y-2 border-l-2 border-primary px-2">
             <div className="flex items-center justify-start">
-              {dayFormatTime(scheduledAt)}
+              {scheduledAt && dayFormatTime(scheduledAt)}
             </div>
             <p className="text-muted-foreground">
               {content ? content : "empty post"}

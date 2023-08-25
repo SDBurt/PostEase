@@ -62,9 +62,3 @@ export type ScheduleFormItem = {
   time: string;
   days: number[];
 }
-
-export type ScheduleFormItem = {
-  id?: string
-  time: string;
-  days: number[];
-}

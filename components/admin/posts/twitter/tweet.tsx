@@ -7,7 +7,7 @@ import { UserAvatar } from "@/components/user-avatar"
 interface TweetHeaderProps {
   userName: string
   handle: string
-  createdAt: Date
+  createdAt?: Date | null
 }
 interface TweetTextProps {
   text: string
@@ -19,7 +19,7 @@ interface TweetProps {
   handle: string
   // text: string;
   children: React.ReactNode
-  createdAt: Date
+  createdAt?: Date | null
   isThread?: boolean
   showTimestamp?: boolean
 }
@@ -71,7 +71,7 @@ function Tweet({
         <TweetHeader
           userName={userName}
           handle={handle}
-          createdAt={showTimestamp && createdAt}
+          createdAt={showTimestamp ? createdAt : null}
         />
         {children}
       </div>

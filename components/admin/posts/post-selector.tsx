@@ -52,6 +52,14 @@ export default function PostSelector({
   const onClick = useCallback(async () => {
     setIsLoading(true)
 
+    if (!selected) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your post was not scheduled. Please try again.",
+        variant: "destructive",
+      })
+    }
+
     try {
       setIsLoading(false)
       await updatePost(posts[selected].id, { status: "SCHEDULED", scheduledAt })
