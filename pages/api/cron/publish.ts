@@ -3,10 +3,12 @@ import { verifySignature } from "@upstash/qstash/nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function handler(_req: NextApiRequest, res: NextApiResponse) {
-  
-  await publishScheduledPosts()
-
-  res.status(200).end();
+  try {
+    await publishScheduledPosts()
+    res.status(200).end();
+  } catch(err) {
+    res.status(500).end();
+  }
 }
 
 export default verifySignature(handler);
