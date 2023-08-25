@@ -1,5 +1,5 @@
 import React from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 import { TIMEZONES } from '@/lib/constants'
 

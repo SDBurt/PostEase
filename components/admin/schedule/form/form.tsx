@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { ScheduleFormItem, ScheduleType } from "@/types"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -150,7 +150,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
     }
   })
 
-  const compareControlledFields = (a, b) => {
+  const compareControlledFields = useCallback((a, b) => {
     if (a.time < b.time) {
       return -1
     }
@@ -158,7 +158,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
       return 1
     }
     return 0
-  }
+  }, [])
 
   function fieldsEqual(a: ScheduleFormItem[], b: ScheduleFormItem[]) {
     return (
@@ -169,7 +169,8 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
   }
 
   useEffect(() => {
-    const sortedFields = controlledFields.toSorted(compareControlledFields)
+    const sortedFields = [...controlledFields]
+    sortedFields.sort(compareControlledFields)
 
     if (
       !fieldsEqual(
@@ -179,7 +180,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
     ) {
       replace(sortedFields)
     }
-  }, [replace, controlledFields])
+  }, [replace, controlledFields, compareControlledFields])
 
   return (
     <Form {...form}>

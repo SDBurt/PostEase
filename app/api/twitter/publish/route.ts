@@ -17,7 +17,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const token = await getToken({ req, secret: env.NEXTAUTH_SECRET })
 
-    const { twitter } = token as { twitter: TwitterToken }
+    const { twitter } = token.provider as { twitter: TwitterToken }
 
     if (!twitter || !twitter.oauth_token || !twitter.oauth_token_secret) {
       return new Response(

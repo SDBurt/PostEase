@@ -1,4 +1,6 @@
 import NextAuth from "next-auth"
+import { JWT } from "next-auth/jwt"
+
 
 declare module "next-auth" {
   /**
@@ -9,8 +11,32 @@ declare module "next-auth" {
       /** The user's twitter oauth token. */
       id: string
       twitter?: {
+        access_token: string
+        refresh_token: string
         oauth_token: string
+        oauth_token_secret: string
       }
     } & DefaultSession["user"]
+  }
+
+  interface Account {
+    oauth_token?: string
+    oauth_token_secret?: string
+  }
+
+}
+
+declare module "next-auth/jwt" {
+  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
+  interface JWT {
+    
+    provider?: {
+      [key: string]: {
+        access_token?: string
+        refresh_token?: string
+        oauth_token?: string
+        oauth_token_secret?: string
+      }
+    }
   }
 }

@@ -21,9 +21,6 @@ export const authOptions: NextAuthOptions = {
     TwitterProvider({
       clientId: env.TWITTER_CONSUMER_KEY,
       clientSecret: env.TWITTER_CONSUMER_KEY_SECRET,
-      // clientId: env.TWITTER_CLIENT_ID,
-      // clientSecret: env.TWITTER_CLIENT_SECRET,
-      // version: "2.0",
     }),
     // LinkedInProvider({
     //     clientId: env.LINKEDIN_CLIENT_ID,
@@ -40,23 +37,23 @@ export const authOptions: NextAuthOptions = {
 
       if (account && account.provider) {
         if (!token[account.provider]) {
-          token[account.provider] = {}
+          token.provider[account.provider] = {}
         }
 
         if (account.access_token) {
-          token[account.provider].access_token = account.access_token
+          token.provider[account.provider].access_token = account.access_token
         }
 
         if (account.refresh_token) {
-          token[account.provider].refresh_token = account.refresh_token
+          token.provider[account.provider].refresh_token = account.refresh_token
         }
 
         if (account.oauth_token) {
-          token[account.provider].oauth_token = account.oauth_token
+          token.provider[account.provider].oauth_token = account.oauth_token
         }
 
         if (account.oauth_token_secret) {
-          token[account.provider].oauth_token_secret =
+          token.provider[account.provider].oauth_token_secret =
             account.oauth_token_secret
         }
       }
@@ -64,12 +61,9 @@ export const authOptions: NextAuthOptions = {
       return token
     },
     async session({ session, token, user }) {
-      // Send properties to the client, like an access_token and user id from a provider.
-
-      // console.log("session", { session, token, user})
 
       session.user.id = token.id
-      session.user.twitter = token.twitter
+      session.user.twitter = token.provider.twitter
       return session
     },
   },
