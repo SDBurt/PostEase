@@ -5,6 +5,8 @@ import { getPost } from "@/lib/db/actions"
 import { Preview } from "@/components/preview/preview"
 import { getCurrentUser } from "@/lib/session"
 
+import { Tweet } from 'react-tweet'
+
 async function getPostForUser(postId: Post["id"], userId: Post["userId"]) {
   return await getPost(postId)
 }
@@ -36,6 +38,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
         content: post.content,
         status: post.status,
         scheduledAt: post.scheduledAt,
+        tweet_ids: post.tweet_ids
       }}
       user={{
         twitterHandle: String(name).replace(" ", "_"),

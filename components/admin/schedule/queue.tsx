@@ -65,8 +65,7 @@ function getQueueData(timezone: string, posts: Post[], schedule: ScheduleType[])
       })
       .map(item => {
         
-        const itemDate = dayjs().date(date).hour(item.h).minute(item.m).second(0)
-        
+        const itemDate = dayjs().date(date).hour(item.h).minute(item.m).second(0) 
         const formattedDate = itemDate.format()
         
         // if a post is scheduled for this date
@@ -88,7 +87,6 @@ function getQueueData(timezone: string, posts: Post[], schedule: ScheduleType[])
         }
       })
 
-    // 2023-07-29T18:42:55-07:00
     let newDataItem: SectionData = {
       date: dt,
       items: items.sort((a,b) =>  new Date(a.date).getTime() - new Date(b.date).getTime())
@@ -118,7 +116,7 @@ function SlotItem({ datetime, draftPosts }) {
 }
 
 interface PostItemProps {
-  postId?: number
+  postId?: string
   scheduledAt: Date
   content: string
   showAction?: boolean

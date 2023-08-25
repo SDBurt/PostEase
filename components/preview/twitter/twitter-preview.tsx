@@ -34,7 +34,7 @@ export default function TwitterForm({
   const scheduledAt = post.scheduledAt
 
   return (
-      <div className="space-y-8">
+      <div className="space-y-8 w-full">
         <div className="grid w-full gap-10">
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center space-x-10">
