@@ -52,7 +52,7 @@ CREATE TABLE "verificationtokens" (
 );
 
 -- CreateTable
-CREATE TABLE "posts" (
+CREATE TABLE "Post" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "content" TEXT[],
@@ -60,19 +60,20 @@ CREATE TABLE "posts" (
     "scheduledAt" TIMESTAMPTZ,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ NOT NULL,
+    "tweet_ids" TEXT[] DEFAULT ARRAY[]::TEXT[],
 
-    CONSTRAINT "posts_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "schedules" (
+CREATE TABLE "Schedule" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "schedule" JSONB NOT NULL,
     "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ NOT NULL,
 
-    CONSTRAINT "schedules_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Schedule_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -91,13 +92,13 @@ CREATE UNIQUE INDEX "verificationtokens_token_key" ON "verificationtokens"("toke
 CREATE UNIQUE INDEX "verificationtokens_identifier_token_key" ON "verificationtokens"("identifier", "token");
 
 -- CreateIndex
-CREATE INDEX "posts_userId_idx" ON "posts"("userId");
+CREATE INDEX "Post_userId_idx" ON "Post"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "schedules_userId_key" ON "schedules"("userId");
+CREATE UNIQUE INDEX "Schedule_userId_key" ON "Schedule"("userId");
 
 -- CreateIndex
-CREATE INDEX "schedules_userId_idx" ON "schedules"("userId");
+CREATE INDEX "Schedule_userId_idx" ON "Schedule"("userId");
 
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -106,7 +107,7 @@ ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "posts" ADD CONSTRAINT "posts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Post" ADD CONSTRAINT "Post_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "schedules" ADD CONSTRAINT "schedules_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Schedule" ADD CONSTRAINT "Schedule_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
