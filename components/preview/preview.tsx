@@ -31,8 +31,6 @@ export function Preview({ post, user }: PreviewProps) {
         ))}
       </section>
     ) : null}
-    
-    
     </div>
   )
 }

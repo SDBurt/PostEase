@@ -1,5 +1,6 @@
 'use server'
 
+import { Post, Status } from "@prisma/client";
 import { db } from "./db";
 import { getCurrentUser } from "./session";
 import { publishTweets } from "./twitter/actions";
@@ -26,7 +27,7 @@ export async function publishForUser(): Promise<any> {
       scheduledAt: {
         lte: now
       },
-      status: "SCHEDULED"
+      status: Status.SCHEDULED
     }
   })
 
@@ -49,7 +50,7 @@ export async function publishForUser(): Promise<any> {
           id: post.id,
         },
         data: {
-          status: "PUBLISHED",
+          status: Status.PUBLISHED,
           tweet_ids: post.tweetIds
         }
       }))
@@ -63,64 +64,71 @@ export async function publishForUser(): Promise<any> {
 
 }
 
-export async function publishScheduledPosts(): Promise<any> {
+type UpdatedPostReturnType = Pick<Post, "id" | "tweet_ids" | "status" | "scheduledAt">
+
+export async function publishScheduledPosts(): Promise<{status: string, count: number, data: UpdatedPostReturnType[]}> {
 
   const now = new Date()
 
+  // Get all posts that can be published
+  const posts = await db.post.findMany({
+    where: {
+      scheduledAt: {
+        lte: now
+      },
+      status: Status.SCHEDULED
+    }
+  })
 
-    // Get all posts that can be published
-    const posts = await db.post.findMany({
+  let publishedTweets = []
+  for (const post of posts) {
+
+    // Get account for post's user
+    const account = await db.account.findFirst({
       where: {
-        scheduledAt: {
-          lte: now
-        },
-        status: "SCHEDULED"
+        userId: post.userId,
+        provider: "twitter"
       }
     })
 
-  
-    let publishedTweets = []
-    for (const post of posts) {
-  
-      // There might be multiple accounts in the future
-      // TODO: make something unique
-      const account = await db.account.findFirst({
-        where: {
-          userId: post.userId,
-          provider: "twitter"
-        }
-      })
-
-      // Twitter
-      const token = {
-        key: account.oauth_token,
-        secret: account.oauth_token_secret
-      }
-
-      const result = await publishTweets(token, post.content)
-  
-      publishedTweets.push({
-        ...post,
-        tweetIds: result
-      })
+    // Create twitter token
+    const token = {
+      key: account.oauth_token,
+      secret: account.oauth_token_secret
     }
-  
-    // Update Database
-    let promises = []
-    publishedTweets.forEach(async post => {
-      promises.push(await db.post.update({
-          where: {
-            id: post.id,
-          },
-          data: {
-            status: "PUBLISHED",
-            tweet_ids: post.tweetIds
-          }
-        }))
-    });
-  
-  const res = await Promise.all(promises)
 
-  return res
+    const result = await publishTweets(token, post.content)
+
+    publishedTweets.push({
+      ...post,
+      tweetIds: result
+    })
+  }
+
+  // Update Database
+  const results: UpdatedPostReturnType[] = []
+  for (const post of publishedTweets) {
+    results.push(await db.post.update({
+      where: {
+        id: post.id,
+      },
+      data: {
+        status: Status.PUBLISHED,
+        tweet_ids: post.tweetIds
+      },
+      select: {
+        id: true,
+        tweet_ids: true,
+        status: true,
+        scheduledAt: true
+      }
+    }))
+  }
+
+  return {
+    status: "SUCCESS",
+    count: publishedTweets.length,
+    data: results
+  }
 
 }
