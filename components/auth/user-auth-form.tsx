@@ -8,16 +8,15 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { cn } from "@/lib/utils"
-
 import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  
   const [isTwitterLoading, setisTwitterLoading] = React.useState<boolean>(false)
-  const [isLinkedinLoading, setIsLinkedinLoading] = React.useState<boolean>(false)
+  const [isLinkedinLoading, setIsLinkedinLoading] =
+    React.useState<boolean>(false)
 
   return (
     <div className={cn("grid gap-4", className)} {...props}>

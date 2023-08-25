@@ -2,14 +2,18 @@
 
 import React, { useMemo, useState } from "react"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Post } from "@prisma/client"
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { useFieldArray, useForm } from "react-hook-form"
 import TextareaAutosize from "react-textarea-autosize"
 import * as z from "zod"
 
 import { updatePost } from "@/lib/db/actions"
 import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Form,
@@ -19,16 +23,11 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { toast } from "@/components/ui/use-toast"
+import { BadgeGroup } from "@/components/admin/posts/post-badge-group"
+import { PublishButton } from "@/components/admin/posts/publish-button"
 import Tweet from "@/components/admin/posts/twitter/tweet"
 import Icons from "@/components/icons"
-import { PublishButton } from "@/components/admin/posts/publish-button"
-import { useSearchParams } from "next/navigation"
 import TwitterPublishButton from "@/components/twitter/publish-button"
-
-import dayjs from "dayjs"
-import relativeTime from "dayjs/plugin/relativeTime"
-import { Badge } from "@/components/ui/badge"
-import { BadgeGroup } from "@/components/admin/posts/post-badge-group"
 
 dayjs.extend(relativeTime)
 
@@ -55,11 +54,10 @@ export default function TwitterForm({
   handle,
   post,
 }: TwitterFormProps) {
-
   const [isSaving, setIsSaving] = useState(false)
   const searchParams = useSearchParams()
 
-  const isScheduledAt = searchParams.get('scheduledAt')
+  const isScheduledAt = searchParams.get("scheduledAt")
 
   const defaultValues: Partial<TwitterFormValues> = {
     tweets:
@@ -79,7 +77,10 @@ export default function TwitterForm({
     control: form.control,
   })
 
-  const tweetText: string[] = useMemo(() => fields.map(field => field.text), [fields])
+  const tweetText: string[] = useMemo(
+    () => fields.map((field) => field.text),
+    [fields]
+  )
 
   async function onSubmit(data: TwitterFormValues) {
     setIsSaving(true)
@@ -147,19 +148,24 @@ export default function TwitterForm({
                 </>
               </Link>
             </div>
-            <BadgeGroup post={post}/>
-            <div className=" flex space-x-4 items-center">
-                {post.status === "DRAFT" ? <PublishButton variant="secondary" postId={post.id} /> : null}
-                {post.status === "DRAFT" ? <TwitterPublishButton text={tweetText} /> : null}
-                {post.status === "SCHEDULED" ? <PublishButton variant="secondary" postId={post.id} /> : null}
-                <Button type="submit">
-                  {isSaving && (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  <span>Save</span>
-                </Button>
+            <BadgeGroup post={post} />
+            <div className=" flex items-center space-x-4">
+              {post.status === "DRAFT" ? (
+                <PublishButton variant="secondary" postId={post.id} />
+              ) : null}
+              {post.status === "DRAFT" ? (
+                <TwitterPublishButton text={tweetText} />
+              ) : null}
+              {post.status === "SCHEDULED" ? (
+                <PublishButton variant="secondary" postId={post.id} />
+              ) : null}
+              <Button type="submit">
+                {isSaving && (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                <span>Save</span>
+              </Button>
             </div>
-            
           </div>
           <div className="mx-auto w-4/5 sm:w-2/3 sm:max-w-[600px]">
             <div>
@@ -185,7 +191,7 @@ export default function TwitterForm({
                             <TextareaAutosize
                               autoFocus
                               placeholder="Tweet content"
-                              className="w-full resize-none appearance-none overflow-hidden bg-transparent text-muted-foreground focus:outline-none focus:text-primary/80 focus:font-medium focus:m-2"
+                              className="w-full resize-none appearance-none overflow-hidden bg-transparent text-muted-foreground focus:m-2 focus:font-medium focus:text-primary/80 focus:outline-none"
                               {...field}
                             />
                             <Button

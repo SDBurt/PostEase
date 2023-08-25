@@ -1,6 +1,7 @@
-
 import * as React from "react"
+import { Schedule } from "@prisma/client"
 
+import { cn } from "@/lib/utils"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 import {
   Dialog,
@@ -10,9 +11,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+
 import { ScheduleForm } from "../form/form"
-import { Schedule } from "@prisma/client"
-import { cn } from "@/lib/utils"
 
 interface ScheduleEditButtonProps extends ButtonProps {
   schedule: Schedule
@@ -24,10 +24,11 @@ export function ScheduleEditButton({
   schedule,
   ...props
 }: ScheduleEditButtonProps) {
-
   return (
     <Dialog>
-      <DialogTrigger {...props} className={cn(buttonVariants())}>Edit Schedule</DialogTrigger>
+      <DialogTrigger {...props} className={cn(buttonVariants())}>
+        Edit Schedule
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Schedule</DialogTitle>

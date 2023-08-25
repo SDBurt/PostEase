@@ -12,7 +12,6 @@
 // this will automatically run needed migrations on the database
 // await migrate(db, { migrationsFolder: 'drizzle' });
 
-
 // export type Post = InferModel<typeof posts, "select">;
 
 import { PrismaClient } from "@prisma/client"

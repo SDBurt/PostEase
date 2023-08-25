@@ -1,5 +1,4 @@
-import { getRequest, postRequest } from "./utils";
-
+import { getRequest, postRequest } from "./utils"
 
 type Token = {
   key: string
@@ -12,20 +11,18 @@ type Token = {
  * @returns Object with authenticated user data
  */
 export async function pingMe(token: Token) {
-
-  const endpointURL = `https://api.twitter.com/2/users/me`;
+  const endpointURL = `https://api.twitter.com/2/users/me`
 
   const result = await getRequest(token, endpointURL)
 
   console.log(result)
 
   return result
-
 }
 
 type PublishTweetResponse = {
   data: {
-    id: string,
+    id: string
     text: string
   }
   errors?: any
@@ -44,34 +41,37 @@ type PublishTweetBody = {
  * @param content a list of strings containing the tweet thread
  * @returns A list of tweet id's
  */
-export async function publishTweets(token: Token, content: string[]): Promise<string[]> {
+export async function publishTweets(
+  token: Token,
+  content: string[]
+): Promise<string[]> {
+  const endpointURL = `https://api.twitter.com/2/tweets`
 
-  const endpointURL = `https://api.twitter.com/2/tweets`;
-
-  let lastTweetID = null;
+  let lastTweetID = null
   const results = []
 
   for (const text of content) {
-    
     const body: PublishTweetBody = {
       text: text,
-      ...(lastTweetID && {reply: {in_reply_to_tweet_id: lastTweetID}})
+      ...(lastTweetID && { reply: { in_reply_to_tweet_id: lastTweetID } }),
     }
 
-    const tweet: PublishTweetResponse = await postRequest(token, endpointURL, body)
-    
+    const tweet: PublishTweetResponse = await postRequest(
+      token,
+      endpointURL,
+      body
+    )
 
     if (tweet?.errors) {
       console.error(tweet.errors)
       throw new Error("Something went wrong when posting tweets")
     }
 
-    lastTweetID = tweet.data.id;
+    lastTweetID = tweet.data.id
     results.push(tweet.data.id)
   }
 
   console.log(results)
 
   return results
-
 }

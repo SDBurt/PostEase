@@ -1,6 +1,6 @@
-import DatetimeSelector from "@/components/datetime-selector"
 import type { Meta, StoryObj } from "@storybook/react"
 
+import DatetimeSelector from "@/components/datetime-selector"
 
 const meta = {
   title: "Shared/DatetimeSelector",
@@ -15,4 +15,3 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {},
 }
-

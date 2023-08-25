@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import dayjs from "dayjs"
-import relativeTime from "dayjs/plugin/relativeTime"
 import calendar from "dayjs/plugin/calendar"
+import relativeTime from "dayjs/plugin/relativeTime"
 import { twMerge } from "tailwind-merge"
 
 dayjs.extend(relativeTime)
@@ -20,29 +20,32 @@ export function formatDate(input: string | number): string {
   })
 }
 
-export function dateFromNow(date: string | number | Date | dayjs.Dayjs): string {
+export function dateFromNow(
+  date: string | number | Date | dayjs.Dayjs
+): string {
   return dayjs(date).fromNow()
 }
 
 export function dayRange(date: Date): string[] {
   let ranges: string[] = []
-  let currentDate = dayjs(date).startOf('day');
-  let endDate = currentDate.add(7, 'day')
+  let currentDate = dayjs(date).startOf("day")
+  let endDate = currentDate.add(7, "day")
 
   while (currentDate.isBefore(endDate)) {
-    ranges.push(currentDate.format());
-    currentDate = currentDate.add(1, 'day');
+    ranges.push(currentDate.format())
+    currentDate = currentDate.add(1, "day")
   }
 
   return ranges
 }
 
-
 export function dayFormat(date: string | number | Date | dayjs.Dayjs): string {
   return dayjs(date).format("dddd, MMMM D, YYYY")
 }
 
-export function dayFormatTime(date: string | number | Date | dayjs.Dayjs): string {
+export function dayFormatTime(
+  date: string | number | Date | dayjs.Dayjs
+): string {
   return dayjs(date).format("h:mm A")
 }
 
@@ -61,22 +64,42 @@ export function dayOfWeek(date: string | number | Date | dayjs.Dayjs): number {
   return dayjs(date).day()
 }
 
-
-export function makeDateTimeSelect(): {label: string, value: {h: number, m: number}}[] {
-  
+export function makeDateTimeSelect(): {
+  label: string
+  value: { h: number; m: number }
+}[] {
   const ampm = ["AM", "PM"]
-  const hours = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11"]
+  const hours = [
+    "00",
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+  ]
   const minutes = ["00", "15", "30", "45"]
-  
+
   const result = []
 
-  ampm.forEach(ap => {
-    hours.forEach(hour => {
-      minutes.forEach(minute => {
-        result.push({label: `${hour}:${minute} ${ap}`, value: {h: ap == "AM" ? parseInt(hour) : parseInt(hour) + 12, m: parseInt(minute)}})
+  ampm.forEach((ap) => {
+    hours.forEach((hour) => {
+      minutes.forEach((minute) => {
+        result.push({
+          label: `${hour}:${minute} ${ap}`,
+          value: {
+            h: ap == "AM" ? parseInt(hour) : parseInt(hour) + 12,
+            m: parseInt(minute),
+          },
+        })
       })
     })
   })
-  
+
   return result
 }

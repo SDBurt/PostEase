@@ -1,16 +1,15 @@
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import Icons from "@/components/icons"
+import { useCallback, useState } from "react"
+import { useRouter } from "next/navigation"
+import { Post } from "@prisma/client"
+
+import { updatePost } from "@/lib/db/actions"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/use-toast"
-import { updatePost } from "@/lib/db/actions"
-import { cn } from "@/lib/utils"
-import { Post } from "@prisma/client"
-import { useRouter } from "next/navigation"
-import { useCallback, useState } from "react"
-
-
+import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import Icons from "@/components/icons"
 
 interface PostSelectorItemProps {
   content: string
@@ -20,8 +19,8 @@ interface PostSelectorItemProps {
 function PostSelectorItem({ content, selected }: PostSelectorItemProps) {
   return (
     <Card className={cn(selected ? "font-semibold" : "font-normal")}>
-      <CardContent className="flex items-center p-4 truncate">
-        {content ? content: "empty post"}
+      <CardContent className="flex items-center truncate p-4">
+        {content ? content : "empty post"}
       </CardContent>
     </Card>
   )
@@ -30,8 +29,8 @@ function PostSelectorItem({ content, selected }: PostSelectorItemProps) {
 PostSelectorItem.Skeleton = function PostItemSkeleton() {
   return (
     <Card>
-      <CardContent className="flex items-center p-4 truncate">
-      <Skeleton className="h-5 w-2/5" />
+      <CardContent className="flex items-center truncate p-4">
+        <Skeleton className="h-5 w-2/5" />
       </CardContent>
     </Card>
   )
@@ -42,26 +41,27 @@ interface PostSelectorProps {
   scheduledAt: Date
 }
 
-
-export default function PostSelector({ posts, scheduledAt }: PostSelectorProps) {
-  
+export default function PostSelector({
+  posts,
+  scheduledAt,
+}: PostSelectorProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [selected, setSelected] = useState<undefined | number>()
 
-  const onClick = useCallback(async() => {
+  const onClick = useCallback(async () => {
     setIsLoading(true)
 
     try {
       setIsLoading(false)
-      await updatePost(posts[selected].id, { status: "SCHEDULED", scheduledAt})
-      
+      await updatePost(posts[selected].id, { status: "SCHEDULED", scheduledAt })
+
       // router.push(`/admin/scheduled/`)
       toast({
         title: "Your post was scheduled.",
         description: "Your post was scheduled successfully.",
       })
-    } catch(err) {
+    } catch (err) {
       setIsLoading(false)
       toast({
         title: "Something went wrong.",
@@ -72,17 +72,26 @@ export default function PostSelector({ posts, scheduledAt }: PostSelectorProps) 
 
     // This forces a cache invalidation.
     router.refresh()
-
-  }, [selected])
+  }, [router, selected, posts, scheduledAt])
 
   return (
     <div>
       {posts?.length ? (
-        <div className="divide-y divide-border space-y-4">
+        <div className="space-y-4 divide-y divide-border">
           {posts.map((post, index) => (
-            <div key={post.id} onClick={() => {console.log(index); setSelected(index)}} className="cursor-pointer">
-              <PostSelectorItem selected={ selected !== undefined ? selected===index : false } content={post.content[0]} />
-            </div>  
+            <div
+              key={post.id}
+              onClick={() => {
+                console.log(index)
+                setSelected(index)
+              }}
+              className="cursor-pointer"
+            >
+              <PostSelectorItem
+                selected={selected !== undefined ? selected === index : false}
+                content={post.content[0]}
+              />
+            </div>
           ))}
           <Button type="submit" onClick={onClick}>
             {isLoading ? (
@@ -104,5 +113,4 @@ export default function PostSelector({ posts, scheduledAt }: PostSelectorProps) 
       )}
     </div>
   )
-
 }

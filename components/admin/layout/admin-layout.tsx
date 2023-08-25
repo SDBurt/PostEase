@@ -1,29 +1,28 @@
 import React from "react"
 import { notFound } from "next/navigation"
+import { getToken } from "next-auth/jwt"
+import { getSession } from "next-auth/react"
 
 import { adminConfig } from "@/config/admin"
+import { authOptions } from "@/lib/auth"
+import { getCurrentUser } from "@/lib/session"
+import { UserAccountNav } from "@/components/auth/user-account-nav"
 import MainNav from "@/components/main-nav"
 import { SiteFooter } from "@/components/site-footer"
 
 import SidebarNav from "../nav/sidebar-nav"
-import { getCurrentUser } from "@/lib/session"
-import { UserAccountNav } from "@/components/auth/user-account-nav"
-import { getSession } from "next-auth/react"
-import { getToken } from "next-auth/jwt"
-import { authOptions } from "@/lib/auth"
 
 interface LayoutProps {
   children: React.ReactNode
 }
 
 export default async function AdminLayout({ children }: LayoutProps) {
-  
   const user = await getCurrentUser()
 
   if (!user) {
     return notFound()
   }
-  
+
   return (
     <div className="flex min-h-screen flex-col space-y-6">
       <header className="sticky top-0 z-40 border-b bg-background">

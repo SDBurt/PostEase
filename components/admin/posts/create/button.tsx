@@ -1,6 +1,5 @@
 "use client"
 
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
@@ -31,7 +30,6 @@ export function PostCreateButton({
 
     return params.toString()
   }
-  
 
   async function onClick() {
     setIsLoading(true)
@@ -42,7 +40,11 @@ export function PostCreateButton({
 
     // This forces a cache invalidation.
     router.refresh()
-    const destination = scheduledAt ? (`/editor/${post.id}` + '?' + createQueryString("scheduledAt", scheduledAt)) : `/editor/${post.id}`
+    const destination = scheduledAt
+      ? `/editor/${post.id}` +
+        "?" +
+        createQueryString("scheduledAt", scheduledAt)
+      : `/editor/${post.id}`
     router.push(destination)
   }
 

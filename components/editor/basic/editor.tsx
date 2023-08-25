@@ -15,7 +15,12 @@ interface EditorProps {
 export function Editor({ post, user }: EditorProps) {
   return (
     <TwitterForm
-      post={{ id: post.id, content: post.content, status: post.status, scheduledAt: post.scheduledAt }}
+      post={{
+        id: post.id,
+        content: post.content,
+        status: post.status,
+        scheduledAt: post.scheduledAt,
+      }}
       imageUrl={user.imageUrl}
       userName={user.userName}
       handle={user.twitterHandle}

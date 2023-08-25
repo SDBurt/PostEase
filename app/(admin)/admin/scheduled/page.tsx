@@ -1,30 +1,32 @@
+import { ScheduleType } from "@/types"
 import { Post } from "@prisma/client"
 
-import { getAllDraftPosts, getAllScheduledPosts, getUserSchedule } from "@/lib/db/actions"
+import {
+  getAllDraftPosts,
+  getAllScheduledPosts,
+  getUserSchedule,
+} from "@/lib/db/actions"
+import { Skeleton } from "@/components/ui/skeleton"
 import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
-import ScheduleQueue from "@/components/admin/schedule/queue"
-import { ScheduleType } from "@/types"
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { ScheduleCreateButton } from "@/components/admin/schedule/create/button"
 import { ScheduleEditButton } from "@/components/admin/schedule/edit/button"
-import { Skeleton } from "@/components/ui/skeleton"
+import ScheduleQueue from "@/components/admin/schedule/queue"
+import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
 export const metadata = {
   title: "Queued",
 }
 
-
 export default async function ScheduledPage() {
-  
   const scheduledPosts: Post[] = await getAllScheduledPosts()
   const draftPosts: Post[] = await getAllDraftPosts()
-  
+
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
   const userSchedules = await getUserSchedule()
 
-  let toRender = <Skeleton className="h-[38px] w-[90px]"/>
+  let toRender = <Skeleton className="h-[38px] w-[90px]" />
 
   if (!userSchedules) {
     toRender = (
@@ -38,19 +40,32 @@ export default async function ScheduledPage() {
       </EmptyPlaceholder>
     )
   } else {
-    const schedules = JSON.parse(userSchedules["schedule"] as string) as ScheduleType[] | []
-    toRender = <ScheduleQueue timezone={timezone} scheduledPosts={scheduledPosts} draftPosts={draftPosts} schedules={schedules}/>
+    const schedules = JSON.parse(userSchedules["schedule"] as string) as
+      | ScheduleType[]
+      | []
+    toRender = (
+      <ScheduleQueue
+        timezone={timezone}
+        scheduledPosts={scheduledPosts}
+        draftPosts={draftPosts}
+        schedules={schedules}
+      />
+    )
   }
 
   return (
     <PageShell>
-      <PageHeader heading="Scheduled Posts" text="Create and manage scheduled posts.">
-        {!userSchedules ? <ScheduleCreateButton variant="outline" /> : <ScheduleEditButton variant="outline" schedule={userSchedules} />}
+      <PageHeader
+        heading="Scheduled Posts"
+        text="Create and manage scheduled posts."
+      >
+        {!userSchedules ? (
+          <ScheduleCreateButton variant="outline" />
+        ) : (
+          <ScheduleEditButton variant="outline" schedule={userSchedules} />
+        )}
       </PageHeader>
-      <div>
-        {toRender}
-      </div>
-      
+      <div>{toRender}</div>
     </PageShell>
   )
 }

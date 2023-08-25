@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { ScheduleTable } from "@/components/admin/schedule/table/table"
 import { columns } from "@/components/admin/schedule/table/columns"
-
+import { ScheduleTable } from "@/components/admin/schedule/table/table"
 
 const meta = {
   title: "Admin/Schedule/Table",
@@ -19,17 +18,17 @@ export const Default: Story = {
     columns: columns,
     data: [
       {
-        "id": "1",
-        "hour": 12,
-        "minute": 30,
-        "monday": false,
-        "tuesday": true,
-        "wednesday": false,
-        "thursday": false,
-        "friday": true,
-        "saturday": false,
-        "sunday": false,
-      }
-    ]
-  }
+        id: "1",
+        hour: 12,
+        minute: 30,
+        monday: false,
+        tuesday: true,
+        wednesday: false,
+        thursday: false,
+        friday: true,
+        saturday: false,
+        sunday: false,
+      },
+    ],
+  },
 }

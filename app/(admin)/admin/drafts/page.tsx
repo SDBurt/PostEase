@@ -14,8 +14,6 @@ export const metadata = {
 export default async function DraftPage() {
   const posts: Post[] = await getAllDraftPosts()
 
-
-
   return (
     <PageShell>
       <PageHeader heading="Drafts" text="Create and manage posts.">

@@ -11,16 +11,8 @@ import { ReactRenderer } from "@tiptap/react"
 import Suggestion from "@tiptap/suggestion"
 import va from "@vercel/analytics"
 import {
-  CheckSquare,
-  Code,
-  Heading1,
-  Heading2,
-  Heading3,
-  List,
-  ListOrdered,
   MessageSquarePlus,
   Text,
-  TextQuote,
 } from "lucide-react"
 import tippy from "tippy.js"
 
@@ -232,7 +224,7 @@ const CommandList = ({
         command(item)
       }
     },
-    [command, editor, items]
+    [command, items]
   )
 
   useEffect(() => {

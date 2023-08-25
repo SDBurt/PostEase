@@ -4,8 +4,8 @@ import { getAllPublishedPosts } from "@/lib/db/actions"
 import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
 import { PostItem } from "@/components/admin/posts/post"
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import TestButtons from "@/components/admin/test/button"
+import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
 export const metadata = {
   title: "Published",

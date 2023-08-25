@@ -26,8 +26,8 @@ interface TweetProps {
 
 function TweetHeader({ userName, handle, createdAt }: TweetHeaderProps) {
   return (
-    <div className="flex space-x-1 justify-start items-center">
-      <h2 className="text-primary font-semibold">{userName}</h2>
+    <div className="flex items-center justify-start space-x-1">
+      <h2 className="font-semibold text-primary">{userName}</h2>
       <h3 className="font-normal text-muted-foreground">
         {"@"}
         {handle}
@@ -35,7 +35,7 @@ function TweetHeader({ userName, handle, createdAt }: TweetHeaderProps) {
       {createdAt ? (
         <>
           <DotFilledIcon className="h-3 w-3 text-muted-foreground" />
-          <h3 className="font-normal text-muted-foreground flex ">
+          <h3 className="flex font-normal text-muted-foreground ">
             {dateFromNow(createdAt)}
           </h3>
         </>
@@ -49,7 +49,7 @@ function TweetText({ text }: TweetTextProps) {
 }
 
 function TweetContainer({ children }: { children: React.ReactNode }) {
-  return <div className="flex gap-2 p-2 w-full">{children}</div>
+  return <div className="flex w-full gap-2 p-2">{children}</div>
 }
 
 function Tweet({
@@ -65,7 +65,7 @@ function Tweet({
     <TweetContainer>
       <div className="flex flex-col items-center">
         <UserAvatar name={userName} imageUrl={imageUrl} />
-        {isThread && <div className="w-px h-full bg-muted" />}
+        {isThread && <div className="h-full w-px bg-muted" />}
       </div>
       <div className="w-full">
         <TweetHeader

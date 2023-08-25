@@ -4,6 +4,7 @@ import { Post } from "@prisma/client"
 import { Skeleton } from "@/components/ui/skeleton"
 import { PostOperations } from "@/components/admin/posts/post-operations"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+
 import { PostCreateButton } from "./create/button"
 import { BadgeGroup } from "./post-badge-group"
 
@@ -18,13 +19,13 @@ function PostItem({ post, hrefPrefix = "/editor" }: PostItemProps) {
       <div className="grid gap-2">
         <Link
           href={`${hrefPrefix}/${post.id}`}
-          className="font-semibold hover:underline truncate"
+          className="truncate font-semibold hover:underline"
         >
           {post.content && post.content.length > 0
             ? post.content[0]
             : "empty post"}
         </Link>
-        <BadgeGroup post={post}/>
+        <BadgeGroup post={post} />
       </div>
       <PostOperations post={{ id: post.id }} />
     </div>

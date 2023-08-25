@@ -1,10 +1,11 @@
 "use server"
 
+import { ScheduleType } from "@/types"
+import { Post, Schedule } from "@prisma/client"
 
 import { db } from "@/lib/db"
-import { ScheduleType } from '@/types';
-import { getCurrentUser } from '../session';
-import { Post, Schedule } from "@prisma/client";
+
+import { getCurrentUser } from "../session"
 
 export async function getPost(postId: Post["id"]): Promise<Post> {
   const user = await getCurrentUser()
@@ -179,8 +180,8 @@ export async function deletePost(
         userId: user.id,
       },
       select: {
-        id: true
-      }
+        id: true,
+      },
     })
     return result
   } catch (err) {
@@ -188,7 +189,6 @@ export async function deletePost(
     throw new Error("Unable to delete post")
   }
 }
-
 
 export async function getUserSchedule(): Promise<Schedule> {
   const user = await getCurrentUser()
@@ -201,7 +201,7 @@ export async function getUserSchedule(): Promise<Schedule> {
     return await db.schedule.findFirst({
       where: {
         userId: user.id,
-      }
+      },
     })
   } catch (err) {
     console.error(err)
@@ -209,26 +209,27 @@ export async function getUserSchedule(): Promise<Schedule> {
   }
 }
 
-
-export async function createUserSchedule(schedule?: ScheduleType[]): Promise<{ id: Schedule["id"] }> {
+export async function createUserSchedule(
+  schedule?: ScheduleType[]
+): Promise<{ id: Schedule["id"] }> {
   const user = await getCurrentUser()
 
   if (!user) {
     throw new Error("Unauthorized")
   }
 
-
-  const newScheduleData = schedule ? JSON.stringify(schedule) : JSON.stringify([])
+  const newScheduleData = schedule
+    ? JSON.stringify(schedule)
+    : JSON.stringify([])
 
   try {
-
-    const schedule =  await db.schedule.findFirst({
+    const schedule = await db.schedule.findFirst({
       where: {
         userId: user.id,
       },
       select: {
-        schedule: true
-      }
+        schedule: true,
+      },
     })
 
     if (schedule) {
@@ -238,7 +239,7 @@ export async function createUserSchedule(schedule?: ScheduleType[]): Promise<{ i
     return db.schedule.create({
       data: {
         schedule: newScheduleData,
-        userId: user.id
+        userId: user.id,
       },
       select: {
         id: true,
@@ -250,18 +251,20 @@ export async function createUserSchedule(schedule?: ScheduleType[]): Promise<{ i
   }
 }
 
-export async function editUserSchedule(id: Schedule["id"], newSchedule: string): Promise<{ id: Schedule["id"] }> {
+export async function editUserSchedule(
+  id: Schedule["id"],
+  newSchedule: string
+): Promise<{ id: Schedule["id"] }> {
   const user = await getCurrentUser()
 
   if (!user) {
     throw new Error("Unauthorized")
   }
 
-
   try {
     return db.schedule.update({
       where: {
-        id
+        id,
       },
       data: {
         schedule: newSchedule,

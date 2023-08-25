@@ -1,8 +1,9 @@
-import { Suspense } from 'react'
-import { getTweet } from 'react-tweet/api'
-import { type TweetProps, TweetNotFound, TweetSkeleton } from 'react-tweet'
-import { MyTweet } from './my-tweet'
- 
+import { Suspense } from "react"
+import { TweetNotFound, TweetSkeleton, type TweetProps } from "react-tweet"
+import { getTweet } from "react-tweet/api"
+
+import { MyTweet } from "./my-tweet"
+
 const TweetContent = async ({ id, components, onError }: TweetProps) => {
   const tweet = id
     ? await getTweet(id).catch((err) => {
@@ -13,20 +14,20 @@ const TweetContent = async ({ id, components, onError }: TweetProps) => {
         }
       })
     : undefined
- 
+
   if (!tweet) {
     const NotFound = components?.TweetNotFound || TweetNotFound
     return <NotFound />
   }
- 
+
   /* @ts-ignore */
   if (tweet.tombstone) {
-    return <TweetNotFound/>
+    return <TweetNotFound />
   }
 
   return <MyTweet tweet={tweet} components={components} />
 }
- 
+
 export const Tweet = ({
   fallback = <TweetSkeleton />,
   ...props

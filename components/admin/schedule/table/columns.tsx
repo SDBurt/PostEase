@@ -3,11 +3,10 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 import { Checkbox } from "@/components/ui/checkbox"
-
-import { DataTableColumnHeader } from "@/components/table/data-table/table-column-header"
 // import { DataTableRowActions } from "@/components/table/data-table/table-row-actions"
 
 import { Schedule } from "@/components/admin/schedule/table/data/schema"
+import { DataTableColumnHeader } from "@/components/table/data-table/table-column-header"
 
 export const columns: ColumnDef<Schedule>[] = [
   {
@@ -46,7 +45,6 @@ export const columns: ColumnDef<Schedule>[] = [
       <DataTableColumnHeader column={column} title="Minute" />
     ),
     cell: ({ row }) => {
-
       return (
         <div className="flex w-[100px] items-center">
           <span className="max-w-[500px] truncate font-medium">
@@ -65,11 +63,7 @@ export const columns: ColumnDef<Schedule>[] = [
       <DataTableColumnHeader column={column} title="Monday" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          {row.getValue("0")}
-        </div>
-      )
+      return <div className="flex items-center">{row.getValue("0")}</div>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -81,11 +75,7 @@ export const columns: ColumnDef<Schedule>[] = [
       <DataTableColumnHeader column={column} title="Tuesday" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          {row.getValue("1")}
-        </div>
-      )
+      return <div className="flex items-center">{row.getValue("1")}</div>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -97,11 +87,7 @@ export const columns: ColumnDef<Schedule>[] = [
       <DataTableColumnHeader column={column} title="Wednesday" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          {row.getValue("2")}
-        </div>
-      )
+      return <div className="flex items-center">{row.getValue("2")}</div>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -113,11 +99,7 @@ export const columns: ColumnDef<Schedule>[] = [
       <DataTableColumnHeader column={column} title="Thursday" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          {row.getValue("3")}
-        </div>
-      )
+      return <div className="flex items-center">{row.getValue("3")}</div>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -129,11 +111,7 @@ export const columns: ColumnDef<Schedule>[] = [
       <DataTableColumnHeader column={column} title="Friday" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          {row.getValue("4")}
-        </div>
-      )
+      return <div className="flex items-center">{row.getValue("4")}</div>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -145,11 +123,7 @@ export const columns: ColumnDef<Schedule>[] = [
       <DataTableColumnHeader column={column} title="Saturday" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          {row.getValue("5")}
-        </div>
-      )
+      return <div className="flex items-center">{row.getValue("5")}</div>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -161,11 +135,7 @@ export const columns: ColumnDef<Schedule>[] = [
       <DataTableColumnHeader column={column} title="Sunday" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          {row.getValue("6")}
-        </div>
-      )
+      return <div className="flex items-center">{row.getValue("6")}</div>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))

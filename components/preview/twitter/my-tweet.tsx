@@ -1,22 +1,22 @@
-import type { Tweet } from 'react-tweet/api'
 import {
-  type TwitterComponents,
+  enrichTweet,
+  QuotedTweet,
+  TweetActions,
+  TweetBody,
   TweetContainer,
   TweetHeader,
-  TweetInReplyTo,
-  TweetBody,
-  TweetMedia,
   TweetInfo,
-  TweetActions,
-  QuotedTweet,
-  enrichTweet,
-} from 'react-tweet'
- 
+  TweetInReplyTo,
+  TweetMedia,
+  type TwitterComponents,
+} from "react-tweet"
+import type { Tweet } from "react-tweet/api"
+
 type Props = {
   tweet: Tweet
   components?: TwitterComponents
 }
- 
+
 export const MyTweet = ({ tweet: t, components }: Props) => {
   const tweet = enrichTweet(t)
   return (

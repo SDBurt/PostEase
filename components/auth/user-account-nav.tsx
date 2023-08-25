@@ -22,9 +22,9 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <UserAvatar
-            imageUrl={user.image}
-            name={user.name }
-            className="h-8 w-8"
+          imageUrl={user.image}
+          name={user.name}
+          className="h-8 w-8"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
