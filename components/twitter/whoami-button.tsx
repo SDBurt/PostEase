@@ -10,7 +10,6 @@ export default function TwitterWhoAmIButton() {
 
     const data = await res.json()
 
-    console.log(data)
     return toast({
       title: "The following data were returned",
       description: (
@@ -21,5 +20,5 @@ export default function TwitterWhoAmIButton() {
     })
   }
 
-  return <Button onClick={testTwitter}>Test User/Me API</Button>
+  return <Button onClick={testTwitter}>Ping Twitter</Button>
 }

@@ -58,8 +58,6 @@ export async function publishForUser(): Promise<any> {
 
   const res = await Promise.all(promises)
 
-  console.log(res)
-
   return res
 }
 

@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import { JWT } from "next-auth/jwt"
 
+export type ValidProviders = "twitter" | "linkedin"
 
 declare module "next-auth" {
   /**
@@ -26,17 +27,17 @@ declare module "next-auth" {
 
 }
 
+
+
 declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   interface JWT {
-    
-    provider?: {
-      [key: string]: {
-        access_token?: string
-        refresh_token?: string
-        oauth_token?: string
-        oauth_token_secret?: string
-      }
+    id: string
+    [key: string]: {
+      access_token?: string
+      refresh_token?: string
+      oauth_token?: string
+      oauth_token_secret?: string
     }
   }
 }

@@ -82,7 +82,6 @@ export default function PostSelector({
             <div
               key={post.id}
               onClick={() => {
-                console.log(index)
                 setSelected(index)
               }}
               className="cursor-pointer"

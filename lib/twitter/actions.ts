@@ -15,8 +15,6 @@ export async function pingMe(token: Token) {
 
   const result = await getRequest(token, endpointURL)
 
-  console.log(result)
-
   return result
 }
 
@@ -70,8 +68,6 @@ export async function publishTweets(
     lastTweetID = tweet.data.id
     results.push(tweet.data.id)
   }
-
-  console.log(results)
 
   return results
 }

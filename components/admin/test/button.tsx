@@ -7,7 +7,6 @@ export default function TestButtons() {
   async function testCron(e) {
     e.preventDefault()
     const res = await fetch("/api/cron/publish")
-    console.log(await res.json())
   }
 
   async function testPublish(e) {
@@ -18,18 +17,23 @@ export default function TestButtons() {
         text: ["Test"],
       }),
     })
-    console.log(await res.json())
   }
 
   return (
     <div className="flex space-x-2">
       <TwitterWhoAmIButton />
-      <Button variant="secondary" onClick={testCron}>
-        Test Cron API
-      </Button>
-      <Button variant="destructive" onClick={testPublish}>
-        Test Publish API
-      </Button>
+      {
+        process.env.NODE_ENV === "development" ? (
+          <>
+            <Button variant="secondary" onClick={testCron}>
+              Test Cron API
+            </Button>
+            <Button variant="destructive" onClick={testPublish}>
+              Test Publish API
+            </Button>
+          </>
+        ) : null
+      }
     </div>
   )
 }

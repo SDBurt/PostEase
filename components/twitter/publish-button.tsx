@@ -23,8 +23,6 @@ export default function TwitterPublishButton({
 
     const data = await res.json()
 
-    console.log(data)
-
     return toast({
       title: "The following data were returned",
       description: (
