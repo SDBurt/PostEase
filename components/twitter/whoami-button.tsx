@@ -11,7 +11,7 @@ export default function TwitterWhoAmIButton() {
     const data = await res.json()
 
     return toast({
-      title: "The following data were returned",
+      title: "The following data was returned",
       description: (
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>

@@ -9,6 +9,8 @@ export const env = createEnv({
     GITHUB_ACCESS_TOKEN: z.string().min(1),
     TWITTER_CONSUMER_KEY: z.string().min(1),
     TWITTER_CONSUMER_KEY_SECRET: z.string().min(1),
+    QSTASH_NEXT_SIGNING_KEY: z.string().min(1),
+    QSTASH_CURRENT_SIGNING_KEY: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1),
@@ -24,6 +26,9 @@ export const env = createEnv({
     // LINKEDIN_CLIENT_SECRET: process.env.LINKEDIN_CLIENT_SECRET,
     GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN,
     TWITTER_CONSUMER_KEY: process.env.TWITTER_CONSUMER_KEY,
-    TWITTER_CONSUMER_KEY_SECRET: process.env.TWITTER_CONSUMER_KEY_SECRET
+    TWITTER_CONSUMER_KEY_SECRET: process.env.TWITTER_CONSUMER_KEY_SECRET,
+
+    QSTASH_NEXT_SIGNING_KEY: process.env.QSTASH_NEXT_SIGNING_KEY,
+    QSTASH_CURRENT_SIGNING_KEY: process.env.QSTASH_CURRENT_SIGNING_KEY
   },
 })

@@ -47,6 +47,7 @@
     "@radix-ui/react-tooltip": "^1.0.6",
     "@t3-oss/env-nextjs": "^0.6.0",
     "@tanstack/react-table": "^8.9.3",
+    "@upstash/qstash": "^0.3.6",
     "@vercel/analytics": "^1.0.1",
     "adapters": "link:@auth/core/adapters",
     "class-variance-authority": "^0.7.0",
