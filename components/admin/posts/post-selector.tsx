@@ -18,8 +18,8 @@ interface PostSelectorItemProps {
 
 function PostSelectorItem({ content, selected }: PostSelectorItemProps) {
   return (
-    <Card className={cn(selected ? "font-semibold" : "font-normal")}>
-      <CardContent className="flex items-center truncate p-4">
+    <Card className={cn(selected ? "font-bold bg-card/40" : "font-normal")}>
+      <CardContent className="flex items-center p-4">
         {content ? content : "empty post"}
       </CardContent>
     </Card>
@@ -29,7 +29,7 @@ function PostSelectorItem({ content, selected }: PostSelectorItemProps) {
 PostSelectorItem.Skeleton = function PostItemSkeleton() {
   return (
     <Card>
-      <CardContent className="flex items-center truncate p-4">
+      <CardContent className="flex items-center">
         <Skeleton className="h-5 w-2/5" />
       </CardContent>
     </Card>
@@ -85,21 +85,23 @@ export default function PostSelector({
   return (
     <div>
       {posts?.length ? (
-        <div className="space-y-4 divide-y divide-border">
-          {posts.map((post, index) => (
-            <div
-              key={post.id}
-              onClick={() => {
-                setSelected(index)
-              }}
-              className="cursor-pointer"
-            >
-              <PostSelectorItem
-                selected={selected !== undefined ? selected === index : false}
-                content={post.content[0]}
-              />
-            </div>
-          ))}
+        <div className="space-y-4">
+          <div className="space-y-2 overflow-y-scroll h-48 p-2">
+            {posts.map((post, index) => (
+              <div
+                key={post.id}
+                onClick={() => {
+                  setSelected(index)
+                }}
+                className="cursor-pointer"
+              >
+                <PostSelectorItem
+                  selected={selected !== undefined ? selected === index : false}
+                  content={post.content[0]}
+                />
+              </div>
+            ))}
+          </div>
           <Button type="submit" onClick={onClick}>
             {isLoading ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

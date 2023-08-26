@@ -5,11 +5,10 @@ import dayjs from "dayjs"
 import { dayFormat, dayFormatTime, dayOfWeek, dayRange } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
 
 import { PostCreateButton } from "../posts/create/button"
-import { PostOperations } from "../posts/post-operations"
 import { PostSelectButton } from "../posts/select-button"
+import { ScheduledPostOperations } from "../posts/scheduled-post-operations"
 
 type SlotType = {
   h: number
@@ -162,7 +161,7 @@ function PostItem({
             </p>
           </div>
         </div>
-        {showAction && postId && <PostOperations post={{ id: postId }} />}
+        {showAction && postId && <ScheduledPostOperations post={{ id: postId }} />}
       </CardContent>
     </Card>
   )

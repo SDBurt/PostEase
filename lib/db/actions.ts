@@ -121,6 +121,8 @@ export async function getAllPublishedPosts(): Promise<Post[]> {
 export async function createPost(data): Promise<{ id: Post["id"] }> {
   const user = await getCurrentUser()
 
+  
+
   if (!user) {
     throw new Error("Unauthorized")
   }

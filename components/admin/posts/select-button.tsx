@@ -89,7 +89,9 @@ export function PostSelectButton({
             This post will be scheduled now. Continue?
           </DialogDescription>
         </DialogHeader>
+        
         <PostSelector posts={posts} scheduledAt={scheduledAt} />
+        
       </DialogContent>
     </Dialog>
   )
