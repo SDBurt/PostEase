@@ -6,8 +6,8 @@ import type { Adapter } from "next-auth/adapters"
 import TwitterProvider from "next-auth/providers/twitter"
 
 import { env } from "@/env.mjs"
-import { db } from "@/lib/db"
 import { ValidProviders } from "@/types/nextauth"
+import { db } from "@/lib/db"
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db) as Adapter,
@@ -30,14 +30,11 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account, profile }) {
-
       if (user) {
         token.id = user.id
       }
 
       if (account && account.provider) {
-        
-   
         if (!token[account.provider as ValidProviders]) {
           token[account.provider] = {}
         }
@@ -63,7 +60,6 @@ export const authOptions: NextAuthOptions = {
       return token
     },
     async session({ session, token, user }) {
-
       session.user.id = token.id
       session.user.twitter = token.twitter
       return session

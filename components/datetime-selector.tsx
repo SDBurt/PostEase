@@ -34,10 +34,10 @@ function makeDateTimeSelect(): {
   const minutes = ["00", "15", "30", "45"]
 
   const result: {
-    label: string,
-    value: string,
-    hour: number,
-    minute: number,
+    label: string
+    value: string
+    hour: number
+    minute: number
   }[] = []
 
   ampm.forEach((ap) => {

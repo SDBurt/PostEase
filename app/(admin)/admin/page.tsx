@@ -6,8 +6,8 @@ import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { PostOperations } from "@/components/admin/posts/post-operations"
+import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
 export const metadata = {
   title: "Admin",
@@ -25,7 +25,9 @@ export default async function AdminPage() {
         {posts?.length ? (
           <div className="divide-y divide-border rounded-md border">
             {posts.map((post) => (
-              <PostItem key={post.id} post={post}><PostOperations post={{ id: post.id }} /></PostItem>
+              <PostItem key={post.id} post={post}>
+                <PostOperations post={{ id: post.id }} />
+              </PostItem>
             ))}
           </div>
         ) : (

@@ -18,7 +18,7 @@ interface PostSelectorItemProps {
 
 function PostSelectorItem({ content, selected }: PostSelectorItemProps) {
   return (
-    <Card className={cn(selected ? "font-bold bg-card/40" : "font-normal")}>
+    <Card className={cn(selected ? "bg-card/40 font-bold" : "font-normal")}>
       <CardContent className="flex items-center p-4">
         {content ? content : "empty post"}
       </CardContent>
@@ -87,7 +87,7 @@ export default function PostSelector({
     <div>
       {posts?.length ? (
         <div className="space-y-4">
-          <div className="space-y-2 overflow-y-scroll h-48 p-2">
+          <div className="h-48 space-y-2 overflow-y-scroll p-2">
             {posts.map((post, index) => (
               <div
                 key={post.id}

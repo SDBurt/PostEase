@@ -46,6 +46,5 @@ export default async function PrivacyPage() {
       Company Address] [Contact Email] [Contact Phone Number]
       `}
     </div>
-    
   )
 }

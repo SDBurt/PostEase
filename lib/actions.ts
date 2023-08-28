@@ -91,7 +91,6 @@ export async function publishScheduledPosts(): Promise<{
     })
 
     if (account?.oauth_token && account?.oauth_token_secret) {
-
       // Create twitter token
       const token = {
         key: account.oauth_token,
@@ -105,8 +104,6 @@ export async function publishScheduledPosts(): Promise<{
         tweet_ids: result,
       })
     }
-
-    
   }
 
   // Update Database

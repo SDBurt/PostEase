@@ -1,3 +1,4 @@
+import React from "react"
 import Link from "next/link"
 import { Post } from "@prisma/client"
 
@@ -7,7 +8,6 @@ import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
 import { PostCreateButton } from "./create/button"
 import { BadgeGroup } from "./post-badge-group"
-import React from "react"
 
 interface PostItemProps {
   post: Post
@@ -55,7 +55,9 @@ function PostList({ posts }: PostListProps) {
       {posts?.length ? (
         <div className="divide-y divide-border rounded-md border">
           {posts.map((post) => (
-            <PostItem key={post.id} post={post}><PostOperations post={{ id: post.id }} /></PostItem>
+            <PostItem key={post.id} post={post}>
+              <PostOperations post={{ id: post.id }} />
+            </PostItem>
           ))}
         </div>
       ) : (

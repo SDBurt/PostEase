@@ -3,7 +3,6 @@ import { Post } from "@prisma/client"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
-
 import Tweet from "@/components/admin/posts/twitter/tweet"
 import Icons from "@/components/icons"
 

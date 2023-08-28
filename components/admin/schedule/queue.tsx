@@ -7,8 +7,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 
 import { PostCreateButton } from "../posts/create/button"
-import { PostSelectButton } from "../posts/select-button"
 import { ScheduledPostOperations } from "../posts/scheduled-post-operations"
+import { PostSelectButton } from "../posts/select-button"
 
 type SlotType = {
   h: number
@@ -161,7 +161,9 @@ function PostItem({
             </p>
           </div>
         </div>
-        {showAction && postId && <ScheduledPostOperations post={{ id: postId }} />}
+        {showAction && postId && (
+          <ScheduledPostOperations post={{ id: postId }} />
+        )}
       </CardContent>
     </Card>
   )

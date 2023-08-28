@@ -50,18 +50,16 @@ export function ScheduledPostOperations({ post }: PostOperationsProps) {
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false)
 
   async function unschedulePostHandler() {
-    
     const postData = {
       status: Status.DRAFT,
-      scheduledAt: null
+      scheduledAt: null,
     }
-    
+
     const res = await updatePost(post.id, postData)
     console.log(res)
 
     router.refresh()
   }
-
 
   return (
     <>
@@ -76,10 +74,8 @@ export function ScheduledPostOperations({ post }: PostOperationsProps) {
               Edit
             </Link>
           </DropdownMenuItem>
-          
-          <DropdownMenuItem
-            onSelect={unschedulePostHandler}
-          >
+
+          <DropdownMenuItem onSelect={unschedulePostHandler}>
             Unschedule
           </DropdownMenuItem>
           <DropdownMenuSeparator />

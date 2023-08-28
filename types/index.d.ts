@@ -54,11 +54,10 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     isPro: boolean
   }
 
-
-export type ScheduleType = {h: number, m: number, days: number[]}
+export type ScheduleType = { h: number; m: number; days: number[] }
 
 export type ScheduleFormItem = {
   id?: string
-  time: string;
-  days: number[];
+  time: string
+  days: number[]
 }

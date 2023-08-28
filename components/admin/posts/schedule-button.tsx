@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
+import { Status } from "@prisma/client"
 
 import { updatePost } from "@/lib/db/actions"
 import { cn } from "@/lib/utils"
@@ -19,7 +20,6 @@ import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 
 import PostSelector from "./post-selector"
-import { Status } from "@prisma/client"
 
 interface ScheduleButtonProps extends ButtonProps {
   postId: number
@@ -38,7 +38,10 @@ export function ScheduleButton({
     setIsLoading(true)
     try {
       setIsLoading(false)
-      await updatePost(postId, { status: Status.SCHEDULED, scheduledAt: new Date() })
+      await updatePost(postId, {
+        status: Status.SCHEDULED,
+        scheduledAt: new Date(),
+      })
       router.push(`/admin/scheduled/`)
       toast({
         title: "Your post was scheduled.",

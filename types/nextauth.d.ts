@@ -24,10 +24,7 @@ declare module "next-auth" {
     oauth_token?: string
     oauth_token_secret?: string
   }
-
 }
-
-
 
 declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */

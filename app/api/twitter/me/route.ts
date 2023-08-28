@@ -4,7 +4,6 @@ import { getToken } from "next-auth/jwt"
 import { env } from "@/env.mjs"
 import { pingMe } from "@/lib/twitter/actions"
 
-
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     const token = await getToken({ req, secret: env.NEXTAUTH_SECRET })

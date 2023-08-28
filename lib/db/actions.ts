@@ -106,7 +106,7 @@ export async function getAllPublishedPosts(): Promise<Post[]> {
     return await db.post.findMany({
       where: {
         userId: user.id,
-        status: Status.PUBLISHED
+        status: Status.PUBLISHED,
       },
       orderBy: {
         createdAt: "asc",
@@ -131,8 +131,8 @@ export async function getAllOverdueScheduledPosts(): Promise<Post[]> {
         userId: user.id,
         status: Status.SCHEDULED,
         scheduledAt: {
-          lte: new Date()
-        }
+          lte: new Date(),
+        },
       },
       orderBy: {
         createdAt: "asc",
@@ -146,8 +146,6 @@ export async function getAllOverdueScheduledPosts(): Promise<Post[]> {
 
 export async function createPost(data): Promise<{ id: Post["id"] }> {
   const user = await getCurrentUser()
-
-  
 
   if (!user) {
     throw new Error("Unauthorized")
