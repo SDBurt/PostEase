@@ -1,7 +1,7 @@
 "use server"
 
 import { ScheduleType } from "@/types"
-import { Post, Schedule } from "@prisma/client"
+import { Post, Schedule, Status } from "@prisma/client"
 
 import { db } from "@/lib/db"
 
@@ -60,7 +60,7 @@ export async function getAllDraftPosts(): Promise<Post[]> {
     return await db.post.findMany({
       where: {
         userId: user.id,
-        status: "DRAFT",
+        status: Status.DRAFT,
       },
       orderBy: {
         createdAt: "asc",
@@ -83,7 +83,7 @@ export async function getAllScheduledPosts(): Promise<Post[]> {
     return await db.post.findMany({
       where: {
         userId: user.id,
-        status: "SCHEDULED",
+        status: Status.SCHEDULED,
       },
       orderBy: {
         createdAt: "asc",
@@ -106,7 +106,33 @@ export async function getAllPublishedPosts(): Promise<Post[]> {
     return await db.post.findMany({
       where: {
         userId: user.id,
-        status: "PUBLISHED",
+        status: Status.PUBLISHED
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    })
+  } catch (err) {
+    console.error(err)
+    throw new Error("Unable to retrieve posts")
+  }
+}
+
+export async function getAllOverdueScheduledPosts(): Promise<Post[]> {
+  const user = await getCurrentUser()
+
+  if (!user) {
+    throw new Error("Unauthorized")
+  }
+
+  try {
+    return await db.post.findMany({
+      where: {
+        userId: user.id,
+        status: Status.SCHEDULED,
+        scheduledAt: {
+          lte: new Date()
+        }
       },
       orderBy: {
         createdAt: "asc",

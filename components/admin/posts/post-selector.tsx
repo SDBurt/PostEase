@@ -52,10 +52,11 @@ export default function PostSelector({
   const onClick = useCallback(async () => {
     setIsLoading(true)
 
-    if (!selected) {
+    if (selected === undefined) {
+      console.error("Nothing Selected")
       return toast({
         title: "Something went wrong.",
-        description: "Your post was not scheduled. Please try again.",
+        description: "Please select a post to schedule and try again.",
         variant: "destructive",
       })
     }

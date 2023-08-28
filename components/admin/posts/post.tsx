@@ -7,13 +7,15 @@ import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
 import { PostCreateButton } from "./create/button"
 import { BadgeGroup } from "./post-badge-group"
+import React from "react"
 
 interface PostItemProps {
   post: Post
+  children: React.ReactNode
   hrefPrefix?: string
 }
 
-function PostItem({ post, hrefPrefix = "/editor" }: PostItemProps) {
+function PostItem({ post, children, hrefPrefix = "/editor" }: PostItemProps) {
   return (
     <div className="flex items-center justify-between p-4">
       <div className="grid gap-2">
@@ -27,7 +29,7 @@ function PostItem({ post, hrefPrefix = "/editor" }: PostItemProps) {
         </Link>
         <BadgeGroup post={post} />
       </div>
-      <PostOperations post={{ id: post.id }} />
+      {children}
     </div>
   )
 }
@@ -53,7 +55,7 @@ function PostList({ posts }: PostListProps) {
       {posts?.length ? (
         <div className="divide-y divide-border rounded-md border">
           {posts.map((post) => (
-            <PostItem key={post.id} post={post} />
+            <PostItem key={post.id} post={post}><PostOperations post={{ id: post.id }} /></PostItem>
           ))}
         </div>
       ) : (

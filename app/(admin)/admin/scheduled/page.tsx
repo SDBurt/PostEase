@@ -56,8 +56,8 @@ export default async function ScheduledPage() {
   return (
     <PageShell>
       <PageHeader
-        heading="Scheduled Posts"
-        text="Create and manage scheduled posts."
+        heading="Scheduled"
+        text="manage your custom schedule"
       >
         {!userSchedules ? (
           <ScheduleCreateButton variant="outline" />

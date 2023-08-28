@@ -36,31 +36,6 @@ export function PostSelectButton({
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
-  async function onClick() {
-    setIsLoading(true)
-
-    try {
-      setIsLoading(false)
-      // await updatePost(postId, { status: "SCHEDULED", scheduledAt: new Date()})
-
-      // router.push(`/admin/scheduled/`)
-      toast({
-        title: "Your post was scheduled.",
-        description: "Your post was scheduled successfully.",
-      })
-    } catch (err) {
-      setIsLoading(false)
-      toast({
-        title: "Something went wrong.",
-        description: "Your post was not scheduled. Please try again.",
-        variant: "destructive",
-      })
-    }
-
-    // This forces a cache invalidation.
-    router.refresh()
-  }
-
   return (
     <Dialog>
       <DialogTrigger
