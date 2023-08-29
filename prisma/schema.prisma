@@ -54,7 +54,7 @@ model User {
   sessions Session[]
 
   posts    Post[]
-  schedule Schedule?
+  schedule Schedule[]
 
   @@map(name: "users")
 }
@@ -93,9 +93,12 @@ enum Status {
 
 model Schedule {
   id        String   @id @default(uuid())
+  title     String   @default("new Schedule")
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String   @unique
-  schedule  Json
+  userId    String
+  timezone  String   @default("America/Vancouver")
+  schedule  Json     @default("[]")
+  isDefault Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
 

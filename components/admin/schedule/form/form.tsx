@@ -9,12 +9,13 @@ import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { TIME_OPTIONS } from "@/lib/constants"
-import { createUserSchedule, editUserSchedule } from "@/lib/db/actions"
+import { createUserSchedule, getDefaultSchedule, getUserSchedule, updateUserSchedule } from "@/lib/db/actions/schedules"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,6 +30,7 @@ import {
 } from "@/components/ui/select"
 import { toast } from "@/components/ui/use-toast"
 import Icons from "@/components/icons"
+import { Input } from "@/components/ui/input"
 
 const items = [
   {
@@ -62,6 +64,8 @@ const items = [
 ] as const
 
 const FormSchema = z.object({
+  title: z.string(),
+  isDefault: z.boolean().default(true).optional(),
   schedules: z
     .array(
       z.object({
@@ -84,7 +88,7 @@ const FormSchema = z.object({
 })
 
 const scheduleToFormItem = (schedules: ScheduleType[]): ScheduleFormItem[] => {
-  return schedules.map((schedule) => ({
+  return schedules?.map((schedule) => ({
     time: `${schedule.h}-${schedule.m}`,
     days: schedule.days,
   }))
@@ -108,6 +112,8 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      title: schedule.title,
+      isDefault: schedule.isDefault || false,
       schedules: schedule
         ? scheduleToFormItem(JSON.parse(schedule.schedule as string))
         : [
@@ -127,16 +133,34 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
       data.schedules as ScheduleFormItem[]
     )
 
-    if (schedule) {
-      await editUserSchedule(schedule.id, JSON.stringify(scheduleData))
-    } else {
-      await createUserSchedule(scheduleData)
+    const payload = {
+      title: data.title,
+      isDefault: data.isDefault,
+      schedule: JSON.stringify(scheduleData)
     }
 
-    toast({
-      title: "Success",
-      description: <p>Your schedule has been updated/created!</p>,
-    })
+    if (data.isDefault) {
+      const defaultSchedules = await getDefaultSchedule()
+      if (defaultSchedules) {
+        for (const schedule of defaultSchedules) {
+          await updateUserSchedule(schedule.id, { isDefault: false })
+        }
+      }
+    }
+
+    if (schedule) {
+      await updateUserSchedule(schedule.id, payload)
+      toast({
+        title: "Success",
+        description: (<p>Your schedule has been updated.</p>),
+      })
+    } else {
+      await createUserSchedule(payload)
+      toast({
+        title: "Success",
+        description: (<p>Your schedule has been created.</p>),
+      })
+    }
 
     router.refresh()
   }
@@ -184,103 +208,144 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        {/* Head */}
-        <div className="grid w-full grid-cols-10 gap-4">
-          <FormLabel className="col-span-2 text-center">Time</FormLabel>
-          {items.map((item) => (
-            <FormLabel
-              key={`column-${item.id}-${item.label}`}
-              className="text-center"
-            >
-              {item.label}
-            </FormLabel>
-          ))}
-        </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex flex-col space-y-8 p-2">
 
-        {/* Body */}
-        <div className="mt-4 grid w-full gap-4 ">
-          {fields.map((field, index) => (
-            <div key={`${field.id}`} className="grid grid-cols-10 gap-4">
-              <FormField
-                control={form.control}
-                key={`${field.id}-time`}
-                name={`schedules.${index}.time`}
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a time" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <div className="max-h-48 overflow-y-scroll rounded">
-                          {TIME_OPTIONS.map((option) => {
-                            return (
-                              <SelectItem
-                                key={`${option.value.h}-${option.value.m}`}
-                                value={`${option.value.h}-${option.value.m}`}
-                              >
-                                {option.label}
-                              </SelectItem>
-                            )
-                          })}
-                        </div>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+      <FormField
+          control={form.control}
+          name="isDefault"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                  Select this schedule as your default
+                </FormLabel>
+                <FormDescription>
+                  Your default schedule will be used when quickly selecting the next available slot.
+                </FormDescription>
+              </div>
+            </FormItem>
+          )}
+        />
 
-              <FormField
-                control={form.control}
-                key={`${field.id}-days`}
-                name={`schedules.${index}.days`}
-                render={({ field }) => (
-                  <>
-                    {items.map((item) => (
-                      <FormItem
-                        key={`${index}-${item.id}`}
-                        className="flex flex-col items-center justify-center"
+      <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="weekday schedule" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormLabel>Schedule</FormLabel>
+        <div>
+          {/* Head */}
+          <div className="grid w-full grid-cols-10 gap-4">
+            <FormLabel className="col-span-2 text-center">Time</FormLabel>
+            {items.map((item) => (
+              <FormLabel
+                key={`column-${item.id}-${item.label}`}
+                className="text-center"
+              >
+                {item.label}
+              </FormLabel>
+            ))}
+          </div>
+
+          {/* Body */}
+          <div className="mt-4 grid w-full gap-4 ">
+            {fields.map((field, index) => (
+              <div key={`${field.id}`} className="grid grid-cols-10 gap-4">
+                <FormField
+                  control={form.control}
+                  key={`${field.id}-time`}
+                  name={`schedules.${index}.time`}
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
                       >
                         <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.id)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, item.id])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== item.id
-                                    )
-                                  )
-                            }}
-                          />
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a time" />
+                          </SelectTrigger>
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    ))}
-                  </>
-                )}
-              />
-              <div className="flex flex-col items-center justify-center">
-                <Button
-                  className="w-6 hover:bg-destructive hover:text-destructive-foreground hover:shadow-sm"
-                  type="button"
-                  variant="secondary"
-                  size="xs"
-                  onClick={() => remove(index)}
-                >
-                  <Icons.close className="h-4 w-4" />
-                </Button>
+                        <SelectContent>
+                          <div className="max-h-48 overflow-y-scroll rounded">
+                            {TIME_OPTIONS.map((option) => {
+                              return (
+                                <SelectItem
+                                  key={`${option.value.h}-${option.value.m}`}
+                                  value={`${option.value.h}-${option.value.m}`}
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              )
+                            })}
+                          </div>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  key={`${field.id}-days`}
+                  name={`schedules.${index}.days`}
+                  render={({ field }) => (
+                    <>
+                      {items.map((item) => (
+                        <FormItem
+                          key={`${index}-${item.id}`}
+                          className="flex flex-col items-center justify-center"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(item.id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, item.id])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== item.id
+                                      )
+                                    )
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      ))}
+                    </>
+                  )}
+                />
+                <div className="flex flex-col items-center justify-center">
+                  <Button
+                    className="w-6 hover:bg-destructive hover:text-destructive-foreground hover:shadow-sm"
+                    type="button"
+                    variant="secondary"
+                    size="xs"
+                    onClick={() => remove(index)}
+                  >
+                    <Icons.close className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         <div className="mt-4 grid w-full justify-center gap-4">
           <Button

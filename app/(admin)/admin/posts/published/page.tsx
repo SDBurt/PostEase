@@ -9,6 +9,8 @@ import { PageHeader } from "@/components/admin/page-header"
 import { PostItem } from "@/components/admin/posts/post"
 import { PostOperations } from "@/components/admin/posts/post-operations"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import LinkTabGroup from "@/components/admin/link-tab-group"
+import { postLinkTabs } from "@/config/admin"
 
 export const metadata = {
   title: "Published",
@@ -19,11 +21,11 @@ export default async function PublishedPage() {
   const overdue: Post[] = await getAllOverdueScheduledPosts()
 
   return (
-    <PageShell>
-      <PageHeader
-        heading="Published"
-        text="manage published posts."
-      ></PageHeader>
+    <div>
+      
+      <div className="flex justify-between">
+        <LinkTabGroup active="published" tabs={postLinkTabs}/>
+      </div>
       <div className="space-y-4">
         {overdue?.length ? (
           <>
@@ -58,6 +60,6 @@ export default async function PublishedPage() {
           </EmptyPlaceholder>
         )}
       </div>
-    </PageShell>
+      </div>
   )
 }

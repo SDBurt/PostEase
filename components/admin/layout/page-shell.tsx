@@ -6,7 +6,7 @@ interface PageShellProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function PageShell({ children, className, ...props }: PageShellProps) {
   return (
-    <div className={cn("grid items-start gap-8", className)} {...props}>
+    <div className={cn("grid items-start gap-4", className)} {...props}>
       {children}
     </div>
   )

@@ -3,9 +3,8 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Post, Status } from "@prisma/client"
+import { Schedule, Status } from "@prisma/client"
 
-import { deletePost, updatePost } from "@/lib/db/actions"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,14 +24,15 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import { deleteUserSchedule, updateUserSchedule } from "@/lib/db/actions/schedules"
 
-async function deletePostHandler(postId: string) {
-  const result = await deletePost(postId)
+async function deleteScheduleHandler(scheduleId: string) {
+  const result = await deleteUserSchedule(scheduleId)
 
-  if (!result || result.id !== postId) {
+  if (!result || result.id !== scheduleId) {
     toast({
       title: "Something went wrong.",
-      description: "Your post was not deleted. Please try again.",
+      description: "Your schedule was not deleted. Please try again.",
       variant: "destructive",
     })
   }
@@ -40,25 +40,14 @@ async function deletePostHandler(postId: string) {
   return true
 }
 
-interface PostOperationsProps {
-  post: Pick<Post, "id">
+interface ScheduleOperationsProps {
+  schedule: Pick<Schedule, "id">
 }
 
-export function ScheduledPostOperations({ post }: PostOperationsProps) {
+export function ScheduleOperations({ schedule }: ScheduleOperationsProps) {
   const router = useRouter()
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false)
-
-  async function unschedulePostHandler() {
-    const postData = {
-      status: Status.DRAFT,
-      scheduledAt: null,
-    }
-
-    const res = await updatePost(post.id, postData)
-
-    router.refresh()
-  }
 
   return (
     <>
@@ -69,13 +58,9 @@ export function ScheduledPostOperations({ post }: PostOperationsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            <Link href={`/editor/${post.id}`} className="flex w-full">
+            <Link href={`/admin/schedule/${schedule.id}`} className="flex w-full">
               Edit
             </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem onSelect={unschedulePostHandler}>
-            Unschedule
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -90,7 +75,7 @@ export function ScheduledPostOperations({ post }: PostOperationsProps) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure you want to delete this post?
+              Are you sure you want to delete this schedule?
             </AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone.
@@ -103,7 +88,7 @@ export function ScheduledPostOperations({ post }: PostOperationsProps) {
                 event.preventDefault()
                 setIsDeleteLoading(true)
 
-                const deleted = await deletePostHandler(post.id)
+                const deleted = await deleteScheduleHandler(schedule.id)
 
                 if (deleted) {
                   setIsDeleteLoading(false)

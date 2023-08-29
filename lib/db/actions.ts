@@ -49,6 +49,35 @@ export async function getAllPosts(): Promise<Post[]> {
   }
 }
 
+export async function getAllPostByStatus(status: string): Promise<Post[]> {
+  const user = await getCurrentUser()
+
+  if (!user) {
+    throw new Error("Unauthorized")
+  }
+
+  const state = status.toUpperCase() as Status
+
+  if (!(state in Status)) {
+    throw new Error("not found")
+  }
+
+  try {
+    return await db.post.findMany({
+      where: {
+        userId: user.id,
+        status: state,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    })
+  } catch (err) {
+    console.error(err)
+    throw new Error("Unable to retrieve posts")
+  }
+}
+
 export async function getAllDraftPosts(): Promise<Post[]> {
   const user = await getCurrentUser()
 
@@ -216,91 +245,3 @@ export async function deletePost(
   }
 }
 
-export async function getUserSchedule(): Promise<Schedule | null> {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    throw new Error("Unauthorized")
-  }
-
-  try {
-    return await db.schedule.findFirst({
-      where: {
-        userId: user.id,
-      },
-    })
-  } catch (err) {
-    console.error(err)
-    throw new Error("Unable to get schedules")
-  }
-}
-
-export async function createUserSchedule(
-  schedule?: ScheduleType[]
-): Promise<{ id: Schedule["id"] }> {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    throw new Error("Unauthorized")
-  }
-
-  const newScheduleData = schedule
-    ? JSON.stringify(schedule)
-    : JSON.stringify([])
-
-  try {
-    const schedule = await db.schedule.findFirst({
-      where: {
-        userId: user.id,
-      },
-      select: {
-        schedule: true,
-      },
-    })
-
-    if (schedule) {
-      throw new Error("Schedule already exists")
-    }
-
-    return db.schedule.create({
-      data: {
-        schedule: newScheduleData,
-        userId: user.id,
-      },
-      select: {
-        id: true,
-      },
-    })
-  } catch (err) {
-    console.error(err)
-    throw new Error("Unable to create schedule")
-  }
-}
-
-export async function editUserSchedule(
-  id: Schedule["id"],
-  newSchedule: string
-): Promise<{ id: Schedule["id"] }> {
-  const user = await getCurrentUser()
-
-  if (!user) {
-    throw new Error("Unauthorized")
-  }
-
-  try {
-    return db.schedule.update({
-      where: {
-        id,
-      },
-      data: {
-        schedule: newSchedule,
-      },
-      select: {
-        id: true,
-      },
-    })
-  } catch (err) {
-    console.error(err)
-    throw new Error("Unable to create schedule")
-  }
-}

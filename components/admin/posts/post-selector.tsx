@@ -117,7 +117,7 @@ export default function PostSelector({
           <EmptyPlaceholder.Icon name="post" />
           <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
-            You don&apos;t have any posts yet.
+            You don&apos;t have any posts to schedule.
           </EmptyPlaceholder.Description>
         </EmptyPlaceholder>
       )}

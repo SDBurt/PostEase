@@ -149,15 +149,6 @@ export default function TwitterForm({
             </div>
             {post && <BadgeGroup post={post} />}
             <div className=" flex items-center space-x-4">
-              {post && post.status === "DRAFT" ? (
-                <PublishButton variant="secondary" postId={post.id} />
-              ) : null}
-              {post && post.status === "DRAFT" ? (
-                <TwitterPublishButton text={tweetText} />
-              ) : null}
-              {post && post.status === "SCHEDULED" ? (
-                <PublishButton variant="secondary" postId={post.id} />
-              ) : null}
               <Button type="submit">
                 {isSaving && (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

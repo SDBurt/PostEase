@@ -30,8 +30,9 @@ function getQueueData(
 ): SectionData[] {
   const now = new Date()
   const weekrange = dayRange(now)
-
   const dayjsNow = dayjs(now)
+
+
 
   let byDayOfWeek: { [key: string]: { h: number; m: number }[] } = {}
 
@@ -57,22 +58,20 @@ function getQueueData(
 
   let data: SectionData[] = []
 
-  weekrange.forEach((dt) => {
-    const dow = dayOfWeek(dt)
-    const date = dayjs(dt).date()
+  weekrange.forEach((item) => {
+    const dt = dayjs(item)
+    const dow = dayOfWeek(item)
 
-    const items: SlotType[] = (byDayOfWeek[dow] || [])
+    const items = (byDayOfWeek[dow] || [])
       .filter((item) => {
-        const itemDate = dayjs()
-          .date(date)
+        const itemDate = dt
           .hour(item.h)
           .minute(item.m)
           .second(0)
         return itemDate.isAfter(dayjsNow)
-      })
-      .map((item) => {
-        const itemDate = dayjs()
-          .date(date)
+
+      }).map((item) => {
+        const itemDate = dt
           .hour(item.h)
           .minute(item.m)
           .second(0)
@@ -84,7 +83,7 @@ function getQueueData(
             h: item.h,
             m: item.m,
             date: formattedDate,
-            type: "POST",
+            type: "POST" as SlotType["type"],
             post: scheduledPostsByDate[formattedDate],
           }
         }
@@ -93,12 +92,12 @@ function getQueueData(
           h: item.h,
           m: item.m,
           date: formattedDate,
-          type: "SLOT",
+          type: "SLOT" as SlotType["type"],
         }
       })
 
     let newDataItem: SectionData = {
-      date: dt,
+      date: dt.format(),
       items: items.sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
       ),
@@ -106,6 +105,8 @@ function getQueueData(
 
     data.push(newDataItem)
   })
+
+  
 
   return data
 }
@@ -221,14 +222,16 @@ export default function ScheduleQueue({
   return (
     <div className="flex flex-col space-y-4">
       {getQueueData(timezone, scheduledPosts, schedules)?.map((schedule) => {
-        return (
+        return schedule && schedule.items.length > 0 ? (
           <div key={`${schedule.date}-section`} className="w-full">
             <ScheduleQueueSection
               sectionData={schedule}
               draftPosts={draftPosts}
             />
           </div>
-        )
+        ) : null
+      
+        
       })}
     </div>
   )

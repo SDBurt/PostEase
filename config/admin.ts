@@ -1,3 +1,4 @@
+import { LinkTabType } from "@/components/admin/link-tab-group";
 import { AdminConfig } from "types"
 
 export const adminConfig: AdminConfig = {
@@ -20,19 +21,15 @@ export const adminConfig: AdminConfig = {
       icon: "dashboard",
     },
     {
-      title: "Drafts",
-      href: "/admin/drafts",
+      title: "Posts",
+      href: "/admin/posts",
       icon: "draft",
+      startsWith: true
     },
     {
-      title: "Scheduled",
-      href: "/admin/scheduled",
+      title: "Schedule",
+      href: "/admin/schedule",
       icon: "scheduled",
-    },
-    {
-      title: "Published",
-      href: "/admin/published",
-      icon: "published",
     },
     {
       title: "Billing",
@@ -48,3 +45,23 @@ export const adminConfig: AdminConfig = {
     },
   ],
 }
+
+export const postLinkTabs: LinkTabType[] = [
+  {
+    label: "Draft",
+    name: "draft",
+    href: "/admin/posts/draft"
+  },
+  {
+    label: "Scheduled",
+    name: "scheduled",
+    href: "/admin/posts/scheduled"
+  },
+  {
+    label: "Published",
+    name: "published",
+    href: "/admin/posts/published"
+  },
+]
+
+export const validStatuses = ["draft", "scheduled", "published"] as const;

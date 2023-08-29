@@ -38,8 +38,6 @@ export function PostCreateButton({
 
     setIsLoading(false)
 
-    // This forces a cache invalidation.
-    router.refresh()
     const destination = scheduledAt
       ? `/editor/${post.id}` +
         "?" +

@@ -1,10 +1,7 @@
 import React from "react"
 import { notFound } from "next/navigation"
-import { getToken } from "next-auth/jwt"
-import { getSession } from "next-auth/react"
 
 import { adminConfig } from "@/config/admin"
-import { authOptions } from "@/lib/auth"
 import { getCurrentUser } from "@/lib/session"
 import { UserAccountNav } from "@/components/auth/user-account-nav"
 import MainNav from "@/components/main-nav"
