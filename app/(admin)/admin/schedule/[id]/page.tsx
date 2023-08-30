@@ -19,11 +19,11 @@ export const metadata = {
   title: "Schedule",
 }
 
-export const PageSchema = z.object({
+const PageSchema = z.object({
   id: z.string(),
 })
 
-export default async function SchedulesPage({ params }) {
+export default async function SchedulesPage({ params }: { params: {id:string}}) {
 
   const { id } = PageSchema.parse(params);
 

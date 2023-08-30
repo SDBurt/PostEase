@@ -208,7 +208,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex flex-col space-y-8 p-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col space-y-8 p-2">
 
       <FormField
           control={form.control}
