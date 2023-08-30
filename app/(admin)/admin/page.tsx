@@ -1,4 +1,4 @@
-import { Post } from "@prisma/client"
+import { Post, Status } from "@prisma/client"
 import dayjs from "dayjs"
 
 import { getAllPosts } from "@/lib/db/actions"
@@ -8,6 +8,7 @@ import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
 import { PostOperations } from "@/components/admin/posts/post-operations"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
 
 export const metadata = {
   title: "Admin",
@@ -25,20 +26,19 @@ export default async function AdminPage() {
         {posts?.length ? (
           <div className="divide-y divide-border rounded-md border">
             {posts.map((post) => (
-              <PostItem key={post.id} post={post}>
+              <PostItem key={post.id} post={post} hrefPrefix={post.status === Status.PUBLISHED ? "/preview" : "/editor"}>
                 <PostOperations post={{ id: post.id }} />
               </PostItem>
             ))}
           </div>
         ) : (
-          <EmptyPlaceholder>
-            <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
-            <EmptyPlaceholder.Description>
-              You don&apos;t have any posts yet. Start creating content.
-            </EmptyPlaceholder.Description>
+          <EmptyListPlaceholder
+            title="No posts created"
+            description="You don't have any posts yet. Start creating content."
+            iconName="post"
+          >
             <PostCreateButton variant="outline">Create Post</PostCreateButton>
-          </EmptyPlaceholder>
+          </EmptyListPlaceholder>
         )}
       </div>
     </PageShell>

@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/use-toast"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import Icons from "@/components/icons"
+import EmptyListPlaceholder from "../empty-placeholder"
 
 interface PostSelectorItemProps {
   content: string
@@ -113,13 +114,12 @@ export default function PostSelector({
           </Button>
         </div>
       ) : (
-        <EmptyPlaceholder>
-          <EmptyPlaceholder.Icon name="post" />
-          <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
-          <EmptyPlaceholder.Description>
-            You don&apos;t have any posts to schedule.
-          </EmptyPlaceholder.Description>
-        </EmptyPlaceholder>
+        <EmptyListPlaceholder
+          title="No posts created"
+          description="You don't have any posts to schedule."
+          iconName="post"
+        >
+        </EmptyListPlaceholder>
       )}
     </div>
   )

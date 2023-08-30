@@ -8,6 +8,7 @@ import { EmptyPlaceholder } from "@/components/empty-placeholder"
 
 import { PostCreateButton } from "./create/button"
 import { BadgeGroup } from "./post-badge-group"
+import EmptyListPlaceholder from "../empty-placeholder"
 
 interface PostItemProps {
   post: Post
@@ -61,14 +62,13 @@ function PostList({ posts }: PostListProps) {
           ))}
         </div>
       ) : (
-        <EmptyPlaceholder>
-          <EmptyPlaceholder.Icon name="post" />
-          <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
-          <EmptyPlaceholder.Description>
-            You don&apos;t have any posts yet. Start creating content.
-          </EmptyPlaceholder.Description>
+        <EmptyListPlaceholder
+          title="No posts created"
+          description="You don't have any posts yet. Start creating content."
+          iconName="post"
+        >
           <PostCreateButton variant="outline" />
-        </EmptyPlaceholder>
+        </EmptyListPlaceholder>
       )}
     </div>
   )

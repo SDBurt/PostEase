@@ -7,6 +7,7 @@ import { PostOperations } from "@/components/admin/posts/post-operations"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { postLinkTabs } from "@/config/admin"
 import LinkTabGroup from "@/components/admin/link-tab-group"
+import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
 
 export const metadata = {
   title: "Drafts",
@@ -31,14 +32,13 @@ export default async function DraftPage() {
             ))}
           </div>
         ) : (
-          <EmptyPlaceholder>
-            <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
-            <EmptyPlaceholder.Description>
-              You don&apos;t have any posts yet. Start creating content.
-            </EmptyPlaceholder.Description>
+          <EmptyListPlaceholder
+            title="No posts created"
+            description="You don't have any posts yet. Start creating content."
+            iconName="post"
+          >
             <PostCreateButton variant="outline">Create Post</PostCreateButton>
-          </EmptyPlaceholder>
+          </EmptyListPlaceholder>
         )}
       </div>
   )

@@ -8,6 +8,7 @@ import { ScheduleCreateButton } from './create/button'
 import ScheduleQueue from './queue'
 import LinkTabGroup from '../link-tab-group'
 import FieldSelect from '@/components/field-select'
+import EmptyListPlaceholder from '../empty-placeholder'
 
 interface ScheduleContainer {
   schedules: Schedule[] | null
@@ -41,14 +42,13 @@ export default function ScheduleContainer({ schedules, timezone, draftPosts, sch
             schedules={JSON.parse(schedules.find((schedule) => selectedSchedule === schedule.id)?.schedule as string)}
           />
         ) : (
-          <EmptyPlaceholder>
-            <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No schedule created</EmptyPlaceholder.Title>
-            <EmptyPlaceholder.Description>
-              You don&apos;t have a schedule yet. Create one now!
-            </EmptyPlaceholder.Description>
-            <ScheduleCreateButton variant="outline" />
-          </EmptyPlaceholder>
+        <EmptyListPlaceholder
+          title="No schedule created"
+          description="You don't have a schedule yet. Create one now!"
+          iconName="post"
+        >
+          <ScheduleCreateButton variant="outline" />
+        </EmptyListPlaceholder>
         )
       }
     </div>
