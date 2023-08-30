@@ -22,9 +22,11 @@ export default async function SchedulePage() {
         <div className="divide-y divide-border rounded-md border">
         {
             schedules?.map((schedule) => {
-              return <ScheduleItem key={schedule.id} schedule={schedule}>
-                <ScheduleOperations schedule={schedule} />
-              </ScheduleItem>
+              return (
+                <ScheduleItem key={schedule.id} schedule={schedule}>
+                  <ScheduleOperations schedule={schedule} />
+                </ScheduleItem>
+              )
             })
           }
           </div>

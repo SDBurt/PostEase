@@ -7,11 +7,11 @@ import { SidebarNavItem } from "types"
 import { cn } from "@/lib/utils"
 import Icons from "@/components/icons"
 
-interface SidebarNavProps {
+interface MobileNavProps {
   items: SidebarNavItem[]
 }
 
-export function SidebarNav({ items }: SidebarNavProps) {
+export function MobileNav({ items }: MobileNavProps) {
   const path = usePathname()
 
   if (!items?.length) {
@@ -19,7 +19,7 @@ export function SidebarNav({ items }: SidebarNavProps) {
   }
 
   return (
-    <nav className="grid items-start gap-2">
+    <nav className="flex w-full justify-evenly">
       {items.map((item: SidebarNavItem, index) => {
         const Icon = Icons[item.icon || "arrowRight"]
         return (
@@ -27,9 +27,9 @@ export function SidebarNav({ items }: SidebarNavProps) {
             <Link key={index} href={item.disabled ? "/" : item.href}>
               <span
                 className={cn(
-                  "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                  item.startsWith ? (path?.startsWith(item.href) ? "bg-accent" : "transparent") : (item.href === path ? "bg-accent" : "transparent"),
-                  item.disabled && "cursor-not-allowed opacity-80"
+                  "group flex flex-col items-center justify-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+                  item.startsWith ? (path?.startsWith(item.href) ? "text-accent-foreground font-semibold" : "text-muted-foreground") : (item.href === path ? "text-accent-foreground font-semibold" : "text-muted-foreground"),
+                  item.disabled && "cursor-not-allowed text-muted-foreground/20 hover:text-muted-foreground/30"
                 )}
               >
                 <Icon className="mr-2 h-4 w-4" />
@@ -43,4 +43,4 @@ export function SidebarNav({ items }: SidebarNavProps) {
   )
 }
 
-export default SidebarNav
+export default MobileNav

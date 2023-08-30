@@ -12,6 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { UserAvatar } from "@/components/user-avatar"
+import Icons from "../icons"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "../ui/button"
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: Pick<User, "name" | "image" | "email">
@@ -20,14 +23,16 @@ interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
 export function UserAccountNav({ user }: UserAccountNavProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className={cn("flex space-x-2 items-center", buttonVariants({variant: "ghost"}))}>
         <UserAvatar
           imageUrl={user.image}
           name={user.name}
-          className="h-8 w-8"
+          className="h-6 w-6"
         />
+        <p>{user.name}</p>
+        <Icons.chevronDown className="h-4 w-4"/>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="start">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
             {user.name && <p className="font-medium">{user.name}</p>}

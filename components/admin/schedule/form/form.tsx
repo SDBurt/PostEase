@@ -95,6 +95,11 @@ const scheduleToFormItem = (schedules: ScheduleType[]): ScheduleFormItem[] => {
 }
 
 const formItemToSchedule = (formData: ScheduleFormItem[]): ScheduleType[] => {
+  
+  if (!formData) {
+    return []
+  }
+  
   return formData.map((item) => ({
     h: parseInt(item.time.split("-")[0]),
     m: parseInt(item.time.split("-")[1]),
@@ -103,7 +108,7 @@ const formItemToSchedule = (formData: ScheduleFormItem[]): ScheduleType[] => {
 }
 
 interface ScheduleFormProps {
-  schedule: Schedule
+  schedule?: Schedule
 }
 
 export function ScheduleForm({ schedule }: ScheduleFormProps) {
@@ -112,14 +117,11 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      title: schedule.title,
-      isDefault: schedule.isDefault || false,
-      schedules: schedule
+      title: schedule?.title || "",
+      isDefault: schedule?.isDefault || false,
+      schedules: schedule?.schedule 
         ? scheduleToFormItem(JSON.parse(schedule.schedule as string))
-        : [
-            { time: "0-0", days: [0, 6] },
-            { time: "0-30", days: [2] },
-          ],
+        : [],
     },
   })
 
@@ -136,7 +138,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
     const payload = {
       title: data.title,
       isDefault: data.isDefault,
-      schedule: JSON.stringify(scheduleData)
+      schedule: scheduleData ? JSON.stringify(scheduleData) : "[]"
     }
 
     if (data.isDefault) {

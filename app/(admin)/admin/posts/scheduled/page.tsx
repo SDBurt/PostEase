@@ -17,11 +17,8 @@ export default async function ScheduledPage() {
   const scheduledPosts: Post[] = await getAllScheduledPosts()
   const draftPosts: Post[] = await getAllDraftPosts()
 
-
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
   const userSchedules = await getUserSchedules()
-
-  console.log(timezone)
 
   return (
     <ScheduleContainer

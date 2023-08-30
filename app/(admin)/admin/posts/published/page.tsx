@@ -1,7 +1,7 @@
 import { Post } from "@prisma/client"
 
 import {
-  getAllOverdueScheduledPosts,
+  getAllPendingScheduledPosts,
   getAllPublishedPosts,
 } from "@/lib/db/actions"
 import { PageShell } from "@/components/admin/layout/page-shell"
@@ -19,7 +19,7 @@ export const metadata = {
 
 export default async function PublishedPage() {
   const posts: Post[] = await getAllPublishedPosts()
-  const overdue: Post[] = await getAllOverdueScheduledPosts()
+  const pending: Post[] = await getAllPendingScheduledPosts()
 
   return (
     <div>
@@ -28,11 +28,11 @@ export default async function PublishedPage() {
         <LinkTabGroup active="published" tabs={postLinkTabs}/>
       </div>
       <div className="space-y-4">
-        {overdue?.length ? (
+        {pending?.length ? (
           <>
-            <h2 className="font-heading text-xl md:text-2xl">Overdue</h2>
+            <h2 className="font-heading text-xl md:text-2xl">Pending</h2>
             <div className="divide-y divide-border rounded-md border">
-              {overdue.map((post) => (
+              {pending.map((post) => (
                 <PostItem key={post.id} post={post} hrefPrefix="/preview">
                   <PostOperations post={{ id: post.id }} />
                 </PostItem>
@@ -40,7 +40,7 @@ export default async function PublishedPage() {
             </div>
           </>
         ) : null}
-        {overdue?.length ? (
+        {pending?.length ? (
           <h2 className="font-heading text-xl md:text-2xl">Published</h2>
         ) : null}
         {posts?.length ? (

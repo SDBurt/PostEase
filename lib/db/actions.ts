@@ -147,7 +147,7 @@ export async function getAllPublishedPosts(): Promise<Post[]> {
   }
 }
 
-export async function getAllOverdueScheduledPosts(): Promise<Post[]> {
+export async function getAllPendingScheduledPosts(): Promise<Post[]> {
   const user = await getCurrentUser()
 
   if (!user) {

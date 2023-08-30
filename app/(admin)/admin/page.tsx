@@ -7,7 +7,6 @@ import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
 import { PostOperations } from "@/components/admin/posts/post-operations"
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
 
 export const metadata = {

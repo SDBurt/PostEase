@@ -10,6 +10,10 @@ import { UserAccountNav } from "@/components/auth/user-account-nav"
 import MainNav from "@/components/main-nav"
 import { SiteFooter } from "@/components/site-footer"
 import SidebarNav from "@/components/admin/nav/sidebar-nav"
+import SidebarHeader from "@/components/admin/nav/sidebar-header"
+import SidebarFooter from "@/components/admin/nav/sidebar-footer"
+import MobileNav from "@/components/admin/nav/mobile-nav"
+import MobileHeader from "@/components/admin/nav/mobile-header"
 
 
 interface LayoutProps {
@@ -24,28 +28,27 @@ export default async function AdminLayout({ children }: LayoutProps) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col space-y-6">
-      <header className="sticky top-0 z-40 border-b bg-background">
-        <div className="container flex h-16 items-center justify-between py-4">
-          <MainNav items={adminConfig.mainNav} />
-          <UserAccountNav
-            user={{
-              name: user.name,
-              image: user.image,
-              email: user.email,
-            }}
-          />
-        </div>
-      </header>
-      <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] flex-col md:flex">
-          <SidebarNav items={adminConfig.sidebarNav} />
+    <div className="flex min-h-screen w-full">
+      <div className="grid container flex-1 gap-12 md:grid-cols-[200px_1fr]">
+        <aside className="hidden w-[200px] md:flex flex-col flex-1 ">
+          <div className="flex-col flex-1 w-full">
+            <SidebarHeader user={user}/>
+            <SidebarNav items={adminConfig.sidebarNav} />
+          </div>
+          <SidebarFooter />
         </aside>
-        <main className="flex w-full flex-1 flex-col overflow-hidden">
+        <div className="md:hidden fixed top-0 left-0 z-40 items-center bg-muted w-full flex">
+          <MobileHeader user={user}/>
+        </div>
+        
+        <div className="md:hidden fixed bottom-0 left-0 z-40 items-center bg-muted w-full flex ">
+          <MobileNav items={adminConfig.sidebarNav} />
+        </div>
+        <main className="flex flex-1 flex-col w-full overflow-hidden pt-16 md:pt-4">
           {children}
         </main>
+
       </div>
-      <SiteFooter className="border-t" />
     </div>
   )
 }

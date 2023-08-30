@@ -1,6 +1,5 @@
 'use client'
 
-import { EmptyPlaceholder } from '@/components/empty-placeholder'
 import { postLinkTabs } from '@/config/admin'
 import { Post, Schedule } from '@prisma/client'
 import React, { useMemo, useState } from 'react'
@@ -26,11 +25,12 @@ export default function ScheduleContainer({ schedules, timezone, draftPosts, sch
 
   return (
     <div className='px-1'>
-      <div className="flex justify-between">
+      <div className="flex md:justify-between space-x-2">
         <LinkTabGroup active="scheduled" tabs={postLinkTabs}/>
-        {/* {userSchedules ? <ScheduleEditButton variant="outline" schedule={userSchedules[0]}/> : <ScheduleCreateButton variant="outline" />} */}
-        <div className='w-64'>
+        <div className="fixed bottom-20 right-8 md:relative md:right-auto md:bottom-auto">
+          
           <FieldSelect value={selectedSchedule || ""} setValue={setSelectedSchedule} fields={selectFields}/>
+          
         </div>
       </div>
       {

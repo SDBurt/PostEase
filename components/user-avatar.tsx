@@ -10,7 +10,7 @@ interface UserAvatarProps extends AvatarProps {
 
 export function UserAvatar({ imageUrl, name, ...props }: UserAvatarProps) {
   return (
-    <Avatar {...props} className="h-10 w-10">
+    <Avatar {...props}>
       {imageUrl ? (
         <AvatarImage alt="Picture" src={imageUrl} />
       ) : (
