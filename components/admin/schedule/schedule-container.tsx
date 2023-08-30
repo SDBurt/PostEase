@@ -2,12 +2,13 @@
 
 import { postLinkTabs } from '@/config/admin'
 import { Post, Schedule } from '@prisma/client'
-import React, { useMemo, useState } from 'react'
+import React, { Suspense, useMemo, useState } from 'react'
 import { ScheduleCreateButton } from './create/button'
 import ScheduleQueue from './queue'
 import LinkTabGroup from '../link-tab-group'
 import FieldSelect from '@/components/field-select'
 import EmptyListPlaceholder from '../empty-placeholder'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface ScheduleContainer {
   schedules: Schedule[] | null
@@ -28,29 +29,29 @@ export default function ScheduleContainer({ schedules, timezone, draftPosts, sch
       <div className="flex md:justify-between space-x-2">
         <LinkTabGroup active="scheduled" tabs={postLinkTabs}/>
         <div className="fixed bottom-20 right-8 md:relative md:right-auto md:bottom-auto">
-          
           <FieldSelect value={selectedSchedule || ""} setValue={setSelectedSchedule} fields={selectFields}/>
-          
         </div>
       </div>
-      {
-        schedules && schedules.length > 0 && selectedSchedule !== null  ? (
-          <ScheduleQueue
-            timezone={timezone}
-            scheduledPosts={scheduledPosts}
-            draftPosts={draftPosts}
-            schedules={JSON.parse(schedules.find((schedule) => selectedSchedule === schedule.id)?.schedule as string)}
-          />
-        ) : (
-        <EmptyListPlaceholder
-          title="No schedule created"
-          description="You don't have a schedule yet. Create one now!"
-          iconName="post"
-        >
-          <ScheduleCreateButton variant="outline" />
-        </EmptyListPlaceholder>
-        )
-      }
+      <Suspense fallback={<Skeleton className="h-5 w-2/5" />}>
+        {
+          schedules && schedules.length > 0 && selectedSchedule !== null  ? (
+            <ScheduleQueue
+              timezone={timezone}
+              scheduledPosts={scheduledPosts}
+              draftPosts={draftPosts}
+              schedules={JSON.parse(schedules.find((schedule) => selectedSchedule === schedule.id)?.schedule as string)}
+            />
+          ) : (
+          <EmptyListPlaceholder
+            title="No schedule created"
+            description="You don't have a schedule yet. Create one now!"
+            iconName="post"
+          >
+            <ScheduleCreateButton variant="outline" />
+          </EmptyListPlaceholder>
+          )
+        }
+      </Suspense>
     </div>
   )
 }

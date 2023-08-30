@@ -5,6 +5,7 @@ import { getUserSchedules } from "@/lib/db/actions/schedules"
 import ScheduleItem from "@/components/admin/schedule/schedule-item"
 import { ScheduleOperations } from "@/components/admin/schedule/schedule-operations"
 import { ScheduleCreateButton } from "@/components/admin/schedule/create/button"
+import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
 
 export const metadata = {
   title: "Admin",
@@ -20,14 +21,19 @@ export default async function SchedulePage() {
       </PageHeader>
       <div>
         <div className="divide-y divide-border rounded-md border">
-        {
-            schedules?.map((schedule) => {
-              return (
-                <ScheduleItem key={schedule.id} schedule={schedule}>
-                  <ScheduleOperations schedule={schedule} />
-                </ScheduleItem>
-              )
-            })
+        { schedules ? (
+           schedules?.map((schedule) => {
+                return (
+                  <ScheduleItem key={schedule.id} schedule={schedule}>
+                    <ScheduleOperations schedule={schedule} />
+                  </ScheduleItem>
+                )
+              })
+            ) : (
+            <EmptyListPlaceholder title="No Schedules" description="Create a schedule to start posting" iconName="scheduled">
+              <ScheduleCreateButton /> 
+            </EmptyListPlaceholder>
+            )
           }
           </div>
       </div>

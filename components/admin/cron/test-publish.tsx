@@ -24,5 +24,5 @@ export default function PublishButton() {
     })
   }
 
-  return <Button onClick={testPublish}>Publish Button</Button>
+  return <Button onClick={testPublish}>Cron Publish</Button>
 }

@@ -28,7 +28,7 @@ export default function TwitterForm({
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-10">
             <Link
-              href="/admin/published"
+              href="/admin/posts/published"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
               <>

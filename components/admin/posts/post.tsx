@@ -16,7 +16,7 @@ interface PostItemProps {
   hrefPrefix?: string
 }
 
-function PostItem({ post, children, hrefPrefix = "/editor" }: PostItemProps) {
+export function PostItem({ post, children, hrefPrefix = "/editor" }: PostItemProps) {
   return (
     <div className="flex items-center justify-between p-4">
       <div className="grid gap-2">
@@ -37,41 +37,11 @@ function PostItem({ post, children, hrefPrefix = "/editor" }: PostItemProps) {
 
 PostItem.Skeleton = function PostItemSkeleton() {
   return (
-    <div className="p-4">
-      <div className="space-y-3">
+    <div className="flex items-center justify-between p-4">
+      <div className="grid gap-2">
+        <Skeleton className="h-5 w-3/5" />
         <Skeleton className="h-5 w-2/5" />
-        <Skeleton className="h-4 w-4/5" />
       </div>
     </div>
   )
 }
-
-interface PostListProps {
-  posts: Post[]
-}
-
-function PostList({ posts }: PostListProps) {
-  return (
-    <div>
-      {posts?.length ? (
-        <div className="divide-y divide-border rounded-md border">
-          {posts.map((post) => (
-            <PostItem key={post.id} post={post}>
-              <PostOperations post={{ id: post.id }} />
-            </PostItem>
-          ))}
-        </div>
-      ) : (
-        <EmptyListPlaceholder
-          title="No posts created"
-          description="You don't have any posts yet. Start creating content."
-          iconName="post"
-        >
-          <PostCreateButton variant="outline" />
-        </EmptyListPlaceholder>
-      )}
-    </div>
-  )
-}
-
-export { PostItem, PostList }

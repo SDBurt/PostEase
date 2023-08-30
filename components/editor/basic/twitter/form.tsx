@@ -74,10 +74,6 @@ export default function TwitterForm({
     control: form.control,
   })
 
-  const tweetText: string[] = useMemo(
-    () => fields.map((field) => field.text),
-    [fields]
-  )
 
   async function onSubmit(data: TwitterFormValues) {
     setIsSaving(true)
@@ -136,7 +132,7 @@ export default function TwitterForm({
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center space-x-10">
               <Link
-                href="/admin"
+                href="/admin/posts/draft"
                 className={cn(buttonVariants({ variant: "ghost" }))}
               >
                 <>

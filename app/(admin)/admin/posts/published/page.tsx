@@ -14,6 +14,8 @@ import { postLinkTabs } from "@/config/admin"
 import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
 import PublishButton from "@/components/admin/cron/test-publish"
 import TwitterWhoAmIButton from "@/components/twitter/whoami-button"
+import { Suspense } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export const metadata = {
   title: "Published",
@@ -25,7 +27,6 @@ export default async function PublishedPage() {
 
   return (
     <div>
-      
       <div className="flex justify-between">
         <LinkTabGroup active="published" tabs={postLinkTabs}/>
             <div className="flex space-x-2">
@@ -38,38 +39,44 @@ export default async function PublishedPage() {
             </div>
       </div>
       <div className="space-y-4">
-        {pending?.length ? (
-          <>
-            <h2 className="font-heading text-xl md:text-2xl">Pending</h2>
+        <Suspense fallback={<Skeleton className="h-[50px] w-full" />}>
+          {pending?.length ? (
+            <>
+              <h2 className="font-heading text-xl md:text-2xl">Pending</h2>
+              <div className="divide-y divide-border rounded-md border">
+                {pending.map((post) => (
+                  <PostItem key={post.id} post={post} hrefPrefix="/preview">
+                    <PostOperations post={{ id: post.id }} />
+                  </PostItem>
+                ))}
+              </div>
+            </>
+          ) : null}
+        </Suspense>
+        <Suspense fallback={<Skeleton className="h-[50px] w-full" />}>
+          {pending?.length ? (
+            <h2 className="font-heading text-xl md:text-2xl">Published</h2>
+          ) : null}
+        </Suspense>
+        <Suspense fallback={<Skeleton className="h-[50px] w-full" />}>
+          {posts?.length ? (
             <div className="divide-y divide-border rounded-md border">
-              {pending.map((post) => (
+              {posts.map((post) => (
                 <PostItem key={post.id} post={post} hrefPrefix="/preview">
                   <PostOperations post={{ id: post.id }} />
                 </PostItem>
               ))}
             </div>
-          </>
-        ) : null}
-        {pending?.length ? (
-          <h2 className="font-heading text-xl md:text-2xl">Published</h2>
-        ) : null}
-        {posts?.length ? (
-          <div className="divide-y divide-border rounded-md border">
-            {posts.map((post) => (
-              <PostItem key={post.id} post={post} hrefPrefix="/preview">
-                <PostOperations post={{ id: post.id }} />
-              </PostItem>
-            ))}
-          </div>
-        ) : (
-          <EmptyListPlaceholder
-            title="No posts published"
-            description="You don't have any posts yet. Published posts will show here."
-            iconName="post"
-          >
-          </EmptyListPlaceholder>
-        )}
+          ) : (
+            <EmptyListPlaceholder
+              title="No posts published"
+              description="You don't have any posts yet. Published posts will show here."
+              iconName="post"
+            >
+            </EmptyListPlaceholder>
+          )}
+        </Suspense>
       </div>
-      </div>
+    </div>
   )
 }

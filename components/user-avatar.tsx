@@ -1,3 +1,5 @@
+'use client'
+
 import { AvatarProps } from "@radix-ui/react-avatar"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -9,10 +11,11 @@ interface UserAvatarProps extends AvatarProps {
 }
 
 export function UserAvatar({ imageUrl, name, ...props }: UserAvatarProps) {
+
   return (
-    <Avatar {...props}>
+    <Avatar {...props} className="w-7 h-7 overflow-hidden">
       {imageUrl ? (
-        <AvatarImage alt="Picture" src={imageUrl} />
+        <AvatarImage alt="Picture" src={imageUrl} className="w-7 h-7"  />
       ) : (
         <AvatarFallback>
           {name ? (

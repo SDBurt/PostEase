@@ -1,19 +1,15 @@
-import React from "react"
+import React, { Suspense } from "react"
 import { notFound } from "next/navigation"
-import { getToken } from "next-auth/jwt"
-import { getSession } from "next-auth/react"
 
 import { adminConfig } from "@/config/admin"
 
 import { getCurrentUser } from "@/lib/session"
-import { UserAccountNav } from "@/components/auth/user-account-nav"
-import MainNav from "@/components/main-nav"
-import { SiteFooter } from "@/components/site-footer"
 import SidebarNav from "@/components/admin/nav/sidebar-nav"
 import SidebarHeader from "@/components/admin/nav/sidebar-header"
 import SidebarFooter from "@/components/admin/nav/sidebar-footer"
 import MobileNav from "@/components/admin/nav/mobile-nav"
 import MobileHeader from "@/components/admin/nav/mobile-header"
+import { Skeleton } from "@/components/ui/skeleton"
 
 
 interface LayoutProps {
@@ -32,13 +28,13 @@ export default async function AdminLayout({ children }: LayoutProps) {
       <div className="grid container flex-1 gap-12 md:grid-cols-[200px_1fr]">
         <aside className="hidden w-[200px] md:flex flex-col flex-1 ">
           <div className="flex-col flex-1 w-full">
-            <SidebarHeader user={user}/>
+            <Suspense fallback={<Skeleton className="h-[50px] w-full" />}><SidebarHeader user={user}/></Suspense>
             <SidebarNav items={adminConfig.sidebarNav} />
           </div>
           <SidebarFooter />
         </aside>
         <div className="md:hidden fixed top-0 left-0 z-40 items-center bg-muted w-full flex">
-          <MobileHeader user={user}/>
+          <Suspense fallback={<Skeleton className="h-[50px] w-full" />}><MobileHeader user={user}/></Suspense>
         </div>
         
         <div className="md:hidden fixed bottom-0 left-0 z-40 items-center bg-muted w-full flex ">

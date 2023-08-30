@@ -80,13 +80,11 @@ export async function publishScheduledPosts(): Promise<{
     },
   })
 
-  console.log(`${posts.length} posts to publish`)
+  
 
   let publishedTweets: Post[] = []
   for (const post of posts) {
     // Get account for post's user
-
-    console.log("post: ", post)
 
     const account = await db.account.findFirst({
       where: {
@@ -119,12 +117,11 @@ export async function publishScheduledPosts(): Promise<{
     }
   }
 
-  console.log(`${publishedTweets.length} posts publish to twitter`)
+  
 
   // Update Database
   const results: UpdatedPostReturnType[] = []
   for (const post of publishedTweets) {
-    console.log("publishedTweet: ", post)
     results.push(
       await db.post.update({
         where: {
@@ -144,7 +141,7 @@ export async function publishScheduledPosts(): Promise<{
     )
   }
 
-  console.log(`${results.length} records updated`)
+  console.log(`${posts.length} posts to publish - ${publishedTweets.length} posts publish to twitter - ${results.length} records updated`)
 
   return {
     status: "SUCCESS",
