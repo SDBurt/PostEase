@@ -102,12 +102,20 @@ export async function publishScheduledPosts(): Promise<{
         secret: account.oauth_token_secret,
       }
 
-      const result = await publishTweets(token, post.content)
+      // Note: Ran into auth error from user account, resulting in a block
+      // try-catch is fix for now TODO: fix this
+      try {
+        const result = await publishTweets(token, post.content)
+        publishedTweets.push({
+          ...post,
+          tweet_ids: result,
+        })
+      } catch(err) {
+        console.error(err)
+      }
+      
 
-      publishedTweets.push({
-        ...post,
-        tweet_ids: result,
-      })
+      
     }
   }
 
