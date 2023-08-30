@@ -65,6 +65,8 @@ export async function publishTweets(
       throw new Error("Something went wrong when posting tweets")
     }
 
+    console.log("tweet: ", tweet)
+
     lastTweetID = tweet.data.id
     results.push(tweet.data.id)
   }

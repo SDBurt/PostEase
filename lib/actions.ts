@@ -86,6 +86,8 @@ export async function publishScheduledPosts(): Promise<{
   for (const post of posts) {
     // Get account for post's user
 
+    console.log("post: ", post)
+
     const account = await db.account.findFirst({
       where: {
         userId: post.userId,
