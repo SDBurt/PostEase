@@ -12,6 +12,7 @@ import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import LinkTabGroup from "@/components/admin/link-tab-group"
 import { postLinkTabs } from "@/config/admin"
 import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
+import PublishButton from "@/components/admin/cron/test-publish"
 
 export const metadata = {
   title: "Published",
@@ -26,6 +27,7 @@ export default async function PublishedPage() {
       
       <div className="flex justify-between">
         <LinkTabGroup active="published" tabs={postLinkTabs}/>
+        {process.env.NODE_ENV === "development" && <PublishButton />}
       </div>
       <div className="space-y-4">
         {pending?.length ? (
