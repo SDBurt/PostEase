@@ -14,6 +14,8 @@ export const metadata = {
 export default async function SchedulePage() {
   const schedules = await getUserSchedules()
 
+  console.log(schedules)
+
   return (
     <PageShell>
       <PageHeader heading="Schedules" text="Create and manage schedules.">
@@ -21,7 +23,7 @@ export default async function SchedulePage() {
       </PageHeader>
       <div>
         <div className="divide-y divide-border rounded-md border">
-        { schedules ? (
+        { schedules && schedules.length > 0 ? (
            schedules?.map((schedule) => {
                 return (
                   <ScheduleItem key={schedule.id} schedule={schedule}>

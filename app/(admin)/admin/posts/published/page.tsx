@@ -16,6 +16,7 @@ import PublishButton from "@/components/admin/cron/test-publish"
 import TwitterWhoAmIButton from "@/components/twitter/whoami-button"
 import { Suspense } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
+import PublishScheduledButton from "@/components/admin/posts/publish-scheduled-button"
 
 export const metadata = {
   title: "Published",
@@ -32,7 +33,10 @@ export default async function PublishedPage() {
             <div className="flex space-x-2">
               {
                 process.env.NODE_ENV === "development" && (
-                <PublishButton />
+                <>
+                  <PublishButton />
+                  <PublishScheduledButton/>
+                </>
                 )
               }
               <TwitterWhoAmIButton/>

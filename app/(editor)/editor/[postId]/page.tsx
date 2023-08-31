@@ -4,6 +4,8 @@ import { Post } from "@prisma/client"
 import { getPost } from "@/lib/db/actions"
 import { getCurrentUser } from "@/lib/session"
 import { Editor } from "@/components/editor/basic/editor"
+import { currentUser } from "@clerk/nextjs"
+import { ExternalAccount } from "@clerk/nextjs/dist/types/server"
 
 async function getPostForUser(postId: Post["id"], userId: Post["userId"]) {
   return await getPost(postId)
@@ -20,7 +22,9 @@ export default async function EditorPage({ params }: EditorPageProps) {
     notFound()
   }
 
-  const { id, name, image } = user
+  const { id, twitter } = user
+
+  const { username, firstName, lastName, imageUrl } = twitter || {}
 
   const post = await getPostForUser(params.postId, id)
 
@@ -37,9 +41,9 @@ export default async function EditorPage({ params }: EditorPageProps) {
         scheduledAt: post.scheduledAt,
       }}
       user={{
-        twitterHandle: `${String(name).replace(" ", "_").toLowerCase()}`,
-        userName: name,
-        imageUrl: image,
+        twitterHandle: username || "undefined",
+        userName: `${firstName} ${lastName}` || "undefined",
+        imageUrl: imageUrl || "",
       }}
     />
   )
