@@ -15,8 +15,6 @@ export async function pingMe(token: Token) {
 
   const result = await getRequest(token, endpointURL)
 
-  console.log(result)
-
   return result
 }
 

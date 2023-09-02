@@ -10,8 +10,6 @@ export default function PublishScheduledButton() {
     e.preventDefault()
     const data = await publishForUser()
 
-    console.log(data)
-
     return toast({
       title: "The following data was returned",
       description: (

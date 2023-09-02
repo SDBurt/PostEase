@@ -14,8 +14,6 @@ export const metadata = {
 export default async function SchedulePage() {
   const schedules = await getUserSchedules()
 
-  console.log(schedules)
-
   return (
     <PageShell>
       <PageHeader heading="Schedules" text="Create and manage schedules.">

@@ -12,8 +12,6 @@ export default function PublishButton() {
     e.preventDefault()
     const data = await publishScheduledPosts()
 
-    console.log(data)
-
     return toast({
       title: "The following data was returned",
       description: (
