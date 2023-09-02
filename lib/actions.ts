@@ -102,7 +102,7 @@ export async function publishScheduledPosts(): Promise<{
   for (const post of posts) {
     // Get account for post's user
 
-    const { token, error } = await getUserAccessTokens(post.userId)
+    const { token, error } = await getUserAccessTokens(post.userId, "oauth_twitter")
 
     if (!error && token?.key && token?.secret) {
 
