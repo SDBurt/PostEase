@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { Post } from "@prisma/client"
+import { Post, Status } from "@prisma/client"
 
 import { getAllDraftPosts } from "@/lib/db/actions"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
@@ -29,7 +29,7 @@ export default async function DraftPage() {
           {posts?.length ? (
             <div className="divide-y divide-border rounded-md border">
               {posts.map((post) => (
-                <PostItem key={post.id} post={post} hrefPrefix="/preview">
+                <PostItem key={post.id} post={post} hrefPrefix="/editor">
                   <PostOperations post={{ id: post.id }} />
                 </PostItem>
               ))}
