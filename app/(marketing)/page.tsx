@@ -80,9 +80,7 @@ export default async function IndexPage() {
             Features
           </h2>
           <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            This project is an experiment to see how a modern app, with features
-            like auth, subscriptions, API routes, and static pages would work in
-            Next.js 13 app dir.
+            This project is a way for people to schedule posts to Twitter using a modern web app
           </p>
         </div>
         <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
@@ -104,7 +102,7 @@ export default async function IndexPage() {
           </FeatureCard>
           <FeatureCard
             title={"Database"}
-            subtitle={"Prisma ORM deployed with Supabase"}
+            subtitle={"Prisma ORM adapted to Supabase"}
           >
             <svg viewBox="0 0 24 24" className="h-12 w-12 fill-current">
               <path d="M0 12C0 5.373 5.373 0 12 0c4.873 0 9.067 2.904 10.947 7.077l-15.87 15.87a11.981 11.981 0 0 1-1.935-1.099L14.99 12H12l-8.485 8.485A11.962 11.962 0 0 1 0 12Zm12.004 12L24 12.004C23.998 18.628 18.628 23.998 12.004 24Z" />
@@ -122,7 +120,7 @@ export default async function IndexPage() {
           </FeatureCard>
           <FeatureCard
             title={"Authentication"}
-            subtitle={"Authentication using Next-Auth and middlewares."}
+            subtitle={"Authentication using Clerk and middlewares."}
           >
             <svg
               viewBox="0 0 24 24"
