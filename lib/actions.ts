@@ -3,21 +3,25 @@
 import { Post, Status } from "@prisma/client"
 
 import { db } from "./db"
-import { getCurrentUser } from "./session"
+import { getAuth } from "./session"
 import { publishTweets } from "./twitter/actions"
+import { getUserAccessTokens } from "./clerk"
 
 export async function publishForUser(): Promise<any> {
   const now = new Date()
-
+  
   // Get Token
-  const user = await getCurrentUser()
+  const user = await getAuth()
 
-  const { twitter } = user
+  if (!user) {
+    return {
+      error: "unauthorized"
+    }
+  }
+  const { token, error } = await getUserAccessTokens(user.id, "oauth_twitter")
 
-  // Publish to Twitter
-  const token = {
-    key: twitter.oauth_token,
-    secret: twitter.oauth_token_secret,
+  if (error || !token) {
+    throw new Error(error || "No token")
   }
 
   // Get all posts that can be published
@@ -27,6 +31,7 @@ export async function publishForUser(): Promise<any> {
         lte: now,
       },
       status: Status.SCHEDULED,
+      userId: user.id
     },
   })
 
@@ -41,21 +46,32 @@ export async function publishForUser(): Promise<any> {
   }
 
   // Update Database
-  let res: Post[] = []
+  let results: UpdatedPostReturnType[] = []
   for (const post of publishedTweets) {
-    const updatedPost = await db.post.update({
-      where: {
-        id: post.id,
-      },
-      data: {
-        status: Status.PUBLISHED,
-        tweet_ids: post.tweet_ids,
-      },
-    })
-    res.push(updatedPost)
+    results.push(
+      await db.post.update({
+        where: {
+          id: post.id,
+        },
+        data: {
+          status: Status.PUBLISHED,
+          tweet_ids: post.tweet_ids,
+        },
+        select: {
+          id: true,
+          tweet_ids: true,
+          status: true,
+          scheduledAt: true,
+        }
+      })
+    )
   }
 
-  return res
+  return {
+    status: "SUCCESS",
+    count: publishedTweets.length,
+    data: results,
+  }
 }
 
 type UpdatedPostReturnType = Pick<
@@ -86,19 +102,9 @@ export async function publishScheduledPosts(): Promise<{
   for (const post of posts) {
     // Get account for post's user
 
-    const account = await db.account.findFirst({
-      where: {
-        userId: post.userId,
-        provider: "twitter",
-      },
-    })
+    const { token, error } = await getUserAccessTokens(post.userId, "oauth_twitter")
 
-    if (account?.oauth_token && account?.oauth_token_secret) {
-      // Create twitter token
-      const token = {
-        key: account.oauth_token,
-        secret: account.oauth_token_secret,
-      }
+    if (!error && token?.key && token?.secret) {
 
       // Note: Ran into auth error from user account, resulting in a block
       // try-catch is fix for now TODO: fix this
@@ -111,9 +117,10 @@ export async function publishScheduledPosts(): Promise<{
       } catch(err) {
         console.error(err)
       }
-      
+    }
 
-      
+    else {
+      console.error(error ? error : "unable to publish tweet")
     }
   }
 

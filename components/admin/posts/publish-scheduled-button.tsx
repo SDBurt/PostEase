@@ -1,16 +1,14 @@
-
-
 "use client"
 
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
-import { publishScheduledPosts } from "@/lib/actions"
+import { publishForUser } from "@/lib/actions"
 
-export default function PublishButton() {
+export default function PublishScheduledButton() {
   
   async function testPublish(e) {
     e.preventDefault()
-    const data = await publishScheduledPosts()
+    const data = await publishForUser()
 
     return toast({
       title: "The following data was returned",
@@ -22,5 +20,5 @@ export default function PublishButton() {
     })
   }
 
-  return <Button onClick={testPublish}>Cron Publish</Button>
+  return <Button onClick={testPublish}>Publish Scheduled</Button>
 }
