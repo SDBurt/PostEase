@@ -23,7 +23,7 @@ import PostSelector from "./post-selector"
 
 interface PostSelectProps extends ButtonProps {
   posts: Post[]
-  scheduledAt: Date
+  scheduledAt: string
 }
 
 export function PostSelectButton({

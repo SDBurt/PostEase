@@ -47,10 +47,12 @@ import {
   User,
   X,
   Youtube,
+  Calendar
 } from "lucide-react"
 
 export const Icons = {
   logo: Send,
+  calendar: Calendar,
   close: X,
   grip: GripVertical,
   spinner: Loader2,

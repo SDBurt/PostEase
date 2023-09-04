@@ -1,7 +1,7 @@
 
 import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
-import { getUserSchedules } from "@/lib/db/actions/schedules"
+import { getSchedules } from "@/lib/db/actions/schedules"
 import ScheduleItem from "@/components/admin/schedule/schedule-item"
 import { ScheduleOperations } from "@/components/admin/schedule/schedule-operations"
 import { ScheduleCreateButton } from "@/components/admin/schedule/create/button"
@@ -12,7 +12,7 @@ export const metadata = {
 }
 
 export default async function SchedulePage() {
-  const schedules = await getUserSchedules()
+  const schedules = await getSchedules()
 
   return (
     <PageShell>

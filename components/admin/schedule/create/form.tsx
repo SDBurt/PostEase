@@ -20,12 +20,14 @@ import {
 import { toast } from "@/components/ui/use-toast"
 
 import { Input } from "@/components/ui/input"
-import { createUserSchedule, updateUserSchedule } from "@/lib/db/actions/schedules"
+import { createSchedule, updateSchedule } from "@/lib/db/actions/schedules"
+import { Checkbox } from "@/components/ui/checkbox"
 
 
 
 const FormSchema = z.object({
-  title: z.string()
+  title: z.string(),
+  isDefault: z.boolean().default(false)
 })
 
 interface ScheduleFormProps {
@@ -40,7 +42,8 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
     defaultValues: {
       title: schedule
         ? schedule.title
-        : ""
+        : "",
+      isDefault: true
     },
   })
 
@@ -48,7 +51,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
     
 
     if (schedule) {
-      const updatedSchedule = await updateUserSchedule(schedule.id, data)
+      const updatedSchedule = await updateSchedule(schedule.id, data)
       toast({
         title: "Success",
         description: <p>Your schedule has been created!</p>,
@@ -56,7 +59,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
       router.push(`/admin/schedule/${updatedSchedule.id}`)
     } else {
 
-      const newSchedule = await createUserSchedule({...data, schedule: ""})
+      const newSchedule = await createSchedule({...data, schedule: ""})
       toast({
         title: "Success",
         description: <p>Your schedule has been updated</p>,
@@ -69,7 +72,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full grid gap-4">
         <FormField
           control={form.control}
           name="title"
@@ -83,6 +86,28 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
                 This is the title of your schedule.
               </FormDescription>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="isDefault"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-2 leading-none">
+                <FormLabel>
+                  Default Schedule
+                </FormLabel>
+                <FormDescription>
+                  Your default schedule will be used when quickly selecting the next available slot.
+                </FormDescription>
+              </div>
             </FormItem>
           )}
         />

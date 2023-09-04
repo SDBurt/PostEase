@@ -1,13 +1,15 @@
 'use server'
 
-import { ScheduleType } from "@/types"
-import { Post, Schedule, Status } from "@prisma/client"
+import { Schedule } from "@prisma/client"
 
 import { db } from "@/lib/db"
 
 import { getCurrentUser } from "@/lib/session"
 
-export async function getUserSchedule(id: string): Promise<Schedule | null> {
+type getScheduleReturnType = Pick<Schedule, "id" | "title" | "schedule" | "isDefault" | "timezone">
+type mutateScheduleReturnType = Pick<Schedule, "id">
+
+export async function getSchedule(id: Schedule["id"]): Promise<getScheduleReturnType | null> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -20,6 +22,13 @@ export async function getUserSchedule(id: string): Promise<Schedule | null> {
         userId: user.id,
         id: id
       },
+      select: {
+        id: true,
+        title: true,
+        schedule: true,
+        isDefault: true,
+        timezone: true
+      }
     })
   } catch (err) {
     console.error(err)
@@ -27,7 +36,9 @@ export async function getUserSchedule(id: string): Promise<Schedule | null> {
   }
 }
 
-export async function getUserSchedules(): Promise<Schedule[] | null> {
+
+
+export async function getSchedules(): Promise<getScheduleReturnType[] | null> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -39,6 +50,13 @@ export async function getUserSchedules(): Promise<Schedule[] | null> {
       where: {
         userId: user.id,
       },
+      select: {
+        id: true,
+        title: true,
+        schedule: true,
+        isDefault: true,
+        timezone: true
+      }
     })
   } catch (err) {
     console.error(err)
@@ -46,9 +64,36 @@ export async function getUserSchedules(): Promise<Schedule[] | null> {
   }
 }
 
-export async function createUserSchedule(
+export async function getDefaultSchedules(): Promise<getScheduleReturnType | null> {
+  const user = await getCurrentUser()
+
+  if (!user) {
+    throw new Error("Unauthorized")
+  }
+
+  try {
+    return await db.schedule.findFirst({
+      where: {
+        userId: user.id,
+        isDefault: true
+      },
+      select: {
+        id: true,
+        title: true,
+        schedule: true,
+        isDefault: true,
+        timezone: true
+      }
+    })
+  } catch (err) {
+    console.error(err)
+    throw new Error("Unable to get schedules")
+  }
+}
+
+export async function createSchedule(
   data
-): Promise<{ id: Schedule["id"] }> {
+): Promise<mutateScheduleReturnType> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -70,10 +115,10 @@ export async function createUserSchedule(
   }
 }
 
-export async function updateUserSchedule(
+export async function updateSchedule(
   id: Schedule["id"],
   data
-): Promise<{ id: Schedule["id"] }> {
+): Promise<mutateScheduleReturnType> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -96,9 +141,9 @@ export async function updateUserSchedule(
   }
 }
 
-export async function deleteUserSchedule(
+export async function deleteSchedule(
   scheduleId: Schedule["id"]
-): Promise<{ id: Schedule["id"] }> {
+): Promise<mutateScheduleReturnType> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -122,7 +167,7 @@ export async function deleteUserSchedule(
   }
 }
 
-export async function getDefaultSchedule(): Promise<Schedule[] | null> {
+export async function getDefaultSchedule(): Promise<getScheduleReturnType | null> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -130,14 +175,21 @@ export async function getDefaultSchedule(): Promise<Schedule[] | null> {
   }
 
   try {
-    return await db.schedule.findMany({
+    return await db.schedule.findFirst({
       where: {
         userId: user.id,
         isDefault: true
       },
+      select: {
+        id: true,
+        title: true,
+        schedule: true,
+        isDefault: true,
+        timezone: true
+      }
     })
   } catch (err) {
     console.error(err)
-    throw new Error("Unable to get schedules")
+    throw new Error("Unable to get default schedules")
   }
 }

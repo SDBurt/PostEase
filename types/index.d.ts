@@ -23,6 +23,14 @@ export type SidebarNavItem = {
     }
 )
 
+export type EditorNavItem = {
+  title: string
+  disabled?: boolean
+  external?: boolean
+  icon?: keyof typeof Icons
+  tabName: string
+}
+
 export type SiteConfig = {
   name: string
   description: string
@@ -37,6 +45,7 @@ export type SiteConfig = {
 export type AdminConfig = {
   mainNav: MainNavItem[]
   sidebarNav: SidebarNavItem[]
+  editorNav: EditorNavItem[]
 }
 
 export type MarketingConfig = {
