@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { PostCreateButton } from "../posts/create/button"
 import { ScheduledPostOperations } from "../posts/scheduled-post-operations"
 import { PostSelectButton } from "../posts/select-button"
-import { SlotType, getQueueData } from "@/lib/schedule"
+import { SectionData, SlotType, getQueueData } from "@/lib/schedule"
 
 
 interface SlotItemProps {
@@ -77,10 +77,7 @@ function PostItem({
 }
 
 interface ScheduleQueueSectionProps {
-  sectionData: {
-    date: Date
-    items: SlotType[]
-  }
+  sectionData: SectionData
   draftPosts: Post[]
 }
 

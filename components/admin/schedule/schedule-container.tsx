@@ -26,9 +26,9 @@ export default function ScheduleContainer({ schedules, timezone, draftPosts, sch
 
   return (
     <div className='px-1'>
-      <div className="flex md:justify-between space-x-2">
+      <div className="flex space-x-2 md:justify-between">
         <LinkTabGroup active="scheduled" tabs={postLinkTabs}/>
-        <div className="fixed bottom-20 right-8 md:relative md:right-auto md:bottom-auto">
+        <div className="fixed bottom-20 right-8 md:relative md:bottom-auto md:right-auto">
           <FieldSelect value={selectedSchedule || ""} setValue={setSelectedSchedule} fields={selectFields}/>
         </div>
       </div>

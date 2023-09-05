@@ -4,8 +4,8 @@ import React from 'react'
 
 export default function MobileHeader({user}) {
   return (
-    <header className="bg-background container w-full">
-      <div className="py-2 md:py-4 flex justify-between items-center">
+    <header className="container w-full bg-background">
+      <div className="flex items-center justify-between py-2 md:py-4">
         <UserAccountNav
           user={{
             name: user.name,

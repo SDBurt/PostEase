@@ -28,7 +28,7 @@ export function MobileNav({ items }: MobileNavProps) {
               <span
                 className={cn(
                   "group flex flex-col items-center justify-center px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
-                  item.startsWith ? (path?.startsWith(item.href) ? "text-accent-foreground font-semibold" : "text-muted-foreground") : (item.href === path ? "text-accent-foreground font-semibold" : "text-muted-foreground"),
+                  item.startsWith ? (path?.startsWith(item.href) ? "font-semibold text-accent-foreground" : "text-muted-foreground") : (item.href === path ? "font-semibold text-accent-foreground" : "text-muted-foreground"),
                   item.disabled && "cursor-not-allowed text-muted-foreground/20 hover:text-muted-foreground/30"
                 )}
               >

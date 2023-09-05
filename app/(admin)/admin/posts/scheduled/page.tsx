@@ -21,7 +21,7 @@ export default async function DraftPage() {
       <div>
         <div className="flex justify-between">
           <LinkTabGroup active="scheduled" tabs={postLinkTabs}/>
-          <div className="fixed bottom-20 right-8 md:relative md:right-auto md:bottom-auto">
+          <div className="fixed bottom-20 right-8 md:relative md:bottom-auto md:right-auto">
             <PostCreateButton variant="default">Create Post</PostCreateButton>
           </div>
         </div>

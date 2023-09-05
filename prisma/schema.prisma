@@ -31,7 +31,7 @@ model Post {
 
   userId String @default(dbgenerated("requesting_user_id()"))
 
-  title   String
+  title   String   @default("Untitled Post")
   content String[]
   status  Status   @default(DRAFT)
 

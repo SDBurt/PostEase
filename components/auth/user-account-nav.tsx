@@ -9,7 +9,7 @@ interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
 export function UserAccountNav({ user }: UserAccountNavProps) {
   
   return (
-    <div className="flex space-x-2 items-center">
+    <div className="flex items-center space-x-2">
       <ThemedUserButton />
     </div>
   )

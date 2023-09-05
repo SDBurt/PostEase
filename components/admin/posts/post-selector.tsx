@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Post } from "@prisma/client"
+import { Post, Status } from "@prisma/client"
 
 import { updatePost } from "@/lib/db/actions/post"
 import { cn } from "@/lib/utils"
@@ -64,7 +64,7 @@ export default function PostSelector({
 
     try {
       setIsLoading(false)
-      await updatePost(posts[selected].id, { status: "SCHEDULED", scheduledAt })
+      await updatePost(posts[selected].id, { status: Status.SCHEDULED, scheduledAt })
 
       // router.push(`/admin/scheduled/`)
       toast({

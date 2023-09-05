@@ -1,10 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton"
-import { Schedule } from "@prisma/client"
 import Link from "next/link"
 import { ScheduleBadgeGroup } from "./schedule-badge-group"
+import { GetSchedule } from "@/types/db"
 
 interface ScheduleItemProps {
-  schedule: Schedule
+  schedule: GetSchedule
   children: React.ReactNode
 }
 

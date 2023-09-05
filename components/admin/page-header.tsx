@@ -11,7 +11,7 @@ export function PageHeader({ heading, text, children }: PageHeaderProps) {
         <h1 className="font-heading text-3xl md:text-4xl">{heading}</h1>
         {text && <p className="text-muted-foreground">{text}</p>}
       </div>
-      <div className="fixed bottom-20 right-8 md:relative md:right-auto md:bottom-auto">
+      <div className="fixed bottom-20 right-8 md:relative md:bottom-auto md:right-auto">
         {children}
       </div>
     </div>

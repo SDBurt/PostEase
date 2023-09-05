@@ -132,7 +132,7 @@ export function Editor({ post, user, schedules }: EditorProps) {
   }
 
 
-  let tabContent = (<Skeleton className="w-[100px] h-[20px]"/>)
+  let tabContent = (<Skeleton className="h-[20px] w-[100px]"/>)
 
   switch(tabName) {
     case "schedule":
@@ -156,9 +156,9 @@ export function Editor({ post, user, schedules }: EditorProps) {
   }
   
   return (
-    <div className="flex flex-col w-full container">
+    <div className="container flex w-full flex-col">
       
-      <div className="flex w-full items-center justify-between mb-3">
+      <div className="mb-3 flex w-full items-center justify-between">
         <div className="flex items-center space-x-10">
           <Link
             href="/admin/posts/draft"
@@ -182,10 +182,10 @@ export function Editor({ post, user, schedules }: EditorProps) {
       </div>
 
       <div className="grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] md:flex flex-col flex-1 ">
+        <aside className="hidden w-[200px] flex-1 flex-col md:flex ">
             <EditorNav items={adminConfig.editorNav} />
         </aside>
-        <main className="flex flex-1 flex-col w-full overflow-hidden pt-16 md:pt-4">
+        <main className="flex w-full flex-1 flex-col overflow-hidden pt-16 md:pt-4">
         <Card className="bg-transparent">
           <CardContent className="p-6">
             <Form {...form}>

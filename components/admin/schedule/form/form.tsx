@@ -108,7 +108,7 @@ const formItemToSchedule = (formData: ScheduleFormItem[]): ScheduleType[] => {
 }
 
 interface ScheduleFormProps {
-  schedule?: Schedule
+  schedule?: Pick<Schedule, "id" | "title" | "isDefault" | "schedule" | "timezone">
 }
 
 export function ScheduleForm({ schedule }: ScheduleFormProps) {

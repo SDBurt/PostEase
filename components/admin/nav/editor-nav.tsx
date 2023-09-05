@@ -20,10 +20,6 @@ export function EditorNav({ items }: SidebarNavProps) {
   
   const tabName = searchParams?.has("tabName") ? searchParams.get("tabName") : "editor"
 
-  if (!items?.length) {
-    return null
-  }
-
   // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
   const createQueryString = useCallback(
@@ -35,6 +31,10 @@ export function EditorNav({ items }: SidebarNavProps) {
     },
     [searchParams]
   )
+
+  if (!items?.length) {
+    return null
+  }
 
   const tabClicked = (tabName: string) => {
     router.push(pathname + '?' + createQueryString('tabName', tabName))
@@ -61,7 +61,7 @@ export function EditorNav({ items }: SidebarNavProps) {
                 <Icon className="mr-2 h-4 w-4" />
                 <span>{item.title}</span>
               </span> 
-              {item.tabName === tabName ? <Icons.chevronRight className="w-4 h-4" /> : null}
+              {item.tabName === tabName ? <Icons.chevronRight className="h-4 w-4" /> : null}
             </Button>
             
           )

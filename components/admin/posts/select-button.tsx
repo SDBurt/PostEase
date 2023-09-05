@@ -4,7 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { Post } from "@prisma/client"
 
-import { updatePost } from "@/lib/db/actions"
+import { updatePost } from "@/lib/db/actions/post"
 import { cn } from "@/lib/utils"
 import { Button, ButtonProps, buttonVariants } from "@/components/ui/button"
 import {
@@ -65,7 +65,7 @@ export function PostSelectButton({
           </DialogDescription>
         </DialogHeader>
 
-        <PostSelector posts={posts} scheduledAt={scheduledAt} />
+        <PostSelector posts={posts} scheduledAt={new Date(scheduledAt)} />
       </DialogContent>
     </Dialog>
   )

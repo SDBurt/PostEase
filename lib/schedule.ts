@@ -11,7 +11,7 @@ export type SlotType = {
   post?: Post
 }
 
-interface SectionData {
+export type SectionData = {
   date: string
   items: SlotType[]
 }

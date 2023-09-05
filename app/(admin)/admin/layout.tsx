@@ -25,22 +25,22 @@ export default async function AdminLayout({ children }: LayoutProps) {
 
   return (
     <div className="flex min-h-screen w-full">
-      <div className="grid container flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] md:flex flex-col flex-1 ">
-          <div className="flex-col flex-1 w-full">
+      <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
+        <aside className="hidden w-[200px] flex-1 flex-col md:flex ">
+          <div className="w-full flex-1 flex-col">
             <Suspense fallback={<Skeleton className="h-[50px] w-full" />}><SidebarHeader user={user}/></Suspense>
             <SidebarNav items={adminConfig.sidebarNav} />
           </div>
           <SidebarFooter />
         </aside>
-        <div className="md:hidden fixed top-0 left-0 z-40 items-center bg-muted w-full flex">
+        <div className="fixed left-0 top-0 z-40 flex w-full items-center bg-muted md:hidden">
           <Suspense fallback={<Skeleton className="h-[50px] w-full" />}><MobileHeader user={user}/></Suspense>
         </div>
         
-        <div className="md:hidden fixed bottom-0 left-0 z-40 items-center bg-muted w-full flex ">
+        <div className="fixed bottom-0 left-0 z-40 flex w-full items-center bg-muted md:hidden ">
           <MobileNav items={adminConfig.sidebarNav} />
         </div>
-        <main className="flex flex-1 flex-col w-full overflow-hidden pt-16 md:pt-4">
+        <main className="flex w-full flex-1 flex-col overflow-hidden pt-16 md:pt-4">
           {children}
         </main>
 

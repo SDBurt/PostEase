@@ -72,7 +72,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full grid gap-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid w-full gap-4">
         <FormField
           control={form.control}
           name="title"

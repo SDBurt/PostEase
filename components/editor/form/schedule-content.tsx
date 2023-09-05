@@ -22,7 +22,7 @@ import { Switch } from "@/components/ui/switch"
 function SelectAllOptions({schedule}) {
 
   if (!schedule) {
-    return <p className="text-sm px-3 py-2">No Slot</p>
+    return <p className="px-3 py-2 text-sm">No Slot</p>
   }
 
   const slots = getSlotData(schedule)
@@ -41,7 +41,7 @@ function SelectAllOptions({schedule}) {
                 {dayjs(slot).format("ddd, MMM D, YYYY - h:mm A")}
               </SelectItem>
             )
-        }) : <p className="text-sm px-3 py-2">No Slot for this date</p>
+        }) : <p className="px-3 py-2 text-sm">No Slot for this date</p>
       }
     </>
   )

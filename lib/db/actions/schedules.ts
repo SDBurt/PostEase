@@ -5,11 +5,11 @@ import { Schedule } from "@prisma/client"
 import { db } from "@/lib/db"
 
 import { getCurrentUser } from "@/lib/session"
+import { GetSchedule } from "@/types/db"
 
-type getScheduleReturnType = Pick<Schedule, "id" | "title" | "schedule" | "isDefault" | "timezone">
 type mutateScheduleReturnType = Pick<Schedule, "id">
 
-export async function getSchedule(id: Schedule["id"]): Promise<getScheduleReturnType | null> {
+export async function getSchedule(id: Schedule["id"]): Promise<GetSchedule | null> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -38,7 +38,7 @@ export async function getSchedule(id: Schedule["id"]): Promise<getScheduleReturn
 
 
 
-export async function getSchedules(): Promise<getScheduleReturnType[] | null> {
+export async function getSchedules(): Promise<GetSchedule[] | null> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -64,7 +64,7 @@ export async function getSchedules(): Promise<getScheduleReturnType[] | null> {
   }
 }
 
-export async function getDefaultSchedules(): Promise<getScheduleReturnType | null> {
+export async function getDefaultSchedules(): Promise<GetSchedule | null> {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -167,7 +167,7 @@ export async function deleteSchedule(
   }
 }
 
-export async function getDefaultSchedule(): Promise<getScheduleReturnType | null> {
+export async function getDefaultSchedule(): Promise<GetSchedule | null> {
   const user = await getCurrentUser()
 
   if (!user) {
