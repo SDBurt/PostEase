@@ -177,7 +177,7 @@ export function ScheduleContent({ form, schedules }: ScheduleFormProps) {
                   </SelectContent>
                 </Select>
                 <FormDescription>
-                  The time slots available for the upcomming week
+                  The time slots available for the upcoming week
                 </FormDescription>
                 <FormMessage />
               </FormItem>
