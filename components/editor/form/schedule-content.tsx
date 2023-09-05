@@ -17,6 +17,8 @@ import React, { useState } from "react"
 import dayjs from "dayjs"
 import { Schedule } from "@prisma/client"
 import { Switch } from "@/components/ui/switch"
+import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
+import { ScheduleCreateButton } from "@/components/admin/schedule/create/button"
 
 
 function SelectAllOptions({schedule}) {
@@ -131,50 +133,56 @@ export function ScheduleContent({ form, schedules }: ScheduleFormProps) {
           </FormItem>
         )}
       />
-      {schedulePost ? (
+      { schedulePost && schedules && schedules.length === 0 ? (
+          <EmptyListPlaceholder title="No Schedules" description="Create a schedule to start posting" iconName="scheduled">
+            <ScheduleCreateButton /> 
+          </EmptyListPlaceholder>
+        ) : null
+      }
+      { (schedulePost && schedules && schedules.length > 0) ? (
         <>
-        <Select onValueChange={onSelectChangeHandler} defaultValue={selectedSchedule?.id}>
-          <FormControl>
-            <SelectTrigger className="bg-background">
-              <SelectValue placeholder="Select a date to view slots" />
-            </SelectTrigger>
-          </FormControl>
-          <SelectContent>
-            {
-              schedules?.map(schedule => (
-                <SelectItem
-                  key={schedule.id}
-                  value={schedule.id}
-                >
-                  {schedule.title}
-                </SelectItem>
-                ))
-            }
-          </SelectContent>
-        </Select>
-        <FormField
-          control={form.control}
-          name="scheduledAt"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Slot</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="bg-background">
-                    <SelectValue placeholder="Select a date to view slots" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectAllOptions schedule={JSON.parse(selectedSchedule?.schedule as string)} />
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                The time slots available for the upcomming week
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <Select onValueChange={onSelectChangeHandler} defaultValue={selectedSchedule?.id}>
+            <FormControl>
+              <SelectTrigger className="bg-background">
+                <SelectValue placeholder="Select a date to view slots" />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent>
+              {
+                schedules?.map(schedule => (
+                  <SelectItem
+                    key={schedule.id}
+                    value={schedule.id}
+                  >
+                    {schedule.title}
+                  </SelectItem>
+                  ))
+              }
+            </SelectContent>
+          </Select>
+          <FormField
+            control={form.control}
+            name="scheduledAt"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Slot</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="bg-background">
+                      <SelectValue placeholder="Select a date to view slots" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectAllOptions schedule={JSON.parse(selectedSchedule?.schedule as string || "[]")} />
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  The time slots available for the upcomming week
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </>
       ) : null}
 

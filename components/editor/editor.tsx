@@ -97,7 +97,7 @@ export function Editor({ post, user, schedules }: EditorProps) {
         updatedData["scheduledAt"] = data.scheduledAt
       }
 
-      console.log("Updated Post: ", updatedData)
+      console.log("Post: ", updatedData)
 
       const result = await updatePost(post?.id, updatedData)
 
@@ -166,7 +166,7 @@ export function Editor({ post, user, schedules }: EditorProps) {
           >
             <>
               <Icons.chevronLeft className="mr-2 h-4 w-4" />
-              Back
+              All Draft Posts
             </>
           </Link>
         </div>

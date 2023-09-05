@@ -138,7 +138,7 @@ export default function TwitterForm({
               >
                 <>
                   <Icons.chevronLeft className="mr-2 h-4 w-4" />
-                  Back
+                  All Draft Posts
                 </>
               </Link>
             </div>
