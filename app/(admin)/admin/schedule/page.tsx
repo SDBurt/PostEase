@@ -6,14 +6,9 @@ import ScheduleItem from "@/components/admin/schedule/schedule-item"
 import { ScheduleOperations } from "@/components/admin/schedule/schedule-operations"
 import { ScheduleCreateButton } from "@/components/admin/schedule/create/button"
 import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
-import Link from "next/link"
-import Icons from "@/components/icons"
-import { BadgeGroup } from "@/components/admin/posts/post-badge-group"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 
 export const metadata = {
-  title: "Admin",
+  title: "Schedules",
 }
 
 export default async function SchedulePage() {

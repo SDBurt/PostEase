@@ -41,6 +41,8 @@ export const metadata: Metadata = {
     "Tailwind CSS",
     "Server Components",
     "Radix UI",
+    "Scheduler",
+    "Twitter",
   ],
   authors: [
     {
@@ -61,6 +63,17 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     siteName: siteConfig.name,
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
@@ -70,8 +83,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    // shortcut: "/favicon-16x16.png",
+    // apple: "/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
 }

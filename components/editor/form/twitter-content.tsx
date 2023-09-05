@@ -17,7 +17,7 @@ import {
 import Tweet from "@/components/admin/posts/twitter/tweet"
 import Icons from "@/components/icons"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import ReactTextareaAutosize from "react-textarea-autosize"
 
 dayjs.extend(relativeTime)
 
@@ -96,10 +96,10 @@ export default function TwitterFormContent({
                   <FormItem className="py-2">
                     <FormControl>
                       <div className="flex space-x-2">
-                        <Textarea
+                        <ReactTextareaAutosize
                           autoFocus
                           placeholder="Tweet content"
-                          rows={4}
+                          className="w-full resize-none outline rounded-lg text-sm outline-1 outline-muted appearance-none overflow-hidden bg-transparent focus:outline-1 p-3 focus:outline-primary"
                           {...field}
                         />
                         <Button

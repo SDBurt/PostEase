@@ -18,6 +18,7 @@ import {
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 import { Status } from "@prisma/client"
+import { revalidatePath } from "next/cache"
 
 interface PublishButtonProps extends ButtonProps {
   postId: string
@@ -42,11 +43,12 @@ export function PublishButton({
         scheduledAt: new Date(),
         updatedAt: new Date(),
       })
-      router.push(`/admin/published/`)
+      router.push("/admin/published/")
       toast({
         title: "Your post was published.",
         description: "Your post was published successfully.",
       })
+      revalidatePath("/admin/published/");
     } catch (err) {
       setIsLoading(false)
       toast({
@@ -55,9 +57,6 @@ export function PublishButton({
         variant: "destructive",
       })
     }
-
-    // This forces a cache invalidation.
-    router.refresh()
   }
 
   return (

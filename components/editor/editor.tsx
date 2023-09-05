@@ -3,7 +3,6 @@
 import * as React from "react"
 import { Post, Schedule, Status } from "@prisma/client"
 
-import TwitterForm from "./twitter/form"
 import { useSearchParams } from "next/navigation"
 import EditorNav from "../admin/nav/editor-nav"
 import { adminConfig } from "@/config/admin"
