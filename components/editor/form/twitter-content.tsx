@@ -99,7 +99,7 @@ export default function TwitterFormContent({
                         <ReactTextareaAutosize
                           autoFocus
                           placeholder="Tweet content"
-                          className="w-full resize-none outline rounded-lg text-sm outline-1 outline-muted appearance-none overflow-hidden bg-transparent focus:outline-1 p-3 focus:outline-primary"
+                          className="w-full resize-none appearance-none overflow-hidden rounded-lg bg-transparent p-3 text-sm outline outline-1 outline-muted focus:outline-1 focus:outline-primary"
                           {...field}
                         />
                         <Button
