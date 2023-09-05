@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ButtonProps, buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
-import { createUserSchedule } from "@/lib/db/actions/schedules"
+import { createSchedule } from "@/lib/db/actions/schedules"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ScheduleForm } from "./form"
 

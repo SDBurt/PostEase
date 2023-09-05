@@ -9,7 +9,7 @@ import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { TIME_OPTIONS } from "@/lib/constants"
-import { createUserSchedule, getDefaultSchedule, getUserSchedule, updateUserSchedule } from "@/lib/db/actions/schedules"
+import { createSchedule, getDefaultSchedule, updateSchedule } from "@/lib/db/actions/schedules"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -144,20 +144,18 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
     if (data.isDefault) {
       const defaultSchedules = await getDefaultSchedule()
       if (defaultSchedules) {
-        for (const schedule of defaultSchedules) {
-          await updateUserSchedule(schedule.id, { isDefault: false })
-        }
+        await updateSchedule(defaultSchedules.id, { isDefault: false })
       }
     }
 
     if (schedule) {
-      await updateUserSchedule(schedule.id, payload)
+      await updateSchedule(schedule.id, payload)
       toast({
         title: "Success",
         description: (<p>Your schedule has been updated.</p>),
       })
     } else {
-      await createUserSchedule(payload)
+      await createSchedule(payload)
       toast({
         title: "Success",
         description: (<p>Your schedule has been created.</p>),
@@ -210,30 +208,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col space-y-8 p-2">
-
-      <FormField
-          control={form.control}
-          name="isDefault"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>
-                  Select this schedule as your default
-                </FormLabel>
-                <FormDescription>
-                  Your default schedule will be used when quickly selecting the next available slot.
-                </FormDescription>
-              </div>
-            </FormItem>
-          )}
-        />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col space-y-4 p-2">
 
       <FormField
           control={form.control}
@@ -245,6 +220,29 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
                 <Input placeholder="weekday schedule" {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="isDefault"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-2 leading-none">
+                <FormLabel>
+                  Default Schedule
+                </FormLabel>
+                <FormDescription>
+                  Your default schedule will be used when quickly selecting the next available slot.
+                </FormDescription>
+              </div>
             </FormItem>
           )}
         />

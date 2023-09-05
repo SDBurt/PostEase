@@ -7,22 +7,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id String @id @default(uuid())
-
-  userId String @default(dbgenerated("requesting_user_id()"))
-
-  content     String[]
-  status      Status    @default(DRAFT)
-  scheduledAt DateTime? @db.Timestamptz()
-  createdAt   DateTime  @default(now()) @db.Timestamptz()
-  updatedAt   DateTime  @updatedAt @db.Timestamptz()
-
-  tweet_ids String[] @default([])
-
-  @@index([userId])
-}
-
 enum Status {
   DRAFT
   SCHEDULED
@@ -38,6 +22,28 @@ model Schedule {
   isDefault Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
+
+  @@index([userId])
+}
+
+model Post {
+  id String @id @default(uuid())
+
+  userId String @default(dbgenerated("requesting_user_id()"))
+
+  title   String
+  content String[]
+  status  Status   @default(DRAFT)
+
+  scheduledAt DateTime? @db.Timestamptz()
+
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+
+  tweet_ids   String[] @default([])
+  linkedin_id String?
+
+  linkedinContent String?
 
   @@index([userId])
 }

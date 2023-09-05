@@ -44,6 +44,18 @@ export const adminConfig: AdminConfig = {
       disabled: true,
     },
   ],
+  editorNav: [
+    {
+      title: "Editor",
+      tabName: "editor",
+      icon: "dashboard",
+    },
+    {
+      title: "Schedule",
+      tabName: "schedule",
+      icon: "scheduled",
+    },
+  ]
 }
 
 export const postLinkTabs: LinkTabType[] = [

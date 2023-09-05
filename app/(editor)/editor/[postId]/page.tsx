@@ -1,15 +1,10 @@
-import { notFound, redirect } from "next/navigation"
-import { Post } from "@prisma/client"
+import { notFound } from "next/navigation"
 
 import { getPost } from "@/lib/db/actions"
 import { getCurrentUser } from "@/lib/session"
-import { Editor } from "@/components/editor/basic/editor"
-import { currentUser } from "@clerk/nextjs"
-import { ExternalAccount } from "@clerk/nextjs/dist/types/server"
+import { Editor } from "@/components/editor/editor"
+import { getSchedules } from "@/lib/db/actions/schedules"
 
-async function getPostForUser(postId: Post["id"], userId: Post["userId"]) {
-  return await getPost(postId)
-}
 
 interface EditorPageProps {
   params: { postId: string }
@@ -22,11 +17,14 @@ export default async function EditorPage({ params }: EditorPageProps) {
     notFound()
   }
 
-  const { id, twitter } = user
+  const { twitter } = user
 
   const { username, firstName, lastName, imageUrl } = twitter || {}
 
-  const post = await getPostForUser(params.postId, id)
+  const post = await getPost(params.postId)
+  const schedules = await getSchedules()
+
+  // const schedules = scheduleData?.schedule ? JSON.parse(scheduleData?.schedule as string) : []
 
   if (!post) {
     notFound()
@@ -36,6 +34,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
     <Editor
       post={{
         id: post.id,
+        title: post.title,
         content: post.content,
         status: post.status,
         scheduledAt: post.scheduledAt,
@@ -45,6 +44,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
         userName: `${firstName} ${lastName}` || "undefined",
         imageUrl: imageUrl || "",
       }}
+      schedules={schedules ?? []}
     />
   )
 }

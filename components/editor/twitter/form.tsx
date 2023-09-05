@@ -11,7 +11,7 @@ import { useFieldArray, useForm } from "react-hook-form"
 import TextareaAutosize from "react-textarea-autosize"
 import * as z from "zod"
 
-import { updatePost } from "@/lib/db/actions"
+import { updatePost } from "@/lib/db/actions/post"
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
@@ -25,6 +25,7 @@ import { toast } from "@/components/ui/use-toast"
 import { BadgeGroup } from "@/components/admin/posts/post-badge-group"
 import Tweet from "@/components/admin/posts/twitter/tweet"
 import Icons from "@/components/icons"
+import ScheduleButton from "../schedule-button"
 
 dayjs.extend(relativeTime)
 

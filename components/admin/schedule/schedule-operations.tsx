@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Schedule, Status } from "@prisma/client"
+import { Schedule } from "@prisma/client"
 
 import {
   AlertDialog,
@@ -24,10 +24,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
-import { deleteUserSchedule, updateUserSchedule } from "@/lib/db/actions/schedules"
+import { deleteSchedule } from "@/lib/db/actions/schedules"
 
 async function deleteScheduleHandler(scheduleId: string) {
-  const result = await deleteUserSchedule(scheduleId)
+  const result = await deleteSchedule(scheduleId)
 
   if (!result || result.id !== scheduleId) {
     toast({

@@ -2,7 +2,7 @@ import { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Post } from "@prisma/client"
 
-import { updatePost } from "@/lib/db/actions"
+import { updatePost } from "@/lib/db/actions/post"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"

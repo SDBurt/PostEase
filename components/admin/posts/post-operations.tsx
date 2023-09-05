@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Post } from "@prisma/client"
 
-import { deletePost } from "@/lib/db/actions"
+import { deletePost } from "@/lib/db/actions/post"
 import {
   AlertDialog,
   AlertDialogAction,
