@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import { Status } from "@prisma/client"
 
 interface PublishButtonProps extends ButtonProps {
   postId: string
@@ -37,7 +38,7 @@ export function PublishButton({
     try {
       setIsLoading(false)
       await updatePost(postId, {
-        status: "PUBLISHED",
+        status: Status.PUBLISHED,
         scheduledAt: new Date(),
         updatedAt: new Date(),
       })
