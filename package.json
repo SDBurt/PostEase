@@ -10,8 +10,9 @@
     "lint:fix": "next lint --fix",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
-    "postinstall": "husky install && prisma generate",
+    "postinstall": "prisma generate",
     "pre-commit": "lint-staged",
+    "test": "vitest",
     "prepare": "husky install",
     "type-check": "tsc --noEmit"
   },
@@ -96,28 +97,30 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "husky": "^8.0.3",
+    "jest": "^29.6.4",
     "lint-staged": "^14.0.1",
     "postcss": "8.4.28",
     "prettier": "^3.0.2",
     "prettier-plugin-tailwindcss": "^0.5.3",
     "prisma": "^5.2.0",
-    "supabase": "^1.88.0"
+    "supabase": "^1.88.0",
+    "vitest": "^0.34.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "semver@>=7.0.0 <7.5.2": ">=7.5.2"
+    }
   },
   "lint-staged": {
-    "(apps|packages)/**/*.{js,ts,jsx,tsx}": [
+    "(app|components|lib)/**/*.{js,ts,jsx,tsx}": [
       "prettier --write",
       "eslint --fix"
     ],
     "*.json": [
       "prettier --write"
     ],
-    "packages/prisma/schema.prisma": [
+    "prisma/schema.prisma": [
       "prisma format"
     ]
-  },
-  "pnpm": {
-    "overrides": {
-      "semver@>=7.0.0 <7.5.2": ">=7.5.2"
-    }
   }
 }
