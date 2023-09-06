@@ -60,3 +60,9 @@ next-env.d.ts
 
 # storybook
 storybook-static/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/test-results/
+/playwright-report/
+/playwright/.cache/
