@@ -9,11 +9,10 @@
 #   - vs @setup/node: https://github.com/actions/setup-node/issues/325                 #
 ########################################################################################
 
-name: "Pnpm install"
+name: "pnpm install"
 description: "Run pnpm install with cache enabled"
 
 runs:
-  using: "composite"
   steps:
    
     - uses: pnpm/action-setup@v2
@@ -39,7 +38,3 @@ runs:
       shell: bash
       run: | 
         pnpm install
-        pnpm prisma generate
-      env:
-        # Other environment variables
-        HUSKY: "0" # By default do not run HUSKY install
