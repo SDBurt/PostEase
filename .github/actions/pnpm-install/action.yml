@@ -1,0 +1,44 @@
+########################################################################################
+# "yarn install" composite action for yarn 2/3/4+ and "nodeLinker: node-modules"       #
+#--------------------------------------------------------------------------------------#
+# Cache:                                                                               #
+#   - Downloaded zip archive (multi-arch, preserved across yarn.lock changes)          #
+#   - Yarn install state (discarded on yarn.lock changes)                              #
+# References:                                                                          #
+#   - bench: https://gist.github.com/belgattitude/0ecd26155b47e7be1be6163ecfbb0f0b     #
+#   - vs @setup/node: https://github.com/actions/setup-node/issues/325                 #
+########################################################################################
+
+name: "Pnpm install"
+description: "Run pnpm install with cache enabled"
+
+runs:
+  using: "composite"
+  steps:
+   
+    - uses: pnpm/action-setup@v2
+      name: Install pnpm
+      with:
+        version: 7
+        run_install: false
+
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - uses: actions/cache@v3
+      name: Setup pnpm cache
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install dependencies
+      run: | 
+        pnpm install
+        pnpm prisma generate
+      env:
+        # Other environment variables
+        HUSKY: "0" # By default do not run HUSKY install

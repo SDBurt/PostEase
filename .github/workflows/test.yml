@@ -10,13 +10,16 @@ concurrency:
 
 jobs:
   test:
-    timeout-minutes: 5
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     # runs-on: buildjet-4vcpu-ubuntu-2204
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/dangerous-git-checkout
       - run: echo 'NODE_OPTIONS="--max_old_space_size=6144"' >> $GITHUB_ENV
-      - uses: ./.github/actions/yarn-install
+      - uses: ./.github/actions/pnpm-install
+        with:
+          version: 8
+
       # Should be an 8GB machine as per https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
-      - run: yarn test
+      - run: pnpm test
