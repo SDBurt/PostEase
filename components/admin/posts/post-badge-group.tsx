@@ -1,6 +1,6 @@
 import { Post } from "@prisma/client"
-import dayjs from "dayjs"
 
+import dayjs from "@/lib/dayjs"
 import { dateFromNow } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import Icons from "@/components/icons"

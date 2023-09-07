@@ -1,7 +1,9 @@
 import { ScheduleType } from "@/types"
 import { Post } from "@prisma/client"
+
+import dayjs from "@/lib/dayjs"
+
 import { dayOfWeek, dayRange } from "./utils"
-import dayjs from "dayjs"
 
 export type SlotType = {
   h: number
@@ -16,13 +18,11 @@ export type SectionData = {
   items: SlotType[]
 }
 
-
 export function toDayOfWeek(schedule: ScheduleType[]) {
-  
   if (!schedule) {
     return {}
   }
-  
+
   let byDayOfWeek: { [key: string]: { h: number; m: number }[] } = {}
 
   // Map schedule to a dictionary using day of week as the key
@@ -40,13 +40,11 @@ export function toDayOfWeek(schedule: ScheduleType[]) {
 }
 
 export function getSlotData(schedule: ScheduleType[]) {
-
   const now = new Date()
   const weekrange = dayRange(now)
   const dayjsNow = dayjs(now)
 
   const byDayOfWeek = toDayOfWeek(schedule)
-
 
   let data: SectionData[] = []
 
@@ -56,17 +54,11 @@ export function getSlotData(schedule: ScheduleType[]) {
 
     const items = (byDayOfWeek[dow] || [])
       .filter((item) => {
-        const itemDate = dt
-          .hour(item.h)
-          .minute(item.m)
-          .second(0)
+        const itemDate = dt.hour(item.h).minute(item.m).second(0)
         return itemDate.isAfter(dayjsNow)
-
-      }).map((item) => {
-        const itemDate = dt
-          .hour(item.h)
-          .minute(item.m)
-          .second(0)
+      })
+      .map((item) => {
+        const itemDate = dt.hour(item.h).minute(item.m).second(0)
         const formattedDate = itemDate.format()
 
         return {
@@ -87,16 +79,13 @@ export function getSlotData(schedule: ScheduleType[]) {
     data.push(newDataItem)
   })
 
-  
-
   return data
-
 }
 
 export function getQueueData(
   posts: Post[],
   schedule: ScheduleType[],
-  timezone?: string,
+  timezone?: string
 ): SectionData[] {
   const now = new Date()
   const weekrange = dayRange(now)
@@ -121,17 +110,11 @@ export function getQueueData(
 
     const items = (byDayOfWeek[dow] || [])
       .filter((item) => {
-        const itemDate = dt
-          .hour(item.h)
-          .minute(item.m)
-          .second(0)
+        const itemDate = dt.hour(item.h).minute(item.m).second(0)
         return itemDate.isAfter(dayjsNow)
-
-      }).map((item) => {
-        const itemDate = dt
-          .hour(item.h)
-          .minute(item.m)
-          .second(0)
+      })
+      .map((item) => {
+        const itemDate = dt.hour(item.h).minute(item.m).second(0)
         const formattedDate = itemDate.format()
 
         // if a post is scheduled for this date
@@ -162,8 +145,6 @@ export function getQueueData(
 
     data.push(newDataItem)
   })
-
-  
 
   return data
 }

@@ -1,7 +1,8 @@
 import { ScheduleType } from "@/types"
 import { Post } from "@prisma/client"
-import dayjs from "dayjs"
 
+import dayjs from "@/lib/dayjs"
+import { getQueueData, SectionData, SlotType } from "@/lib/schedule"
 import { dayFormat, dayFormatTime, dayOfWeek, dayRange } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -9,8 +10,6 @@ import { Label } from "@/components/ui/label"
 import { PostCreateButton } from "../posts/create/button"
 import { ScheduledPostOperations } from "../posts/scheduled-post-operations"
 import { PostSelectButton } from "../posts/select-button"
-import { SectionData, SlotType, getQueueData } from "@/lib/schedule"
-
 
 interface SlotItemProps {
   datetime: string
