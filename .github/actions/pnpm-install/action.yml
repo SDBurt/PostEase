@@ -13,7 +13,7 @@ name: "pnpm install"
 description: "Run pnpm install with cache enabled"
 
 runs:
-  using: "node16"
+  using: "composite"
   steps:
    
     - uses: pnpm/action-setup@v2
