@@ -8,7 +8,7 @@ test('isValidUrl on http://google.com returns true', () => {
 })
 
 test('isValidUrl on google.com returns false', () => {
-  expect(isValidUrl("google.com")).toEqual(true)
+  expect(isValidUrl("google.com")).toEqual(false)
 })
 
 test('containsURL on "google.com" returns "https://google.com"', () => {

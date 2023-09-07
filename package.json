@@ -12,7 +12,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
     "postinstall": "prisma generate",
     "pre-commit": "lint-staged",
-    "test": "vitest",
+    "test": "vitest run",
     "prepare": "husky install",
     "type-check": "tsc --noEmit"
   },
@@ -107,6 +107,7 @@
     "prettier-plugin-tailwindcss": "^0.5.3",
     "prisma": "^5.2.0",
     "supabase": "^1.88.0",
+    "vite-tsconfig-paths": "^4.2.0",
     "vitest": "^0.34.3"
   },
   "pnpm": {
