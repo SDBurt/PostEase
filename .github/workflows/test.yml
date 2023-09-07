@@ -10,8 +10,9 @@ concurrency:
 
 jobs:
   test:
-    timeout-minutes: 20
-    runs-on: buildjet-4vcpu-ubuntu-2204
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    # runs-on: buildjet-4vcpu-ubuntu-2204
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/dangerous-git-checkout
