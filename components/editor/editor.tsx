@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useState } from "react"
 import Link from "next/link"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Post, Schedule, Status } from "@prisma/client"
 import { useForm } from "react-hook-form"
@@ -66,6 +66,8 @@ export function Editor({ post, user, schedules }: EditorProps) {
 
   const [isSaving, setIsSaving] = useState(false)
 
+  const router = useRouter()
+
   const defaultValues: Partial<FormValues> = {
     title: post.title || "",
     tweets:
@@ -109,8 +111,6 @@ export function Editor({ post, user, schedules }: EditorProps) {
         updatedData["scheduledAt"] = data.scheduledAt
       }
 
-      console.log("Post: ", updatedData)
-
       const result = await updatePost(post?.id, updatedData)
 
       setIsSaving(false)
@@ -128,6 +128,7 @@ export function Editor({ post, user, schedules }: EditorProps) {
         description: <p>{`Updated ${post.title} successfully!`}</p>,
       })
     } catch (err) {
+      console.log(err)
       setIsSaving(false)
       return toast({
         title: "Unsuccessful",

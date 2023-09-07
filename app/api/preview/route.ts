@@ -15,7 +15,6 @@ export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
 
   if (!searchParams.has("status")) {
-    console.log("no status")
     return NextResponse.json("no status parameter provider", { status: 400 })
   }
 

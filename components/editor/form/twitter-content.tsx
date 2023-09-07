@@ -59,7 +59,7 @@ function CloseButton({
 }
 
 export const MetaTagPreview = ({ fieldName, control }) => {
-  const [showPreview, setShowPreview] = useState(true)
+  const [showPreview, setShowPreview] = useState(false)
 
   const result = useWatch({ control, name: fieldName })
   const [url] = useDebounce(containsURL(result), 1000)
@@ -76,18 +76,18 @@ export const MetaTagPreview = ({ fieldName, control }) => {
   }
 
   return (
-    <div className="group flex space-x-2">
+    <div className="">
       {showPreview ? (
         url ? (
-          <>
+          <div className="group relative flex space-x-2">
             <TwitterMetatagPreview url={url} />
-            <div className="group-hover:right-3 group-hover:top-3 group-hover:block">
+            <div className="absolute right-3 top-3 hidden group-hover:block">
               <CloseButton
                 onClickHandler={() => setShowPreview(false)}
                 content="Dismiss preview"
               />
             </div>
-          </>
+          </div>
         ) : null
       ) : null}
     </div>

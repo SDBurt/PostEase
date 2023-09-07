@@ -36,15 +36,24 @@ export function dayRange(date: Date): string[] {
   return ranges
 }
 
+const urlRegex =
+  "((http|https)+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?" // OLD
+
 export const containsURL = (text: string) => {
-  const regex = new RegExp(
-    "([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?"
-  )
+  const regex = new RegExp(urlRegex)
   const result = text.match(regex)
 
-  if (result && result.length > 0) {
-    return result[0]
-  } else return null
+  if (!result || result.length === 0) {
+    return null
+  }
+
+  const newUrl = result[0]
+
+  if (!(newUrl.startsWith("http://") || newUrl.startsWith("https://"))) {
+    return "https://" + newUrl
+  }
+
+  return newUrl
 }
 
 export function dayFormat(date: string | number | Date | dayjs.Dayjs): string {
@@ -117,6 +126,7 @@ export const isValidUrl = (url: string) => {
     new URL(url)
     return true
   } catch (e) {
+    console.error(e)
     return false
   }
 }
