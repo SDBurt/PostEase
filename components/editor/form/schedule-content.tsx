@@ -1,6 +1,10 @@
 "use client"
 
+import React, { useState } from "react"
+import { Schedule } from "@prisma/client"
 
+import dayjs from "@/lib/dayjs"
+import { getSlotData } from "@/lib/schedule"
 import {
   FormControl,
   FormDescription,
@@ -9,45 +13,44 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getSlotData } from "@/lib/schedule"
-
-import React, { useState } from "react"
-
-import dayjs from "dayjs"
-import { Schedule } from "@prisma/client"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
 import { ScheduleCreateButton } from "@/components/admin/schedule/create/button"
 
-
-function SelectAllOptions({schedule}) {
-
+function SelectAllOptions({ schedule }) {
   if (!schedule) {
     return <p className="px-3 py-2 text-sm">No Slot</p>
   }
 
   const slots = getSlotData(schedule)
 
-  const options = slots.reduce((acc, curr) => [...acc, ...curr.items.map(item => item.date)], [] as string[])
+  const options = slots.reduce(
+    (acc, curr) => [...acc, ...curr.items.map((item) => item.date)],
+    [] as string[]
+  )
 
   return (
     <>
-      {
-          options && options.length > 0 ? options.map((slot) => {
-            return (
-              <SelectItem
-                key={slot}
-                value={slot}
-              >
-                {dayjs(slot).format("ddd, MMM D, YYYY - h:mm A")}
-              </SelectItem>
-            )
-        }) : <p className="px-3 py-2 text-sm">No Slot for this date</p>
-      }
+      {options && options.length > 0 ? (
+        options.map((slot) => {
+          return (
+            <SelectItem key={slot} value={slot}>
+              {dayjs(slot).format("ddd, MMM D, YYYY - h:mm A")}
+            </SelectItem>
+          )
+        })
+      ) : (
+        <p className="px-3 py-2 text-sm">No Slot for this date</p>
+      )}
     </>
   )
-
 }
 
 // function SelectOptions({scheduledAtDate, scheduleByDayOfWeek}) {
@@ -59,7 +62,7 @@ function SelectAllOptions({schedule}) {
 //   const now = dayjs()
 //   const scheduledAt = dayjs(scheduledAtDate)
 //   const currentDate = scheduledAt.date()
-    
+
 //   const options = scheduleByDayOfWeek[currentDate]
 
 //   const filterdOptions = options.filter(option => {
@@ -87,20 +90,23 @@ function SelectAllOptions({schedule}) {
 
 interface ScheduleFormProps {
   form: any
-  schedules: Pick<Schedule, "id" | "title" | "schedule" | "isDefault" | "timezone">[]
+  schedules: Pick<
+    Schedule,
+    "id" | "title" | "schedule" | "isDefault" | "timezone"
+  >[]
 }
 
 export function ScheduleContent({ form, schedules }: ScheduleFormProps) {
+  const [selectedSchedule, setSelectedSchedule] = useState(
+    schedules?.find((schedule) => schedule.isDefault)
+  )
 
-  const [selectedSchedule, setSelectedSchedule] = useState(schedules?.find(schedule => schedule.isDefault))
-  
   // const scheduledAtDate = form.watch("scheduledAtDate") // you can also target specific fields by their names
   const schedulePost = form.watch("schedulePost") // you can also target specific fields by their names
   // const byDayOfWeek = toDayOfWeek(schedule)
 
   const onSelectChangeHandler = (value: Schedule["id"]) => {
-
-    const selected = schedules?.find(item => {
+    const selected = schedules?.find((item) => {
       return item.id === value
     })
 
@@ -117,47 +123,41 @@ export function ScheduleContent({ form, schedules }: ScheduleFormProps) {
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
             <div className="space-y-0.5">
-              <FormLabel className="text-base">
-                Schedule Post
-              </FormLabel>
-              <FormDescription>
-                Schedule this post?
-              </FormDescription>
+              <FormLabel className="text-base">Schedule Post</FormLabel>
+              <FormDescription>Schedule this post?</FormDescription>
             </div>
             <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-              />
+              <Switch checked={field.value} onCheckedChange={field.onChange} />
             </FormControl>
           </FormItem>
         )}
       />
-      { schedulePost && schedules && schedules.length === 0 ? (
-          <EmptyListPlaceholder title="No Schedules" description="Create a schedule to start posting" iconName="scheduled">
-            <ScheduleCreateButton /> 
-          </EmptyListPlaceholder>
-        ) : null
-      }
-      { (schedulePost && schedules && schedules.length > 0) ? (
+      {schedulePost && schedules && schedules.length === 0 ? (
+        <EmptyListPlaceholder
+          title="No Schedules"
+          description="Create a schedule to start posting"
+          iconName="scheduled"
+        >
+          <ScheduleCreateButton />
+        </EmptyListPlaceholder>
+      ) : null}
+      {schedulePost && schedules && schedules.length > 0 ? (
         <>
-          <Select onValueChange={onSelectChangeHandler} defaultValue={selectedSchedule?.id}>
+          <Select
+            onValueChange={onSelectChangeHandler}
+            defaultValue={selectedSchedule?.id}
+          >
             <FormControl>
               <SelectTrigger className="bg-background">
                 <SelectValue placeholder="Select a date to view slots" />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {
-                schedules?.map(schedule => (
-                  <SelectItem
-                    key={schedule.id}
-                    value={schedule.id}
-                  >
-                    {schedule.title}
-                  </SelectItem>
-                  ))
-              }
+              {schedules?.map((schedule) => (
+                <SelectItem key={schedule.id} value={schedule.id}>
+                  {schedule.title}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <FormField
@@ -166,14 +166,21 @@ export function ScheduleContent({ form, schedules }: ScheduleFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Slot</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger className="bg-background">
                       <SelectValue placeholder="Select a date to view slots" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectAllOptions schedule={JSON.parse(selectedSchedule?.schedule as string || "[]")} />
+                    <SelectAllOptions
+                      schedule={JSON.parse(
+                        (selectedSchedule?.schedule as string) || "[]"
+                      )}
+                    />
                   </SelectContent>
                 </Select>
                 <FormDescription>
@@ -255,6 +262,6 @@ export function ScheduleContent({ form, schedules }: ScheduleFormProps) {
           </FormItem>
         )}
       />*/}
-    </> 
+    </>
   )
 }

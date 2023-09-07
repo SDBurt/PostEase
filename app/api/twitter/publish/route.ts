@@ -45,7 +45,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       { status: 200 }
     )
   } catch (e) {
-    console.error(e)
+    console.error("error during Publish Post")
     return new Response(JSON.stringify({ message: e.message }), { status: 500 })
   }
 }

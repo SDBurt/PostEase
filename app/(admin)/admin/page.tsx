@@ -1,13 +1,13 @@
 import { Post, Status } from "@prisma/client"
-import dayjs from "dayjs"
 
+import dayjs from "@/lib/dayjs"
 import { getAllPosts } from "@/lib/db/actions"
+import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
 import { PageShell } from "@/components/admin/layout/page-shell"
 import { PageHeader } from "@/components/admin/page-header"
 import { PostCreateButton } from "@/components/admin/posts/create/button"
 import { PostItem } from "@/components/admin/posts/post"
 import { PostOperations } from "@/components/admin/posts/post-operations"
-import EmptyListPlaceholder from "@/components/admin/empty-placeholder"
 
 export const metadata = {
   title: "Admin",
@@ -25,7 +25,13 @@ export default async function AdminPage() {
         {posts?.length ? (
           <div className="divide-y divide-border rounded-md border">
             {posts.map((post) => (
-              <PostItem key={post.id} post={post} hrefPrefix={post.status === Status.PUBLISHED ? "/preview" : "/editor"}>
+              <PostItem
+                key={post.id}
+                post={post}
+                hrefPrefix={
+                  post.status === Status.PUBLISHED ? "/preview" : "/editor"
+                }
+              >
                 <PostOperations post={{ id: post.id }} />
               </PostItem>
             ))}

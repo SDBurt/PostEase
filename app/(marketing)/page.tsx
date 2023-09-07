@@ -57,7 +57,10 @@ export default async function IndexPage() {
             everything.
           </p>
           <div className="space-x-4">
-            <Link href="/sign-in" className={cn(buttonVariants({ size: "lg" }))}>
+            <Link
+              href="/sign-in"
+              className={cn(buttonVariants({ size: "lg" }))}
+            >
               Get Started
             </Link>
             <Link
@@ -80,7 +83,8 @@ export default async function IndexPage() {
             Features
           </h2>
           <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            This project is a way for people to schedule posts to Twitter using a modern web app
+            This project is a way for people to schedule posts to Twitter using
+            a modern web app
           </p>
         </div>
         <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
