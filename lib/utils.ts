@@ -39,6 +39,17 @@ export function dayRange(date: Date): string[] {
   return ranges
 }
 
+export const containsURL = (text: string) => {
+  const regex = new RegExp(
+    "([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?"
+  )
+  const result = text.match(regex)
+
+  if (result && result.length > 0) {
+    return result[0]
+  } else return null
+}
+
 export function dayFormat(date: string | number | Date | dayjs.Dayjs): string {
   return dayjs(date).format("dddd, MMMM D, YYYY")
 }
