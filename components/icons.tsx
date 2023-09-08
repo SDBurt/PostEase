@@ -4,6 +4,7 @@ import {
   ArrowRight,
   ArrowUp,
   BarChart,
+  Calendar,
   CalendarClock,
   Check,
   ChevronDown,
@@ -47,7 +48,6 @@ import {
   User,
   X,
   Youtube,
-  Calendar
 } from "lucide-react"
 
 export const Icons = {
@@ -102,6 +102,8 @@ export const Icons = {
   twitch: Twitch,
   dribbble: Dribbble,
   globe: Globe,
+  image: Image,
+  file: File,
   spotify: ({ ...props }: LucideProps) => (
     <svg
       role="img"

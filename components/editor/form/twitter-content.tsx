@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/tooltip"
 import Tweet from "@/components/admin/posts/twitter/tweet"
 import Icons from "@/components/icons"
+import ImageInputButton from "@/components/image-input-button"
+import ImageInputPreview from "@/components/image-preview"
 
 import TwitterMetatagPreview from "./twitter-metatag-preview"
 
@@ -58,37 +60,83 @@ function CloseButton({
   )
 }
 
+interface PreviewContainerProps {
+  show: boolean
+  setShow: (value) => void
+  children: React.ReactNode
+}
+
+export const PreviewContainer = ({
+  show,
+  setShow,
+  children,
+}: PreviewContainerProps) => {
+  return (
+    <div>
+      {show ? (
+        <div className="group relative flex w-full space-x-2 lg:w-[540px]">
+          {children}
+          <div className="absolute right-3 top-3 hidden group-hover:block">
+            <CloseButton
+              onClickHandler={() => setShow(false)}
+              content="Dismiss"
+            />
+          </div>
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
 export const MetaTagPreview = ({ fieldName, control }) => {
   const [showPreview, setShowPreview] = useState(false)
 
   const result = useWatch({ control, name: fieldName })
-  const [url] = useDebounce(containsURL(result), 1000)
+  const [debouncedUrl] = useDebounce(containsURL(result), 1000)
 
   // show preview if url changes
   useEffect(() => {
-    if (url && isValidUrl(url)) {
+    if (debouncedUrl && isValidUrl(debouncedUrl)) {
       setShowPreview(true)
     }
-  }, [setShowPreview, url])
+  }, [setShowPreview, debouncedUrl])
 
-  if (!url || !isValidUrl(url)) {
+  if (!debouncedUrl || !isValidUrl(debouncedUrl)) {
     return null
   }
 
   return (
-    <div className="">
-      {showPreview ? (
-        url ? (
-          <div className="group relative flex space-x-2">
-            <TwitterMetatagPreview url={url} />
-            <div className="absolute right-3 top-3 hidden group-hover:block">
-              <CloseButton
-                onClickHandler={() => setShowPreview(false)}
-                content="Dismiss preview"
-              />
-            </div>
-          </div>
-        ) : null
+    <div>
+      {debouncedUrl ? (
+        <PreviewContainer show={showPreview} setShow={setShowPreview}>
+          <TwitterMetatagPreview url={debouncedUrl} />
+        </PreviewContainer>
+      ) : null}
+    </div>
+  )
+}
+
+export const ImagePreview = ({ imagePrevew }) => {
+  const [showPreview, setShowPreview] = useState(false)
+  const [deboucedImagePreview] = useDebounce(imagePrevew, 1000)
+
+  // show preview if url changes
+  useEffect(() => {
+    if (deboucedImagePreview) {
+      setShowPreview(true)
+    }
+  }, [setShowPreview, deboucedImagePreview])
+
+  if (!deboucedImagePreview) {
+    return null
+  }
+
+  return (
+    <div>
+      {deboucedImagePreview ? (
+        <PreviewContainer show={showPreview} setShow={setShowPreview}>
+          <ImageInputPreview filePreview={deboucedImagePreview} />
+        </PreviewContainer>
       ) : null}
     </div>
   )
@@ -112,15 +160,32 @@ interface TwitterFormContentProps {
 }
 
 export default function TwitterFormContent({
+  form,
   imageUrl,
   userName,
   handle,
-  form,
 }: TwitterFormContentProps) {
-  const { fields, append, remove } = useFieldArray<TwitterFormContentValues>({
-    name: "tweets",
-    control: form.control,
-  })
+  const { fields, append, remove, update } =
+    useFieldArray<TwitterFormContentValues>({
+      name: "tweets",
+      control: form.control,
+    })
+
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+
+  const handleFileSelect = (file: File) => {
+    // Handle the selected file here, e.g., upload it to a server
+    if (file) {
+      console.log("Selected File:", file)
+
+      // Create a data URL for image preview
+      const reader = new FileReader()
+      reader.onload = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   return (
     <div className="grid w-full gap-6">
@@ -163,16 +228,25 @@ export default function TwitterFormContent({
                             placeholder="Tweet content"
                             className="w-full resize-none appearance-none overflow-hidden rounded-lg bg-transparent p-3 text-sm outline outline-1 outline-muted focus:outline-1 focus:outline-primary"
                             {...field}
+                            onChange={(e) => {
+                              field.onChange(e)
+                              form.setValue(
+                                `tweets.${index}.length`,
+                                e.target.value.length
+                              )
+                            }}
                           />
                           <CloseButton
                             onClickHandler={() => remove(index)}
                             content="Remove"
                           />
                         </div>
+                        <p>{form.getValues(`tweets.${index}.length`)}</p>
                         <MetaTagPreview
                           fieldName={field.name}
                           control={form.control}
                         />
+                        <ImagePreview imagePrevew={imagePreview} />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -182,15 +256,19 @@ export default function TwitterFormContent({
             }}
           />
         ))}
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="mt-2"
-          onClick={() => append({ text: "" })}
-        >
-          Add Tweet
-        </Button>
+
+        {/* Controls */}
+        <div className="mt-2 flex space-x-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            onClick={() => append({ text: "" })}
+          >
+            <Icons.add className="h-4 w-4" />
+          </Button>
+          <ImageInputButton onFileSelect={handleFileSelect} />
+        </div>
       </div>
     </div>
   )

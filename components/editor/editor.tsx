@@ -9,10 +9,12 @@ import { Post, Schedule, Status } from "@prisma/client"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
+import { SelectPost, SelectSchedule } from "@/types/db"
 import { adminConfig } from "@/config/admin"
 import dayjs from "@/lib/dayjs"
 import { updatePost } from "@/lib/db/actions/post"
 import { cn } from "@/lib/utils"
+import { editorFormSchema } from "@/lib/validations/editor"
 
 import EditorNav from "../admin/nav/editor-nav"
 import { BadgeGroup } from "../admin/posts/post-badge-group"
@@ -25,22 +27,17 @@ import { toast } from "../ui/use-toast"
 import { ScheduleContent } from "./form/schedule-content"
 import TwitterFormContent from "./form/twitter-content"
 
-const formSchema = z.object({
-  title: z.string().min(1),
-  tweets: z.array(
-    z.object({
-      text: z.string().min(5).max(280),
-    })
-  ),
-  publishToTwitter: z.boolean().default(false),
-  publishToLinkedin: z.boolean().default(false),
-  linkedinContent: z.string().optional(),
-  schedulePost: z.boolean().default(false),
-  scheduledAtDate: z.date().nullable(),
-  scheduledAt: z.string().nullable(), // select can't be date object
-})
+const formDefaults: Partial<FormValues> = {
+  title: "",
+  tweets: [{ text: "", length: 0, images: [] }],
+  publishToTwitter: false,
+  publishToLinkedin: false,
+  linkedinContent: "",
+  schedulePost: false,
+  scheduledAtDate: null,
+}
 
-type FormValues = z.infer<typeof formSchema>
+type FormValues = z.infer<typeof editorFormSchema>
 
 interface EditorProps {
   user: {
@@ -48,11 +45,8 @@ interface EditorProps {
     userName: string
     twitterHandle: string
   }
-  post: Pick<Post, "id" | "title" | "content" | "status" | "scheduledAt">
-  schedules: Pick<
-    Schedule,
-    "id" | "title" | "schedule" | "isDefault" | "timezone"
-  >[]
+  post: SelectPost
+  schedules: SelectSchedule[]
 }
 
 export function Editor({ post, user, schedules }: EditorProps) {
@@ -66,30 +60,34 @@ export function Editor({ post, user, schedules }: EditorProps) {
 
   const [isSaving, setIsSaving] = useState(false)
 
-  const router = useRouter()
-
   const defaultValues: Partial<FormValues> = {
-    title: post.title || "",
+    title: post.title || formDefaults.title,
     tweets:
       post.content && post.content.length > 0
-        ? post.content.map((text) => ({ text: text }))
-        : [{ text: "" }],
-    publishToTwitter: false,
-    publishToLinkedin: false,
-    linkedinContent: "",
-    schedulePost: post.status ? post.status !== Status.DRAFT : false,
+        ? post.content.map((text) => ({
+            text: text,
+            length: text.length,
+            images: [],
+          }))
+        : formDefaults.tweets,
+    publishToTwitter: formDefaults.publishToTwitter,
+    publishToLinkedin: formDefaults.publishToLinkedin,
+    linkedinContent: formDefaults.linkedinContent,
+    schedulePost: post.status
+      ? post.status !== Status.DRAFT
+      : formDefaults.schedulePost,
     scheduledAtDate:
       (post.scheduledAt && dayjs(post.scheduledAt).startOf("day").toDate()) ||
       (isScheduledAt && new Date(isScheduledAt)) ||
-      null,
+      formDefaults.scheduledAtDate,
     scheduledAt:
       (post.scheduledAt && dayjs(post.scheduledAt).format()) ||
       isScheduledAt ||
-      null,
+      formDefaults.scheduledAt,
   }
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(editorFormSchema),
     defaultValues,
     mode: "onChange",
   })

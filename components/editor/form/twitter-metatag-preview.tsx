@@ -51,7 +51,7 @@ export default function TwitterMetatagPreview({
   return (
     <>
       {data.tags && (
-        <Card className="group relative w-full lg:w-[540px]">
+        <Card>
           <CardContent className="p-4">
             {data.tags.image && (
               <img
