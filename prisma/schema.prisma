@@ -29,21 +29,36 @@ model Schedule {
 model Post {
   id String @id @default(uuid())
 
+  // owner
   userId String @default(dbgenerated("requesting_user_id()"))
 
   title   String   @default("Untitled Post")
   content String[]
   status  Status   @default(DRAFT)
 
+  // scheduling time with timezone
   scheduledAt DateTime? @db.Timestamptz()
+
+  // reference ID's
+  tweet_ids   String[] @default([])
+  linkedin_id String?
+
+  // text for linkedin
+  linkedinContent String?
 
   createdAt DateTime @default(now()) @db.Timestamptz()
   updatedAt DateTime @updatedAt @db.Timestamptz()
 
-  tweet_ids   String[] @default([])
-  linkedin_id String?
-
-  linkedinContent String?
+  images Image[]
 
   @@index([userId])
+}
+
+model Image {
+  id String @id @default(uuid())
+
+  url String
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
 }

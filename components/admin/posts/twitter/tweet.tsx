@@ -49,7 +49,7 @@ function TweetText({ text }: TweetTextProps) {
 }
 
 function TweetContainer({ children }: { children: React.ReactNode }) {
-  return <div className="flex w-full gap-2 p-2">{children}</div>
+  return <div className="flex w-full gap-2 p-2 pb-4">{children}</div>
 }
 
 function Tweet({
@@ -67,7 +67,7 @@ function Tweet({
         <UserAvatar name={userName} imageUrl={imageUrl} />
         {isThread && <div className="h-full w-px bg-muted" />}
       </div>
-      <div className="w-full">
+      <div className="flex w-full flex-col space-y-2">
         <TweetHeader
           userName={userName}
           handle={handle}

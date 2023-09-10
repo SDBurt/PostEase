@@ -9,7 +9,11 @@ import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { TIME_OPTIONS } from "@/lib/constants"
-import { createSchedule, getDefaultSchedule, updateSchedule } from "@/lib/db/actions/schedules"
+import {
+  createSchedule,
+  getDefaultSchedule,
+  updateSchedule,
+} from "@/lib/db/actions/schedules"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -21,6 +25,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import {
   Select,
   SelectContent,
@@ -30,7 +35,6 @@ import {
 } from "@/components/ui/select"
 import { toast } from "@/components/ui/use-toast"
 import Icons from "@/components/icons"
-import { Input } from "@/components/ui/input"
 
 const items = [
   {
@@ -95,11 +99,10 @@ const scheduleToFormItem = (schedules: ScheduleType[]): ScheduleFormItem[] => {
 }
 
 const formItemToSchedule = (formData: ScheduleFormItem[]): ScheduleType[] => {
-  
   if (!formData) {
     return []
   }
-  
+
   return formData.map((item) => ({
     h: parseInt(item.time.split("-")[0]),
     m: parseInt(item.time.split("-")[1]),
@@ -108,18 +111,23 @@ const formItemToSchedule = (formData: ScheduleFormItem[]): ScheduleType[] => {
 }
 
 interface ScheduleFormProps {
-  schedule?: Pick<Schedule, "id" | "title" | "isDefault" | "schedule" | "timezone">
+  schedule?: Pick<
+    Schedule,
+    "id" | "title" | "isDefault" | "schedule" | "timezone"
+  >
 }
+
+type FormSchemeValues = z.infer<typeof FormSchema>
 
 export function ScheduleForm({ schedule }: ScheduleFormProps) {
   const router = useRouter()
 
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<FormSchemeValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: schedule?.title || "",
       isDefault: schedule?.isDefault || false,
-      schedules: schedule?.schedule 
+      schedules: schedule?.schedule
         ? scheduleToFormItem(JSON.parse(schedule.schedule as string))
         : [],
     },
@@ -130,7 +138,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
     control: form.control,
   })
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: FormSchemeValues) {
     const scheduleData = formItemToSchedule(
       data.schedules as ScheduleFormItem[]
     )
@@ -138,7 +146,7 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
     const payload = {
       title: data.title,
       isDefault: data.isDefault,
-      schedule: scheduleData ? JSON.stringify(scheduleData) : "[]"
+      schedule: scheduleData ? JSON.stringify(scheduleData) : "[]",
     }
 
     if (data.isDefault) {
@@ -152,13 +160,13 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
       await updateSchedule(schedule.id, payload)
       toast({
         title: "Success",
-        description: (<p>Your schedule has been updated.</p>),
+        description: <p>Your schedule has been updated.</p>,
       })
     } else {
       await createSchedule(payload)
       toast({
         title: "Success",
-        description: (<p>Your schedule has been created.</p>),
+        description: <p>Your schedule has been created.</p>,
       })
     }
 
@@ -208,9 +216,11 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col space-y-4 p-2">
-
-      <FormField
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex w-full flex-col space-y-4 p-2"
+      >
+        <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
@@ -236,17 +246,16 @@ export function ScheduleForm({ schedule }: ScheduleFormProps) {
                 />
               </FormControl>
               <div className="space-y-2 leading-none">
-                <FormLabel>
-                  Default Schedule
-                </FormLabel>
+                <FormLabel>Default Schedule</FormLabel>
                 <FormDescription>
-                  Your default schedule will be used when quickly selecting the next available slot.
+                  Your default schedule will be used when quickly selecting the
+                  next available slot.
                 </FormDescription>
               </div>
             </FormItem>
           )}
         />
-        
+
         <FormLabel>Schedule</FormLabel>
         <div>
           {/* Head */}
